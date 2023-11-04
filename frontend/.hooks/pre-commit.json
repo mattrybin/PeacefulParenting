@@ -1,8 +1,8 @@
 {
   "steps": [
     {
-      "name": "Example hook inside frontend",
-      "command": "echo \"Hello world!\""
+      "name": "Build frontend",
+      "command": "pnpm build"
     }
   ]
 }
