@@ -1,8 +1,8 @@
 {
   "steps": [
     {
-      "name": "Example hook inside backend",
-      "command": "echo \"Hello world!\""
+      "name": "Build backend",
+      "command": "go build -o build/backend"
     }
   ]
 }
