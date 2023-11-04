@@ -1,0 +1,8 @@
+{
+  "steps": [
+    {
+      "name": "Example hook inside backend",
+      "command": "echo \"Hello world!\""
+    }
+  ]
+}
