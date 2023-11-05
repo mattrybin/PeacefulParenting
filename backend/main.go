@@ -1,7 +1,20 @@
 package main
 
-import "fmt"
+import "github.com/gofiber/fiber/v2"
+
+type Data struct {
+	Firstname string `json:"firstname"`
+	Lastname  string `json:"lastname"`
+}
 
 func main() {
-	fmt.Println("AWESOME123")
+	app := fiber.New()
+	app.Get("/api/v1/questions", func(c *fiber.Ctx) error {
+		data := []Data{
+			{"Matt", "Rybin"},
+			{"Adam", "Eve"},
+		}
+		return c.JSON(data)
+	})
+	app.Listen(":3100")
 }

@@ -2,7 +2,7 @@
   "steps": [
     {
       "name": "Build backend",
-      "command": "go build -o build/backend"
+      "command": "make clean && make build"
     }
   ]
 }
