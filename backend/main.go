@@ -30,5 +30,8 @@ func main() {
 	})
 
 	v1.Get("/questions", handlers.GetAllQuestions)
+	v1.Get("/questions/:question_id", handlers.GetQuestionById)
+	v1.Post("/questions", handlers.CreateQuestion)
+	v1.Delete("/questions/:question_id", handlers.DeleteQuestion)
 	log.Fatal(app.Listen(":3100"))
 }
