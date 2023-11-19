@@ -24,6 +24,12 @@ const config = {
 		themes: [{
 			light: {
 				...require("daisyui/src/theming/themes")["light"],
+				// "primary": "#f0abfc",
+				// "primary-content": "#4a044e",
+				"primary": "#701a75",
+				"primary-content": "#fdf4ff",
+				"success": "#047857",
+				"accent": "#86198f",
 				"neutral": "#3d4451",
 				"base-100": "#F5F5F4",
 				"base-200": "#E7E5E4",
@@ -32,6 +38,10 @@ const config = {
 			},
 			dark: {
 				...require("daisyui/src/theming/themes")["dark"],
+				"primary": "#701a75",
+				"primary-content": "#fdf4ff",
+				"success": "#10b981",
+				"accent": "#a21caf",
 				"neutral": "#3d4451",
 				"base-100": "#1C1917",
 				"base-200": "#292524",

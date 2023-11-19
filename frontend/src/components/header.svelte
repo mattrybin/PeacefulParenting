@@ -1,14 +1,9 @@
 <script>
-	import { onMount } from 'svelte';
 	import HeaderBranding from './HeaderBranding.svelte';
 	import MobileHeaderControllers from './MobileHeaderController.svelte';
 	import FilterTab from './FilterTab.svelte';
 	import Search from './Search.svelte';
 	import HeaderController from './HeaderController.svelte';
-	onMount(() => {
-		// @ts-ignore
-		// document.querySelector('html').setAttribute('data-theme', 'dark');
-	});
 </script>
 
 <div class="header border-b border-base-200 bg-base-100">

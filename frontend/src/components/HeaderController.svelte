@@ -1,5 +1,5 @@
 <script>
-	import { CirclesFour, MagnifyingGlass } from 'phosphor-svelte';
+	import { CirclesFour } from 'phosphor-svelte';
 </script>
 
 <div class="grid grid-flow-col items-center gap-2">

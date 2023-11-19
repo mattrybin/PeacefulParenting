@@ -7,7 +7,9 @@
 <div class="root-container">
 	<div class="content-container">
 		<Header />
-		<slot />
+		<div class="py-4 pb-20">
+			<slot />
+		</div>
 	</div>
 	<Footer />
 </div>
