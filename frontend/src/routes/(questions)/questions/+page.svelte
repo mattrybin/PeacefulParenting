@@ -1,7 +1,9 @@
 <script>
-	import { Baby, CheckFat, EggCrack, MagnifyingGlass } from 'phosphor-svelte';
-	import { filter } from '../stores/useHeader';
-	import Icons from '../components/Icons.svelte';
+	import { CheckFat } from 'phosphor-svelte';
+	import Icons from '@components/Icons.svelte';
+	import { filter } from '@stores/useHeader';
+	import { questionsViews } from '@enums';
+	// import { questions } from './page.specs';
 
 	let questions = [
 		{
@@ -61,9 +63,9 @@
 	role="tablist"
 	class="mt-6 rounded-none justify-center border-t border-base-200 flex gap-4 h-12 items-center"
 >
-	<button class="btn btn-primary btn-sm normal-case">Top</button>
-	<button class="text-base-300 font-bold">Week</button>
-	<button class="text-base-300 font-bold">Month</button>
+	{#each questionsViews as item}
+		<button class="text-base-300 font-bold">{item}</button>
+	{/each}
 </div>
 
 <div class="border-b border-base-300 bg-base-200">
@@ -104,12 +106,4 @@
 			</div>
 		</div>
 	{/each}
-	<!-- <div class="border-t border-base-300 p-4">
-		<div>0 votes 0 answers 416 views</div>
-		<div>
-			Self-image issues can emerge early. How do I foster a healthy body image and self-acceptance
-			in my child amid societal pressures and media influences?
-		</div>
-		<div>Antoni answered 1 min ago</div>
-	</div> -->
 </div>

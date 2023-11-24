@@ -1,17 +1,74 @@
 <script>
 	// @ts-nocheck
-
-	import * as R from 'remeda'; // tree-shaking supported!
+	import { onMount } from 'svelte';
+	import Swiper from 'swiper';
 	import { register } from 'swiper/element/bundle';
 	import Icons from './Icons.svelte';
 	import { items, switchFilter, filter } from '../stores/useHeader';
 	register();
+	onMount(() => {
+		const swiperEl = document.querySelector('swiper-container');
+		const swiperParams = {
+			slidesPerView: 3.8,
+			spaceBetween: 15,
+			freeMode: true,
+			breakpoints: {
+				'360': {
+					slidesPerView: 3.8,
+					spaceBetween: 15
+				},
+				'390': {
+					slidesPerView: 3.6,
+					spaceBetween: 15
+				},
+				'430': {
+					slidesPerView: 4.8,
+					spaceBetween: 15
+				}
+			},
+			on: {
+				init() {
+					// ...
+				}
+			}
+		};
+
+		// now we need to assign all parameters to Swiper element
+		Object.assign(swiperEl, swiperParams);
+
+		// and now initialize it
+		swiperEl.initialize();
+	});
+	// register();
+	// slides-per-view={3.8}
+	// space-between={15}
+	// freeMode={true}
+	// breakpoints={{
+	// 	'360': {
+	// 		slidesPerView: 3.8,
+	// 		spaceBetween: 15
+	// 	},
+	// 	'390': {
+	// 		slidesPerView: 3.6,
+	// 		spaceBetween: 15
+	// 	},
+	// 	'430': {
+	// 		slidesPerView: 4.8,
+	// 		spaceBetween: 15
+	// 	}
+	// }}
 </script>
 
 <div>
-	<swiper-container slides-per-view={3.5} space-between={15} freeMode={true}>
+	<swiper-container init="false">
 		{#each items as item (item)}
-			<swiper-slide class="grid place-items-center" on:click={() => switchFilter(item.id)}>
+			<swiper-slide
+				tabindex="0"
+				role="button"
+				on:keydown={() => switchFilter(item.id)}
+				class="grid place-items-center"
+				on:click={() => switchFilter(item.id)}
+			>
 				<Icons
 					variant={item.icon}
 					class={`text-7 ${item.id === $filter?.id ? 'fill-base-content' : 'fill-base-300'}`}

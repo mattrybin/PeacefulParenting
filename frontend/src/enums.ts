@@ -1,0 +1,1 @@
+export const questionsViews = ["New", "Top", "Week", "Month"] as const
