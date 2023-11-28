@@ -76,7 +76,7 @@
     padding-right: env(safe-area-inset-right) !important;
     /* contain: strict !important; */
     overflow-clip-margin: 4px !important;
-    padding-bottom: 16px;
+    /* padding-bottom: 16px; */
   }
 
   .header::before {

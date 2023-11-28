@@ -7,6 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/css"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
+import { checkPath } from "../utils"
 
 export const Header = () => (
   <div className="header border-b border-base-200 bg-base-100">
@@ -48,6 +49,8 @@ const Search = () => (
 )
 
 const FilterTab = () => {
+  const pathname = usePathname()
+  const path = checkPath(pathname)
   const searchParams = useSearchParams()
   const filter = (searchParams.get("filter") as string) || ""
   const swiperParams = {
@@ -81,41 +84,43 @@ const FilterTab = () => {
     { id: "household", icon: "house-line", title: "Household", subtitle: "Parents & kids" },
     { id: "relatives", icon: "users-three", title: "Relatives", subtitle: "Beyond home" }
   ]
-  return (
-    <div>
-      <Swiper {...swiperParams}>
-        {items.map(({ id, icon, title, subtitle }) => (
-          <SwiperSlide key={id}>
-            <Link
-              // href={"/"}
-              href={
-                id !== filter
-                  ? `?${new URLSearchParams({
-                      filter: id
-                    })}`
-                  : "/questions"
-              }
-              className="grid justify-center text-center"
-            >
-              <Icons
-                variant={icon}
-                className={`text-7 ${id === filter ? "text-base-content" : "text-base-300"}`}
-                weight={id === filter ? "fill" : "duotone"}
-              />
-              <div
-                className={`font-semibold -mb-[4px] ${
-                  id === filter ? "text-base-content" : "text-base-300"
-                }`}
+  if (path === "questions") {
+    return (
+      <div className="pb-5">
+        <Swiper {...swiperParams}>
+          {items.map(({ id, icon, title, subtitle }) => (
+            <SwiperSlide key={id}>
+              <Link
+                // href={"/"}
+                href={
+                  id !== filter
+                    ? `?${new URLSearchParams({
+                        filter: id
+                      })}`
+                    : "/questions"
+                }
+                className="grid justify-center text-center"
               >
-                {title}
-              </div>
-              <div className={`text-3 font-semibold text-base-300`}>{subtitle}</div>
-            </Link>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
-  )
+                <Icons
+                  variant={icon}
+                  className={`text-7 ${id === filter ? "text-base-content" : "text-base-300"}`}
+                  weight={id === filter ? "fill" : "duotone"}
+                />
+                <div
+                  className={`font-semibold -mb-[4px] ${
+                    id === filter ? "text-base-content" : "text-base-300"
+                  }`}
+                >
+                  {title}
+                </div>
+                <div className={`text-3 font-semibold text-base-300`}>{subtitle}</div>
+              </Link>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    )
+  }
 }
 
 const MobileHeaderController = () => (
