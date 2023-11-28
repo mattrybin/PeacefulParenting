@@ -1,7 +1,6 @@
 <script>
 	// @ts-nocheck
 	import { onMount } from 'svelte';
-	import Swiper from 'swiper';
 	import { register } from 'swiper/element/bundle';
 	import Icons from './Icons.svelte';
 	import { items, switchFilter, filter } from '../stores/useHeader';
