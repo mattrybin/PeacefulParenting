@@ -1,8 +1,0 @@
-{
-  "steps": [
-    {
-      "name": "Build frontend",
-      "command": "pnpm build"
-    }
-  ]
-}
