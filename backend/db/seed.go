@@ -11,29 +11,28 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type User struct {
-	Username string `faker:"username"`
-}
-
 type Post struct {
-	Title    string `faker:"sentence"`
-	Category string `faker:"oneof: infancy, toddler, child, preteen, teen, adult, household, relatives"`
-	// Category string `faker:"username"`
+	Title       string
+	Category    string
+	ViewCount   int
+	VoteCount   int
+	AnswerCount int
 }
 
-func createUser() User {
-	user := User{}
-
-	err := faker.FakeData(&user)
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	return user
+var questions = []map[string]string{
+	{"category": "infancy", "title": "How can I manage my infant's sleep schedule effectively?"},
+	{"category": "infancy", "title": "Is it normal for my 1-year-old to not be walking yet?"},
+	{"category": "infancy", "title": "How should I introduce solid foods to my 6-month-old baby?"},
+	{"category": "infancy", "title": "What are the signs that my infant may be teething, and how can I soothe them?"},
+	{"category": "infancy", "title": "Is it alright for my 4-month-old to sleep through the night without a feeding?"},
+	{"category": "infancy", "title": "What are some age-appropriate activities to engage my 1-year-old's developing senses?"},
+	{"category": "infancy", "title": "How can I help my infant develop a strong bond with their siblings?"},
+	{"category": "infancy", "title": "My infant seems to be afraid of strangers, is this normal and how should I handle it?"},
+	{"category": "infancy", "title": "What are the best techniques for calming my baby during a bout of intense crying?"},
+	{"category": "infancy", "title": "How can I gradually get my 1-year-old to start using a sippy cup?"},
 }
 
-func createPost() Post {
+func createPost(index int) Post {
 	post := Post{}
 
 	err := faker.FakeData(&post)
@@ -41,6 +40,14 @@ func createPost() Post {
 	if err != nil {
 		fmt.Println(err)
 	}
+	views, _ := faker.RandomInt(1, 500, 1)
+	votes, _ := faker.RandomInt(1, 20, 1)
+	answers, _ := faker.RandomInt(1, 5, 1)
+	post.Title = questions[index]["title"]
+	post.Category = questions[index]["category"]
+	post.ViewCount = views[0]
+	post.VoteCount = votes[0]
+	post.AnswerCount = answers[0]
 
 	return post
 }
@@ -75,54 +82,17 @@ func main() {
 		fmt.Println(err)
 	}
 
-	n := 5
-	users := make([]User, n)
-
-	for i := range users {
-		users[i] = createUser()
-	}
-
 	nPost := 5
 	posts := make([]Post, nPost)
 
 	for i := range posts {
-		posts[i] = createPost()
+		posts[i] = createPost(i)
 	}
-	insertUsers(db, users)
 	insertPosts(db, posts)
 }
 
-func insertUsers(db *sql.DB, users []User) ([]string, error) {
-	sqlStatement := "INSERT INTO users (username) VALUES ($1) RETURNING id;"
-	ids := make([]string, len(users))
-	var err error
-
-	tx, err := db.Begin()
-	if err != nil {
-		return nil, err
-	}
-
-	for i, user := range users {
-		lastInsertId := ""
-		err = tx.QueryRow(sqlStatement, user.Username).Scan(&lastInsertId)
-		if err != nil {
-			tx.Rollback()
-			return nil, err
-		}
-		ids[i] = lastInsertId
-	}
-
-	err = tx.Commit()
-	if err != nil {
-		tx.Rollback()
-		return nil, err
-	}
-
-	return ids, nil
-}
-
 func insertPosts(db *sql.DB, posts []Post) ([]string, error) {
-	sqlStatement := "INSERT INTO posts (title, category) VALUES ($1, $2) RETURNING id;"
+	sqlStatement := "INSERT INTO posts (title, category, view_count, vote_count, answer_count) VALUES ($1, $2, $3, $4, $5) RETURNING id;"
 	ids := make([]string, len(posts))
 	var err error
 
@@ -131,10 +101,11 @@ func insertPosts(db *sql.DB, posts []Post) ([]string, error) {
 		return nil, err
 	}
 
-	for i, user := range posts {
+	for i, post := range posts {
 		lastInsertId := ""
-		err = tx.QueryRow(sqlStatement, user.Title, user.Category).Scan(&lastInsertId)
+		err = tx.QueryRow(sqlStatement, post.Title, post.Category, post.ViewCount, post.VoteCount, post.AnswerCount).Scan(&lastInsertId)
 		if err != nil {
+			fmt.Println("ERROR", err)
 			tx.Rollback()
 			return nil, err
 		}
@@ -143,6 +114,7 @@ func insertPosts(db *sql.DB, posts []Post) ([]string, error) {
 
 	err = tx.Commit()
 	if err != nil {
+		fmt.Println("ERROR", err)
 		tx.Rollback()
 		return nil, err
 	}

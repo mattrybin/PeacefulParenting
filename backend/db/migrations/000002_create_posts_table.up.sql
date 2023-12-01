@@ -1,20 +1,15 @@
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
-CREATE OR REPLACE FUNCTION update_modified_column() RETURNS TRIGGER AS $$
-BEGIN
-   NEW.updated_at = NOW(); 
-   RETURN NEW; 
-END;
-$$ LANGUAGE plpgsql;
-
 CREATE TABLE IF NOT EXISTS posts(
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT null,
    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-   title VARCHAR (255) UNIQUE NOT NULL,
-   category VARCHAR (50) NOT NULL
+   title VARCHAR (255) NOT NULL,
+   category VARCHAR (50) NOT NULL,
+   view_count INT,
+   vote_count INT,
+   answer_count INT
 );
 
-CREATE TRIGGER update_modtime 
+CREATE TRIGGER update_modified_time 
 BEFORE UPDATE ON posts
 FOR EACH ROW 
 EXECUTE PROCEDURE update_modified_column();

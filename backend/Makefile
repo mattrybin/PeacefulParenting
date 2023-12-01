@@ -7,6 +7,10 @@ clean:
 run: build
 	go run main.go
 
+.PHONY: debug
+debug: 
+	dlv debug 
+
 seed:
 	cd db && go run seed.go
 
