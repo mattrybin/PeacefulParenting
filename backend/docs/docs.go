@@ -35,7 +35,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Data"
+                            "$ref": "#/definitions/handlers.Post"
                         }
                     },
                     "301": {
@@ -217,6 +217,32 @@ const docTemplate = `{
                 },
                 "lastname": {
                     "type": "string"
+                }
+            }
+        },
+        "handlers.Post": {
+            "type": "object",
+            "properties": {
+                "VoteCount": {
+                    "type": "integer"
+                },
+                "answerCount": {
+                    "type": "integer"
+                },
+                "category": {
+                    "type": "string"
+                },
+                "createAt": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "viewCount": {
+                    "type": "integer"
                 }
             }
         },

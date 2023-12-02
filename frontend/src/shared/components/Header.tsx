@@ -75,7 +75,7 @@ const FilterTab = () => {
     }
   }
   const items = [
-    { id: "infancy", icon: "egg-crack", title: "Infancy", subtitle: "0-1 Years" },
+    { id: "infant", icon: "egg-crack", title: "Infant", subtitle: "0-1 Years" },
     { id: "toddler", icon: "baby", title: "Toddler", subtitle: "1-3 Years" },
     { id: "child", icon: "tooth", title: "Child", subtitle: "3-8 Years" },
     { id: "preteen", icon: "backpack", title: "Preteen", subtitle: "9-12 Years" },

@@ -7,6 +7,23 @@ definitions:
       lastname:
         type: string
     type: object
+  handlers.Post:
+    properties:
+      VoteCount:
+        type: integer
+      answerCount:
+        type: integer
+      category:
+        type: string
+      createAt:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+      viewCount:
+        type: integer
+    type: object
   handlers.ResponseHTTP:
     properties:
       data: {}
@@ -34,7 +51,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handlers.Data'
+            $ref: '#/definitions/handlers.Post'
         "301":
           description: Moved Permanently
           schema:

@@ -1,12 +1,23 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/swagger"
+	_ "github.com/lib/pq"
 	_ "github.com/mattrybin/PeacefulParenting/backend/docs"
 	"github.com/mattrybin/PeacefulParenting/backend/handlers"
+)
+
+const (
+	host     = "localhost"
+	port     = 5432
+	user     = "postgres"
+	password = "password"
+	dbname   = "postgres"
 )
 
 // @title PeacefulParenting API
@@ -18,6 +29,27 @@ import (
 
 // @BasePath /api
 func main() {
+	// Configure db connection
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname)
+
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		log.Fatalf("Failed to connect to database, error: %s", err)
+	}
+	defer db.Close()
+
+	err = db.Ping()
+	if err != nil {
+		log.Fatalf("Failed to ping to database, error: %s", err)
+	}
+
+	log.Println("Successfully connected to database!")
+
+	handlers := handlers.Handler{
+		DB: db,
+	}
+
 	app := fiber.New()
 	app.Get("/docs/*", swagger.HandlerDefault)
 
@@ -33,5 +65,5 @@ func main() {
 	v1.Get("/questions/:question_id", handlers.GetQuestionById)
 	v1.Post("/questions", handlers.CreateQuestion)
 	v1.Delete("/questions/:question_id", handlers.DeleteQuestion)
-	log.Fatal(app.Listen(":3100"))
+	log.Fatal(app.Listen(":4100"))
 }

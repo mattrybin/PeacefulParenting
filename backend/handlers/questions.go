@@ -1,8 +1,26 @@
 package handlers
 
 import (
+	"database/sql"
+	"fmt"
+	"time"
+
 	"github.com/gofiber/fiber/v2"
 )
+
+type Post struct {
+	Id          string    `json:"id"`
+	Title       string    `json:"title"`
+	Category    string    `json:"category"`
+	ViewCount   int       `json:"viewCount"`
+	VoteCount   int       `json:"voteCount"`
+	AnswerCount int       `json:"answerCount"`
+	CreateAt    time.Time `json:"createAt"`
+}
+
+type Handler struct {
+	DB *sql.DB
+}
 
 type ResponseHTTP struct {
 	Success bool        `json:"success"`
@@ -26,20 +44,38 @@ type Data struct {
 // @Tags Questions
 // @Accept json
 // @Produce json
-// @Success 200 {object} Data
+// @Success 200 {object} Post
 // @Failure 301 {object} ResponseHTTP{}
 // @Failure 403 {object} ResponseHTTP{}
 // @Failure 404 {object} ResponseHTTP{}
 // @Router /v1/questions [get]
-func GetAllQuestions(c *fiber.Ctx) error {
-	data := []Data{
-		{"Matt", "Rybin"},
-		{"Adam", "Eve"},
+func (h *Handler) GetAllQuestions(c *fiber.Ctx) error {
+	rows, err := h.DB.Query("SELECT id, title, category, view_count, vote_count, answer_count, created_at FROM posts")
+	if err != nil {
+		// Returns a 500 error if something goes wrong
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 	}
+	defer rows.Close()
+
+	var posts []Post
+	for rows.Next() {
+		var q Post
+		if err := rows.Scan(&q.Id, &q.Title, &q.Category, &q.ViewCount, &q.VoteCount, &q.AnswerCount, &q.CreateAt); err != nil {
+			// Returns a 500 error if something goes wrong
+			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		}
+		posts = append(posts, q)
+		fmt.Println(posts)
+	}
+
+	// data := []Data{
+	// 	{"Matt", "Rybin"},
+	// 	{"Adam", "Eve"},
+	// }
 	return c.JSON(ResponseHTTP{
 		Success: true,
 		Message: "Success get all questions.",
-		Data:    data,
+		Data:    posts,
 	})
 }
 
@@ -52,7 +88,7 @@ func GetAllQuestions(c *fiber.Ctx) error {
 // @Success 200 {object} ResponseHTTP{data=[]Data}
 // @Failure 503 {object} ResponseHTTP{}
 // @Router /v1/questions/{question_id} [get]
-func GetQuestionById(c *fiber.Ctx) error {
+func (h *Handler) GetQuestionById(c *fiber.Ctx) error {
 	data := []Data{
 		{"Matt", "Rybin"},
 		{"Adam", "Eve"},
@@ -73,7 +109,7 @@ func GetQuestionById(c *fiber.Ctx) error {
 // @Success 200 {object} ResponseHTTP{data=[]Data}
 // @Failure 400 {object} ResponseHTTP{}
 // @Router /v1/questions [post]
-func CreateQuestion(c *fiber.Ctx) error {
+func (h *Handler) CreateQuestion(c *fiber.Ctx) error {
 	data := []Data{
 		{"Matt", "Rybin"},
 		{"Adam", "Eve"},
@@ -95,7 +131,7 @@ func CreateQuestion(c *fiber.Ctx) error {
 // @Failure 404 {object} ResponseHTTP{}
 // @Failure 503 {object} ResponseHTTP{}
 // @Router /v1/questions/{question_id} [delete]
-func DeleteQuestion(c *fiber.Ctx) error {
+func (h *Handler) DeleteQuestion(c *fiber.Ctx) error {
 	return c.JSON(ResponseHTTP{
 		Success: true,
 		Message: "Success delete question.",
