@@ -1,5 +1,7 @@
+import ky from 'ky';
 import { useQuery } from '@tanstack/react-query'
 import { sleep } from 'shared/utils'
+import { ZodType, z } from 'zod';
 
 // import { defaultData } from './opportunities/page.specs'
 
@@ -40,11 +42,48 @@ let questions = [
     timeAgo: "53 min ago"
   }
 ]
+
+
+const useQuestionsQuerySchema = z.array(
+  z.object({
+    id: z.string(),
+    title: z.string(),
+    voteCount: z.number(),
+    answerCount: z.number(),
+    viewCount: z.number(),
+    createAt: z.coerce.date(),
+    category: z.string(),
+    user: z.object({
+      image: z.string(),
+      username: z.string(),
+    }).default({ image: "https://i.pravatar.cc/150?img=3", username: "Matt Rybin" })
+  }))
+
+
+const parseQuery = <T>(schema: ZodType<T>) => {
+  return (data: any) => {
+    const result = schema.safeParse(data);
+
+    if (!result.success) {
+      console.error(result.error);
+      throw new Error(JSON.stringify(result.error));
+    } else {
+      console.log(result.data);
+      return result.data;
+    }
+  };
+}
+
 export const useQuestionsQuery = () =>
   useQuery({
-    queryKey: ['opportunities'],
+    queryKey: ['questions'],
     queryFn: async () => {
-      await sleep(2000)
-      return questions
+      const data = await ky("https://946a-94-75-96-58.ngrok-free.app/api/v1/questions",
+        {
+          headers: {
+            'ngrok-skip-browser-warning': 'anyValue'
+          }
+        }).json()
+      return parseQuery(useQuestionsQuerySchema)(data)
     },
   })

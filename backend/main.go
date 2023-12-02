@@ -6,6 +6,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/swagger"
 	_ "github.com/lib/pq"
 	_ "github.com/mattrybin/PeacefulParenting/backend/docs"
@@ -51,6 +52,15 @@ func main() {
 	}
 
 	app := fiber.New()
+	app.Use(cors.New(cors.Config{
+		AllowCredentials: true,
+		AllowOrigins:     "*",
+		AllowHeaders:     "*",
+	}))
+	app.Use(func(c *fiber.Ctx) error {
+		c.Set("ngrok-skip-browser-warning", "69420")
+		return c.Next()
+	})
 	app.Get("/docs/*", swagger.HandlerDefault)
 
 	api := app.Group("/api")

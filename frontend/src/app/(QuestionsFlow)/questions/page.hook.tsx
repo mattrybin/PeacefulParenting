@@ -13,12 +13,12 @@ export const items = [
   { id: "relatives", icon: "users-three", title: "Relatives", subtitle: "Beyond home" }
 ]
 
-type H<T extends (...args: any[]) => any> = <K extends keyof ReturnType<T>>() => ReturnType<T>[K]
 export const useQuestions = () => {
-  const { data: questions, isLoading } = useQuestionsQuery()
+  const { data: questions, isLoading, isSuccess, isError } = useQuestionsQuery()
   const searchParams = useSearchParams()
   const filter = (searchParams.get("filter") as string) || ""
   const item = items.find((item) => item.id === filter)
+  console.log("HERE", questions?.length)
   return {
     header: {
       item
@@ -27,6 +27,9 @@ export const useQuestions = () => {
       questionsViews
     },
     list: {
+      isSuccess: isSuccess && questions?.length !== 0,
+      isEmpty: !isError && !isLoading && questions?.length === 0,
+      isError,
       isLoading,
       questions,
       item,

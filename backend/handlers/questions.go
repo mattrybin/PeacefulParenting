@@ -64,19 +64,13 @@ func (h *Handler) GetAllQuestions(c *fiber.Ctx) error {
 			// Returns a 500 error if something goes wrong
 			return fiber.NewError(fiber.StatusInternalServerError, err.Error())
 		}
+
+		c.Set("ngrok-skip-browser-warning", "69420")
 		posts = append(posts, q)
 		fmt.Println(posts)
 	}
 
-	// data := []Data{
-	// 	{"Matt", "Rybin"},
-	// 	{"Adam", "Eve"},
-	// }
-	return c.JSON(ResponseHTTP{
-		Success: true,
-		Message: "Success get all questions.",
-		Data:    posts,
-	})
+	return c.JSON(posts)
 }
 
 // @Summary Get question by ID
@@ -93,11 +87,7 @@ func (h *Handler) GetQuestionById(c *fiber.Ctx) error {
 		{"Matt", "Rybin"},
 		{"Adam", "Eve"},
 	}
-	return c.JSON(ResponseHTTP{
-		Success: true,
-		Message: "Success get question by id.",
-		Data:    data,
-	})
+	return c.JSON(data)
 }
 
 // @Summary Create a new question
