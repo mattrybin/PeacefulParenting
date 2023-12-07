@@ -3,6 +3,10 @@ import { H } from "shared/utils"
 import { Icons } from "../../../shared/components/Icons"
 import { useQuestions } from "./page.hook"
 import { PageContainer } from "shared/components/Containers"
+import { timeAgo } from "shared/instances"
+import Link from "next/link"
+import { matchParams, setParams } from "shared/components/Header"
+import { useSearchParams } from "next/navigation"
 
 export default function HomePage() {
   const { header, tabs, list } = useQuestions()
@@ -45,21 +49,29 @@ const Header = ({ item }: H<typeof useQuestions, "header">) => {
   )
 }
 
-const Tabs = ({ questionsViews }: H<typeof useQuestions, "tabs">) => (
-  <div
-    role="tablist"
-    className="mt-6 rounded-none justify-center border-t border-b border-base-200 flex gap-4 h-12 items-center"
-  >
-    {questionsViews.map((item: any) => (
-      <button
-        key={item}
-        className="text-base-300 font-bold"
-      >
-        {item}
-      </button>
-    ))}
-  </div>
-)
+const Tabs = ({ questionsViews }: H<typeof useQuestions, "tabs">) => {
+  const searchParams = useSearchParams()
+  return (
+    <div
+      role="tablist"
+      className="mt-6 rounded-none justify-center border-t border-b border-base-200 flex gap-2 h-12 items-center"
+    >
+      {questionsViews.map((item: string) => (
+        <Link
+          href={setParams(searchParams, { sort: item.toLocaleLowerCase() }, false)}
+          key={item}
+          className={`font-bold ${
+            matchParams(searchParams, "sort", item, "top")
+              ? "btn btn-primary btn-sm"
+              : "btn btn-ghost btn-sm text-base-300"
+          }`}
+        >
+          {item}
+        </Link>
+      ))}
+    </div>
+  )
+}
 
 const List = ({
   isLoading,
@@ -83,7 +95,7 @@ const List = ({
               answerCount,
               viewCount,
               user,
-              timeAgo,
+              createdAt,
               approved
             }: any) => (
               <div
@@ -128,7 +140,7 @@ const List = ({
                   </div>
                   <div className="flex gap-1 font-medium">
                     <div className="text-accent">{user?.username}</div>
-                    <div className="text-base-300">answered {timeAgo}</div>
+                    <div className="text-base-300">answered {timeAgo(createdAt)}</div>
                   </div>
                 </div>
                 {!item && (

@@ -12,7 +12,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type Post struct {
+type Question struct {
 	Title       string
 	Category    string
 	ViewCount   int
@@ -174,16 +174,16 @@ var questions = []map[string]string{
 	{"category": "relatives", "title": "How can I help my child handle criticism from relatives?"},
 }
 
-type Question struct {
-	Category  string
-	Title     string
-	ViewCount int
-	VoteCount int
-}
+// type Question struct {
+// 	Category  string
+// 	Title     string
+// 	ViewCount int
+// 	VoteCount int
+// }
 
-func addValues(questions []map[string]string) []Post {
+func addValues(questions []map[string]string) []Question {
 	// create our Questions slice
-	var expandedQuestions []Post
+	var expandedQuestions []Question
 
 	// iterate over the original map and add to the new slice
 	for _, q := range questions {
@@ -191,7 +191,7 @@ func addValues(questions []map[string]string) []Post {
 		votes, _ := faker.RandomInt(1, 20, 1)
 		answers, _ := faker.RandomInt(1, 5, 1)
 		createAt, _ := faker.RandomInt(1, 10000, 1)
-		newQuestion := Post{
+		newQuestion := Question{
 			Category: q["category"],
 			Title:    q["title"],
 			// assign a default value for viewCount and voteCount,
@@ -208,10 +208,10 @@ func addValues(questions []map[string]string) []Post {
 	return expandedQuestions
 }
 
-func createPost(index int) Post {
-	post := Post{}
+func createQuestion(index int) Question {
+	question := Question{}
 
-	err := faker.FakeData(&post)
+	err := faker.FakeData(&question)
 
 	if err != nil {
 		fmt.Println(err)
@@ -219,13 +219,13 @@ func createPost(index int) Post {
 	views, _ := faker.RandomInt(1, 500, 1)
 	votes, _ := faker.RandomInt(1, 20, 1)
 	answers, _ := faker.RandomInt(1, 5, 1)
-	post.Title = questions[index]["title"]
-	post.Category = questions[index]["category"]
-	post.ViewCount = views[0]
-	post.VoteCount = votes[0]
-	post.AnswerCount = answers[0]
+	question.Title = questions[index]["title"]
+	question.Category = questions[index]["category"]
+	question.ViewCount = views[0]
+	question.VoteCount = votes[0]
+	question.AnswerCount = answers[0]
 
-	return post
+	return question
 }
 
 func main() {
@@ -260,14 +260,14 @@ func main() {
 
 	var listQuestions = addValues(questions)
 	for i := range listQuestions {
-		listQuestions[i] = createPost(i)
+		listQuestions[i] = createQuestion(i)
 	}
-	insertPosts(db, listQuestions)
+	insertQuestions(db, listQuestions)
 }
 
-func insertPosts(db *sql.DB, posts []Post) ([]string, error) {
-	sqlStatement := "INSERT INTO posts (created_at, title, category, view_count, vote_count, answer_count) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;"
-	ids := make([]string, len(posts))
+func insertQuestions(db *sql.DB, questions []Question) ([]string, error) {
+	sqlStatement := "INSERT INTO questions (created_at, title, category, view_count, vote_count, answer_count) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;"
+	ids := make([]string, len(questions))
 	var err error
 
 	tx, err := db.Begin()
@@ -275,9 +275,9 @@ func insertPosts(db *sql.DB, posts []Post) ([]string, error) {
 		return nil, err
 	}
 
-	for i, post := range posts {
+	for i, question := range questions {
 		lastInsertId := ""
-		err = tx.QueryRow(sqlStatement, time.Now().Add(-time.Duration(post.CreateAt)*time.Hour), post.Title, post.Category, post.ViewCount, post.VoteCount, post.AnswerCount).Scan(&lastInsertId)
+		err = tx.QueryRow(sqlStatement, time.Now().Add(-time.Duration(question.CreateAt)*time.Hour), question.Title, question.Category, question.ViewCount, question.VoteCount, question.AnswerCount).Scan(&lastInsertId)
 		if err != nil {
 			fmt.Println("ERROR", err)
 			tx.Rollback()

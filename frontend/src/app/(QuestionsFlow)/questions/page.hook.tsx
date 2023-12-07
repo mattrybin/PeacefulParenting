@@ -10,7 +10,8 @@ export const items = [
   { id: "teen", icon: "person-simple-throw", title: "Teen", subtitle: "13-16 Years" },
   { id: "adult", icon: "graduation-cap", title: "Adult", subtitle: "17-21 Years" },
   { id: "household", icon: "house-line", title: "Household", subtitle: "Parents & kids" },
-  { id: "relatives", icon: "users-three", title: "Relatives", subtitle: "Beyond home" }
+  { id: "relatives", icon: "users-three", title: "Relatives", subtitle: "Beyond home" },
+  { id: "other", icon: "users-three", title: "Other", subtitle: "" }
 ]
 
 export const useQuestions = () => {
@@ -18,7 +19,6 @@ export const useQuestions = () => {
   const searchParams = useSearchParams()
   const filter = (searchParams.get("filter") as string) || ""
   const item = items.find((item) => item.id === filter)
-  console.log("HERE", questions?.length)
   return {
     header: {
       item

@@ -1,27 +1,20 @@
 basePath: /api
 definitions:
-  handlers.Data:
+  handlers.Question:
     properties:
-      firstname:
-        type: string
-      lastname:
-        type: string
-    type: object
-  handlers.Post:
-    properties:
-      VoteCount:
-        type: integer
       answerCount:
         type: integer
       category:
         type: string
-      createAt:
+      createdAt:
         type: string
       id:
         type: string
       title:
         type: string
       viewCount:
+        type: integer
+      voteCount:
         type: integer
     type: object
   handlers.ResponseHTTP:
@@ -51,7 +44,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/handlers.Post'
+            $ref: '#/definitions/handlers.Question'
         "301":
           description: Moved Permanently
           schema:
@@ -65,98 +58,6 @@ paths:
           schema:
             $ref: '#/definitions/handlers.ResponseHTTP'
       summary: Get all questions
-      tags:
-      - Questions
-    post:
-      consumes:
-      - application/json
-      description: Create question
-      parameters:
-      - description: Register book
-        in: body
-        name: question
-        required: true
-        schema:
-          type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/handlers.ResponseHTTP'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/handlers.Data'
-                  type: array
-              type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/handlers.ResponseHTTP'
-      summary: Create a new question
-      tags:
-      - Questions
-  /v1/questions/{question_id}:
-    delete:
-      consumes:
-      - application/json
-      description: Remove question by ID
-      parameters:
-      - description: Question ID
-        in: path
-        name: question_id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/handlers.ResponseHTTP'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/handlers.ResponseHTTP'
-        "503":
-          description: Service Unavailable
-          schema:
-            $ref: '#/definitions/handlers.ResponseHTTP'
-      summary: Remove question by ID
-      tags:
-      - Questions
-    get:
-      consumes:
-      - application/json
-      description: Get question by ID
-      parameters:
-      - description: Question ID
-        in: path
-        name: question_id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            allOf:
-            - $ref: '#/definitions/handlers.ResponseHTTP'
-            - properties:
-                data:
-                  items:
-                    $ref: '#/definitions/handlers.Data'
-                  type: array
-              type: object
-        "503":
-          description: Service Unavailable
-          schema:
-            $ref: '#/definitions/handlers.ResponseHTTP'
-      summary: Get question by ID
       tags:
       - Questions
 swagger: "2.0"

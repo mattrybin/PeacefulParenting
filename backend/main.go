@@ -21,6 +21,25 @@ const (
 	dbname   = "postgres"
 )
 
+func setupPostgres() *sql.DB {
+	fmt.Print("AWESOME")
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname)
+
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		log.Fatalf("Failed to connect to database, error: %s", err)
+	}
+
+	err = db.Ping()
+	if err != nil {
+		log.Fatalf("Failed to ping to database, error: %s", err)
+	}
+
+	log.Println("Successfully connected to database!")
+	return db
+}
+
 // @title PeacefulParenting API
 // @version 1.0
 // @description This is an API for PeacefulParenting.ai
@@ -30,37 +49,23 @@ const (
 
 // @BasePath /api
 func main() {
-	// Configure db connection
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-
-	db, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		log.Fatalf("Failed to connect to database, error: %s", err)
-	}
+	db := setupPostgres()
 	defer db.Close()
-
-	err = db.Ping()
-	if err != nil {
-		log.Fatalf("Failed to ping to database, error: %s", err)
-	}
-
-	log.Println("Successfully connected to database!")
 
 	handlers := handlers.Handler{
 		DB: db,
 	}
 
 	app := fiber.New()
+
 	app.Use(cors.New(cors.Config{
 		AllowCredentials: true,
 		AllowOrigins:     "*",
-		AllowHeaders:     "*",
+		AllowHeaders:     "X-Total-Count",
+		// ExposeHeaders:    "Content-Range",
+		ExposeHeaders: "X-Total-Count",
 	}))
-	app.Use(func(c *fiber.Ctx) error {
-		c.Set("ngrok-skip-browser-warning", "69420")
-		return c.Next()
-	})
+
 	app.Get("/docs/*", swagger.HandlerDefault)
 
 	api := app.Group("/api")
@@ -72,8 +77,8 @@ func main() {
 	})
 
 	v1.Get("/questions", handlers.GetAllQuestions)
-	v1.Get("/questions/:question_id", handlers.GetQuestionById)
-	v1.Post("/questions", handlers.CreateQuestion)
-	v1.Delete("/questions/:question_id", handlers.DeleteQuestion)
+	// v1.Get("/questions/:question_id", handlers.GetQuestionById)
+	// v1.Post("/questions", handlers.CreateQuestion)
+	// v1.Delete("/questions/:question_id", handlers.DeleteQuestion)
 	log.Fatal(app.Listen(":4100"))
 }

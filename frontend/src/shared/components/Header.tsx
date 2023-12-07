@@ -1,6 +1,6 @@
 "use client"
-
-import { usePathname, useRouter } from "next/navigation"
+import { ReadonlyURLSearchParams, usePathname, useRouter } from "next/navigation"
+import * as R from "ramda"
 
 import { Icons } from "./Icons"
 import { Swiper, SwiperSlide } from "swiper/react"
@@ -92,13 +92,10 @@ const FilterTab = () => {
             <SwiperSlide key={id}>
               <Link
                 // href={"/"}
-                href={
-                  id !== filter
-                    ? `?${new URLSearchParams({
-                        filter: id
-                      })}`
-                    : "/questions"
-                }
+                // href={id !== filter ? `?${setParams({ filter: id })}` : "/questions"}
+                // href={id !== filter ? `?${setParams({ filter: id })}` : "/questions"}
+                // href={`?${setParams({ filter })}`}
+                href={setParams(searchParams, { filter: id })}
                 className="grid justify-center text-center"
               >
                 <Icons
@@ -145,3 +142,52 @@ const MobileHeaderController = () => (
     />
   </div>
 )
+
+const getCurrentParams = R.pipe<any, Record<string, string>>((params) => {
+  let object = {}
+  params.forEach((value: string, key: string) => {
+    object = { ...object, [key]: value }
+  })
+  return object
+})
+
+export const setParams = (
+  currentParams: ReadonlyURLSearchParams,
+  params: Record<string, string>,
+  toggle: boolean = true
+): string => {
+  const noneParamsExist = currentParams.size === 0
+  if (noneParamsExist) {
+    const result = `?${new URLSearchParams(params)}`
+    return result
+  } else {
+    const current = getCurrentParams(currentParams)
+    let mergedParams = R.mergeAll([current, params])
+    if (toggle) {
+      const firstToggleParms = R.pipe<any, any, [string, string]>(R.toPairs, R.head)(params)
+      if (current[firstToggleParms[0]] === firstToggleParms[1]) {
+        delete mergedParams[firstToggleParms[0]]
+        return `?${new URLSearchParams(mergedParams)}`
+      } else {
+        return `?${new URLSearchParams(mergedParams)}`
+      }
+    } else {
+      return `?${new URLSearchParams(mergedParams)}`
+    }
+  }
+}
+
+export const matchParams = (
+  searchParams: ReadonlyURLSearchParams,
+  attr: string,
+  value: string,
+  defaultValue: string
+) => {
+  const isParam = searchParams.get(attr.toLocaleLowerCase()) !== null
+  const defaultMatch = defaultValue?.toLocaleLowerCase() === value?.toLocaleLowerCase()
+  if (isParam) {
+    return searchParams.get(attr.toLocaleLowerCase()) === value?.toLocaleLowerCase()
+  } else {
+    return defaultMatch
+  }
+}

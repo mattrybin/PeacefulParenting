@@ -1,9 +1,6 @@
-import ky from 'ky';
 import { useQuery } from '@tanstack/react-query'
-import { sleep } from 'shared/utils'
 import { ZodType, z } from 'zod';
-
-// import { defaultData } from './opportunities/page.specs'
+import { requestV1 } from 'shared/instances';
 
 let questions = [
   {
@@ -51,7 +48,7 @@ const useQuestionsQuerySchema = z.array(
     voteCount: z.number(),
     answerCount: z.number(),
     viewCount: z.number(),
-    createAt: z.coerce.date(),
+    createdAt: z.coerce.date(),
     category: z.string(),
     user: z.object({
       image: z.string(),
@@ -78,12 +75,7 @@ export const useQuestionsQuery = () =>
   useQuery({
     queryKey: ['questions'],
     queryFn: async () => {
-      const data = await ky("https://946a-94-75-96-58.ngrok-free.app/api/v1/questions",
-        {
-          headers: {
-            'ngrok-skip-browser-warning': 'anyValue'
-          }
-        }).json()
+      const data = await requestV1("questions").json()
       return parseQuery(useQuestionsQuerySchema)(data)
     },
   })
