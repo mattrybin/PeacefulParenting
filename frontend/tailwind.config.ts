@@ -35,6 +35,8 @@ const config: Config = {
         "base-200": "#E7E5E4",
         "base-300": "#78716C",
         "base-content": "#1C1917",
+        "info": "blue",
+        "info-content": "red"
       },
       dark: {
         ...require("daisyui/src/theming/themes")["dark"],
@@ -49,6 +51,6 @@ const config: Config = {
       },
     }],
   },
-  plugins: [forms, typography, daisyui]
+  plugins: [forms, typography, daisyui, require('tailwindcss-animated')]
 }
 export default config

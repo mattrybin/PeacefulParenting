@@ -53,6 +53,9 @@ dependencies:
   swiper:
     specifier: ^11.0.5
     version: 11.0.5
+  tailwindcss-animated:
+    specifier: ^1.0.1
+    version: 1.0.1(tailwindcss@3.3.5)
   zod:
     specifier: ^3.22.4
     version: 3.22.4
@@ -2814,6 +2817,14 @@ packages:
   /swiper@11.0.5:
     resolution: {integrity: sha512-rhCwupqSyRnWrtNzWzemnBLMoyYuoDgGgspAm/8iBD3jCvAWycPLH4Z3TB0O5520DHLzMx94yUMH/B9Efpa48w==}
     engines: {node: '>= 4.7.0'}
+    dev: false
+
+  /tailwindcss-animated@1.0.1(tailwindcss@3.3.5):
+    resolution: {integrity: sha512-u5wusj89ZwP8I+s8WZlaAd7aZTWBN/XEG6QgMKpkIKmAf3xP1A6WYf7oYIKmGaB10UAQaSqWopi/i1ozzZEs8Q==}
+    peerDependencies:
+      tailwindcss: '>=3.1.0'
+    dependencies:
+      tailwindcss: 3.3.5
     dev: false
 
   /tailwindcss@3.3.5:

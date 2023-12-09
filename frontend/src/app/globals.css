@@ -35,6 +35,9 @@
       font-synthesis-weight: none;
     }
   }
+  html {
+    scrollbehavior: smooth;
+  }
   body {
     line-height: 1.65;
     position: relative;
