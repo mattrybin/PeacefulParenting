@@ -62,8 +62,7 @@ func main() {
 		AllowCredentials: true,
 		AllowOrigins:     "*",
 		AllowHeaders:     "X-Total-Count",
-		// ExposeHeaders:    "Content-Range",
-		ExposeHeaders: "X-Total-Count",
+		ExposeHeaders:    "X-Total-Count",
 	}))
 
 	app.Get("/docs/*", swagger.HandlerDefault)

@@ -3,11 +3,13 @@ import "@phosphor-icons/web/duotone"
 export const Icons = ({
   weight,
   variant,
-  className
+  className,
+  size = "4"
 }: {
-  weight: string
+  weight: "fill" | "duotone"
   variant: string
   className?: string
+  size?: string
 }) => {
-  return <i className={`ph-${weight} ph-${variant.toLowerCase()} ${className}`} />
+  return <i className={`ph-${weight} ph-${variant.toLowerCase()} text-${size} ${className}`} />
 }

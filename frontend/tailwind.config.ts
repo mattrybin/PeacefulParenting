@@ -10,8 +10,10 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    fontSize: {
-      ...defaultTheme.spacing
+    extend: {
+      fontSize: {
+        ...defaultTheme.spacing
+      },
     },
     screens: {
       'ipad': '768px',

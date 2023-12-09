@@ -7,9 +7,7 @@ const initTimeAgo = new TimeAgo("en")
 const url = 'http://localhost:4100/api';
 
 export const requestV1 = ky.create({
-  prefixUrl: `${url}/v1`, headers: {
-    'ngrok-skip-browser-warning': 'anyValue'
-  }
+  prefixUrl: `${url}/v1`,
 });
 
 export const timeAgo = (date: Date) => initTimeAgo.format(new Date(date), 'twitter')

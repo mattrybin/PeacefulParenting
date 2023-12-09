@@ -32,10 +32,13 @@ export const Header = () => (
 )
 
 const HeaderBranding = () => (
-  <div className="font-semibold gap-[1px] flex text-lg">
+  <Link
+    href={"/"}
+    className="font-semibold gap-[1px] flex text-lg"
+  >
     <span className="text-base-content">PeacefulParenting</span>
     <span className="text-base-300">.ai</span>
-  </div>
+  </Link>
 )
 
 const Search = () => (

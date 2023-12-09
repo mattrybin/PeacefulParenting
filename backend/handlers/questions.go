@@ -130,10 +130,11 @@ func (h *Handler) GetAllQuestions(c *fiber.Ctx) error {
 	}
 
 	if len(questions) == 0 {
+		c.Set("Access-Control-Expose-Headers", "X-Total-Count")
 		c.Set("X-Total-Count", "0")
 		return c.JSON([]Question{})
 	}
-
+	c.Set("Access-Control-Expose-Headers", "X-Total-Count")
 	c.Set("X-Total-Count", strconv.Itoa(totalCount))
 	return c.JSON(questions)
 }

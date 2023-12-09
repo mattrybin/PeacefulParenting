@@ -1,1 +1,1 @@
-export const questionsViews = ["Top", "New", "Week", "Month"] as const
+export const questionsViews = [{ value: "top", label: "Top Views" }, { value: "new", label: "Latest" }] as const
