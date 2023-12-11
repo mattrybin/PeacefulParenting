@@ -36,10 +36,32 @@ export const Footer = () => {
   const handleScroll = () => {
     const currentScrollPos = window.scrollY
 
-    if (currentScrollPos > prevScrollPos) {
-      setVisible(false)
-    } else {
+    // Checking if user is at the bottom of the page
+    const windowHeight =
+      document.documentElement.scrollHeight - document.documentElement.clientHeight
+
+    // Set up a bottom cushion of 20 pixels. Adjust as per the need.
+    const bottomCushion = 20
+    const isBottom = Math.round(window.pageYOffset) >= windowHeight - bottomCushion
+    console.log(isBottom)
+
+    // Amount of 'cushion' in pixels for scrolling down
+    const scrollCushion = 20
+
+    // When user has scrolled down beyond cushion
+    // if (currentScrollPos > prevScrollPos + scrollCushion) {
+    //   setVisible(false)
+    // }
+    // When user has scrolled up or hit the bottom
+    // else if (isBottom || currentScrollPos < prevScrollPos) {
+    //   setVisible(true)
+    // }
+    if (isBottom) {
       setVisible(true)
+    } else if (currentScrollPos < prevScrollPos) {
+      setVisible(true)
+    } else {
+      setVisible(false)
     }
 
     setPrevScrollPos(currentScrollPos)
