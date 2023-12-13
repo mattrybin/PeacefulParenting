@@ -30,7 +30,7 @@ export const QuestionsHeader = ({ item }: H<typeof useQuestions, "header">) => {
           </Link>
         </div>
       ) : (
-        <div className="flex justify-between items-center px-4 h-16">
+        <div className="flex justify-between items-center px-4 mt-6 h-16">
           <div className="font-semibold text-5">Top Questions</div>
           <Link
             href={"questions/ask"}

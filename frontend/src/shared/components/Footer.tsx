@@ -4,6 +4,7 @@ import { Icons } from "./Icons"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { checkPath } from "../utils"
+import { useSession } from "next-auth/react"
 
 let array = [
   {
@@ -20,18 +21,27 @@ let array = [
     id: "resources",
     icon: "book-bookmark",
     title: "Resources"
-  },
-  {
-    id: "login",
-    icon: "user-circle",
-    title: "Log in"
   }
+  // {
+  //   id: "login",
+  //   icon: "user-circle",
+  //   title: "Log in"
+  // }
 ]
+
+let login = {
+  id: "login",
+  icon: "user-circle",
+  title: "Log in"
+}
+
 export const Footer = () => {
   const pathname = usePathname()
   const path = checkPath(pathname)
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [visible, setVisible] = useState(true)
+  const session = useSession()
+  const isAuth = session.status === "authenticated"
 
   const handleScroll = () => {
     const currentScrollPos = window.scrollY
@@ -98,6 +108,23 @@ export const Footer = () => {
           </div>
         </Link>
       ))}
+      <Link
+        className="grid place-items-center gap-0"
+        href={login.id}
+      >
+        <Icons
+          variant={login.icon}
+          className={`text-7 ${login.id === path ? "text-base-content" : "text-base-300"}`}
+          weight={login.id === path ? "fill" : "duotone"}
+        />
+        <div
+          className={`font-semibold text-3 ${
+            login.id === path ? "text-base-content" : "text-base-300"
+          }`}
+        >
+          {isAuth ? "Account" : "Login"}
+        </div>
+      </Link>
     </div>
   )
 }

@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/pg-adapter": "^0.2.9",
     "@phosphor-icons/web": "^2.0.3",
+    "@t3-oss/env-nextjs": "^0.7.1",
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
     "@tanstack/react-query": "^5.8.4",
@@ -20,7 +22,9 @@
     "javascript-time-ago": "^2.5.9",
     "ky": "^1.1.3",
     "next": "14.0.3",
+    "next-auth": "5.0.0-beta.4",
     "next-typesafe-url": "^4.0.3",
+    "pg": "^8.11.3",
     "ramda": "^0.29.1",
     "react": "^18",
     "react-dom": "^18",

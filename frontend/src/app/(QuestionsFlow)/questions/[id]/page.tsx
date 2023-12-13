@@ -1,6 +1,7 @@
 import { PageContainer } from "shared/components/Containers"
 import { useQuestion } from "./page.hook"
 import Markdown from "react-markdown"
+import { Icons } from "shared/components/Icons"
 
 const markdown = `Let me be clear. I'm not worried about her behavior or think it is abnormal or anything. I am just looking for feedback on how I handled the situation and/or tips on how to approach similar cases.
 
@@ -12,7 +13,7 @@ I added the attachment tag because I had to break away from her hugging my arm a
 `
 
 export default function HomePage() {
-  const { title } = useQuestion()
+  const { title, category } = useQuestion()
   return (
     <PageContainer>
       <div className="border-b">
@@ -24,8 +25,20 @@ export default function HomePage() {
           </div>
         </div>
         <div className="grid grid-flow-col grid-cols-2 justify-between border-t text-center h-16">
-          <div className="border-r">Toddler</div>
-          <div className=" self-center">123 Views</div>
+          <div className="border-r flex items-center text-left justify-center gap-2">
+            <Icons
+              variant={category.icon}
+              weight={"duotone"}
+              size="7"
+            />
+            <div className="leading-5">
+              <div className="font-semibold">{category.title}</div>
+              <div>{category.subtitle}</div>
+            </div>
+          </div>
+          <div className="self-center flex justify-center gap-2">
+            <div className="font-semibold">123 Views</div>
+          </div>
         </div>
       </div>
       <div>
@@ -34,3 +47,22 @@ export default function HomePage() {
     </PageContainer>
   )
 }
+
+// <Link
+//   href={setParams(searchParams, { filter: id })}
+//   className="grid justify-center text-center"
+// >
+//   <Icons
+//     variant={icon}
+//     className={`text-7 ${id === filter ? "text-base-content" : "text-base-300"}`}
+//     weight={id === filter ? "fill" : "duotone"}
+//   />
+//   <div
+//     className={`font-semibold -mb-[4px] ${
+//       id === filter ? "text-base-content" : "text-base-300"
+//     }`}
+//   >
+//     {title}
+//   </div>
+//   <div className={`text-3 font-semibold text-base-300`}>{subtitle}</div>
+// </Link>
