@@ -7,6 +7,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/swagger"
 	_ "github.com/lib/pq"
 	_ "github.com/mattrybin/PeacefulParenting/backend/docs"
@@ -65,6 +66,13 @@ func main() {
 		ExposeHeaders:    "X-Total-Count",
 	}))
 
+	app.Use(func(c *fiber.Ctx) error {
+		c.Set("Access-Control-Expose-Headers", "X-Total-Count")
+		c.Set("Content-Type", "application/json")
+		return c.Next()
+	})
+	app.Use(logger.New())
+
 	app.Get("/docs/*", swagger.HandlerDefault)
 
 	api := app.Group("/api")
@@ -75,8 +83,8 @@ func main() {
 		return c.Next()
 	})
 
-	v1.Get("/questions", handlers.GetAllQuestions)
-	// v1.Get("/questions/:question_id", handlers.GetQuestionById)
+	v1.Get("/questions", handlers.GetListQuestions)
+	v1.Get("/questions/:id", handlers.GetOneQuestion)
 	// v1.Post("/questions", handlers.CreateQuestion)
 	// v1.Delete("/questions/:question_id", handlers.DeleteQuestion)
 	log.Fatal(app.Listen(":4100"))

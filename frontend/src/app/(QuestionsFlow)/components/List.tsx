@@ -2,6 +2,7 @@ import { Icons } from "shared/components/Icons"
 import { timeAgo } from "shared/instances"
 import { H } from "shared/utils"
 import { useQuestions } from "../questions/page.hook"
+import Link from "next/link"
 
 export const List = ({
   isLoading,
@@ -28,9 +29,10 @@ export const List = ({
               createdAt,
               approved
             }: any) => (
-              <div
+              <Link
+                href={`/questions/${id}`}
                 key={id}
-                className={`border-b border-base-300/50 last:border-base-200 pt-4 px-4 ${
+                className={`block border-b border-base-300/50 last:border-base-200 pt-4 px-4 ${
                   item && "pb-4"
                 }`}
               >
@@ -89,7 +91,7 @@ export const List = ({
                     </div>
                   </div>
                 )}
-              </div>
+              </Link>
             )
           )}
       </div>

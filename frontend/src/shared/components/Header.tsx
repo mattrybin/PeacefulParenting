@@ -94,10 +94,6 @@ const FilterTab = () => {
           {items.map(({ id, icon, title, subtitle }) => (
             <SwiperSlide key={id}>
               <Link
-                // href={"/"}
-                // href={id !== filter ? `?${setParams({ filter: id })}` : "/questions"}
-                // href={id !== filter ? `?${setParams({ filter: id })}` : "/questions"}
-                // href={`?${setParams({ filter })}`}
                 href={setParams(searchParams, { filter: id })}
                 className="grid justify-center text-center"
               >

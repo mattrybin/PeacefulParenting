@@ -2,7 +2,6 @@ import {
   Admin,
   Resource,
   EditGuesser,
-  ShowGuesser,
   Datagrid,
   DateField,
   List,
@@ -12,6 +11,9 @@ import {
   FilterListItem,
   FilterLiveSearch,
   SavedQueriesList,
+  Show,
+  SimpleShowLayout,
+  ShowButton,
 } from "react-admin";
 import { dataProvider } from "./dataProvider";
 import { Card, CardContent } from "@mui/material";
@@ -52,8 +54,18 @@ export const PostList = () => (
       <NumberField source="voteCount" />
       <NumberField source="answerCount" />
       <DateField source="createdAt" />
+      <ShowButton />
     </Datagrid>
   </List>
+);
+export const PostShow = () => (
+  <Show>
+    <SimpleShowLayout>
+      <TextField source="id" />
+      <TextField source="title" />
+      <TextField source="category" />
+    </SimpleShowLayout>
+  </Show>
 );
 
 export const App = () => (
@@ -62,7 +74,7 @@ export const App = () => (
       name="questions"
       list={PostList}
       edit={EditGuesser}
-      show={ShowGuesser}
+      show={PostShow}
     />
   </Admin>
 );

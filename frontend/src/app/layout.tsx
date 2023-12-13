@@ -73,7 +73,7 @@ const Body = ({ children }: PropsWithChildren) => (
   <div className="root-container">
     <div className="content-container">
       <Header />
-      <div className="py-4 pb-20">{children}</div>
+      <div className="pb-20">{children}</div>
     </div>
     <Footer />
   </div>

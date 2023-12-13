@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
+	"log"
 	"strconv"
 	"time"
 
@@ -42,47 +42,6 @@ type Data struct {
 	Lastname  string `json:"lastname"`
 }
 
-func getSort(param string) SortParams {
-	defaultParams := []string{"id", "DESC"}
-	var sortParams SortParams
-	err := json.Unmarshal([]byte(param), &sortParams)
-
-	if err != nil {
-		sortParams = defaultParams
-	}
-	return sortParams
-}
-
-type Filter struct {
-	Category string `json:"category"`
-}
-
-func getFilter(param string) Filter {
-
-	defaultParams := Filter{""}
-	var filterParams Filter
-	err := json.Unmarshal([]byte(param), &filterParams)
-	if err != nil {
-		// Default sort parameters are used if parsing fails
-		filterParams = defaultParams
-	}
-	return filterParams
-}
-
-func getRange(param string) (string, string) {
-	defaultParams := []int{0, 9}
-	var rangeParams RangeParams
-	err := json.Unmarshal([]byte(param), &rangeParams)
-
-	if err != nil {
-		rangeParams = defaultParams
-	}
-	return strconv.Itoa(rangeParams[1] - rangeParams[0] + 1), strconv.Itoa(rangeParams[0])
-}
-
-type SortParams []string
-type RangeParams []int
-
 // @Summary Get all questions
 // @Description Get all questions
 // @Tags Questions
@@ -93,11 +52,11 @@ type RangeParams []int
 // @Failure 403 {object} ResponseHTTP{}
 // @Failure 404 {object} ResponseHTTP{}
 // @Router /v1/questions [get]
-func (h *Handler) GetAllQuestions(c *fiber.Ctx) error {
+func (h *Handler) GetListQuestions(c *fiber.Ctx) error {
 	var totalCount int
-	sort := getSort(c.Query("sort", `["id","DESC"]`))
-	limit, offset := getRange(c.Query("range", `[75, 99]`))
-	filter := getFilter(c.Query("filter", `{}`))
+	sort := utils.GetSort(c.Query("sort", `["id","DESC"]`))
+	limit, offset := utils.GetRange(c.Query("range", `[75, 99]`))
+	filter := utils.GetFilter(c.Query("filter", `{}`))
 
 	baseQuery := "FROM questions"
 
@@ -130,31 +89,46 @@ func (h *Handler) GetAllQuestions(c *fiber.Ctx) error {
 	}
 
 	if len(questions) == 0 {
-		c.Set("Access-Control-Expose-Headers", "X-Total-Count")
 		c.Set("X-Total-Count", "0")
 		return c.JSON([]Question{})
 	}
-	c.Set("Access-Control-Expose-Headers", "X-Total-Count")
 	c.Set("X-Total-Count", strconv.Itoa(totalCount))
 	return c.JSON(questions)
 }
 
-// // @Summary Get question by ID
-// // @Description Get question by ID
-// // @Tags Questions
-// // @Accept json
-// // @Produce json
-// // @Param question_id path int true "Question ID"
-// // @Success 200 {object} ResponseHTTP{data=[]Data}
-// // @Failure 503 {object} ResponseHTTP{}
-// // @Router /v1/questions/{question_id} [get]
-// func (h *Handler) GetQuestionById(c *fiber.Ctx) error {
-// 	data := []Data{
-// 		{"Matt", "Rybin"},
-// 		{"Adam", "Eve"},
-// 	}
-// 	return c.JSON(data)
-// }
+// @Summary Get question by ID
+// @Description Get question by ID
+// @Tags Questions
+// @Accept json
+// @Produce json
+// @Param question_id path int true "Question ID"
+// @Success 200 {object} ResponseHTTP{data=[]Data}
+// @Failure 503 {object} ResponseHTTP{}
+// @Router /v1/questions/{id} [get]
+func (h *Handler) GetOneQuestion(c *fiber.Ctx) error {
+	fmt.Println("HELLO")
+	id := c.Params("id")
+	log.Println("This is a log message")
+
+	query := fmt.Sprintf("SELECT id, title, category, view_count, vote_count, answer_count, created_at FROM questions WHERE id = '%s'", id)
+	row := h.DB.QueryRow(query)
+	var question Question // assuming Question is your model
+	err := row.Scan(&question.Id, &question.Title, &question.Category, &question.ViewCount, &question.VoteCount, &question.AnswerCount, &question.CreatedAt)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			// No result
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"error": "No question found with given id",
+			})
+		}
+		// DB error
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(question)
+}
 
 // // @Summary Create a new question
 // // @Description Create question
