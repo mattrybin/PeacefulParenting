@@ -1,5 +1,4 @@
 "use client"
-import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { Header } from "../shared/components/Header"
@@ -10,8 +9,21 @@ import { Providers } from "./providers"
 const inter = Inter({ subsets: ["latin"] })
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  if (typeof window !== "undefined") {
+    if (
+      localStorage.theme === "dark" ||
+      (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+      document.documentElement.setAttribute("data-theme", "dark")
+    } else {
+      document.documentElement.setAttribute("data-theme", "light")
+    }
+  }
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      data-theme={typeof window !== "undefined" ? JSON.parse(localStorage.theme) : "auto"}
+    >
       <head>
         <meta
           name="google"

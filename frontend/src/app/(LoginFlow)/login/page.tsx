@@ -14,7 +14,7 @@ export default async function Page() {
       <div className="grid justify-center text-center pt-20 gap-4">
         <div className="w-40 h-40 rounded-box border-2 border-base-content mx-auto">
           <img
-            className="h-full w-full rounded-box"
+            className="h-full w-full rounded-[13px]"
             src={imageUrl}
           />
         </div>

@@ -16,7 +16,7 @@ export default function HomePage() {
 
   return (
     <PageContainer>
-      <div className="grid justify-center items-center gap-4 mt-2">
+      <div className="grid justify-center items-center gap-4 mt-8">
         <div className="flex justify-center">
           <Link
             className="btn btn-sm"
