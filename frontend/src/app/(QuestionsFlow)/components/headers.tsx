@@ -5,17 +5,15 @@ import Link from "next/link"
 
 export const QuestionsHeader = ({ item }: H<typeof useQuestions, "header">) => {
   return (
-    <>
+    <div className="px-4 h-24 w-full grid max-content">
       {item ? (
-        <div className="flex justify-between items-center px-4 h-16">
+        <div className="flex justify-between items-center">
           <div className="flex gap-2 items-center">
-            <div>
-              <Icons
-                variant={item.icon}
-                className="fill-base-content text-8"
-                weight="fill"
-              />
-            </div>
+            <Icons
+              variant={item.icon}
+              className="fill-base-content text-8"
+              weight="fill"
+            />
             <div className="">
               <div className="font-semibold text-4">{item.title}</div>
               <div className="font-semibold text-5 -mt-2 -mb-[3px]">Questions</div>
@@ -30,7 +28,7 @@ export const QuestionsHeader = ({ item }: H<typeof useQuestions, "header">) => {
           </Link>
         </div>
       ) : (
-        <div className="flex justify-between items-center px-4 mt-6 h-16">
+        <div className="flex justify-between items-center">
           <div className="font-semibold text-5">Top Questions</div>
           <Link
             href={"questions/ask"}
@@ -40,6 +38,6 @@ export const QuestionsHeader = ({ item }: H<typeof useQuestions, "header">) => {
           </Link>
         </div>
       )}
-    </>
+    </div>
   )
 }

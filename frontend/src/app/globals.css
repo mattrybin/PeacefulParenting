@@ -118,3 +118,7 @@
   grid-template-columns: repeat(7, calc(50% - 40px));
   grid-template-rows: minmax(50px, 1fr);
 }
+
+.max-content {
+  @apply ipad:max-w-[704px] desktop:max-w-[900px] mx-auto;
+}

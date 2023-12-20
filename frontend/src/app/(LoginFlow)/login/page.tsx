@@ -8,7 +8,6 @@ export default async function Page() {
   const session = await auth()
   const imageUrl = session?.user?.image?.replace("=s96-c", "")
   // const imageUrl = session?.user?.image ?? ""
-  console.log(imageUrl)
   if (session) {
     return (
       <div className="grid justify-center text-center pt-20 gap-4">

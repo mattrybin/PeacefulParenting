@@ -28,7 +28,6 @@ const parseQuery = <T>(schema: ZodType<T>) => {
       console.error(result.error);
       throw new Error(JSON.stringify(result.error));
     } else {
-      console.log(result.data);
       return result.data;
     }
   };

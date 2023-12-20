@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      data-theme={typeof window !== "undefined" ? JSON.parse(localStorage.theme) : "auto"}
+      data-theme={typeof window !== "undefined" ? localStorage.theme : "auto"}
     >
       <head>
         <meta

@@ -15,7 +15,7 @@ export const List = ({
 }: H<typeof useQuestions, "list">) => {
   if (isSuccess) {
     return (
-      <div className="border-b border-base-200 bg-base-200/75">
+      <div className="border-b border-base-200 bg-base-200/75 ipad:bg-base-100 max-content border-l border-r w-full">
         {!isLoading &&
           questions?.map(
             ({
@@ -32,7 +32,7 @@ export const List = ({
               <Link
                 href={`/questions/${id}`}
                 key={id}
-                className={`block border-b border-base-300/50 last:border-base-200 pt-4 px-4 ${
+                className={`group hover:bg-base-200 block border-b border-base-300/50 ipad:border-base-200 last:border-base-200 pt-4 px-4 ${
                   item && "pb-4"
                 }`}
               >
@@ -60,7 +60,7 @@ export const List = ({
                   <div className="w-1 h-1 bg-base-300 rounded-full" />
                   <div>{viewCount} views</div>
                 </div>
-                <div className="my-2 mb-3 font-medium">{title}</div>
+                <div className="my-2 mb-3 font-medium group-hover:text-primary">{title}</div>
                 <div className="text-right flex justify-end items-center">
                   <div className="avatar">
                     <div className="w-5 h-5 rounded border-2 border-base-content mr-[6px]">

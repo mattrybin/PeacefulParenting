@@ -53,7 +53,6 @@ export const Footer = () => {
     // Set up a bottom cushion of 20 pixels. Adjust as per the need.
     const bottomCushion = 20
     const isBottom = Math.round(window.pageYOffset) >= windowHeight - bottomCushion
-    console.log(isBottom)
 
     // Amount of 'cushion' in pixels for scrolling down
     const scrollCushion = 20

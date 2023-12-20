@@ -47,22 +47,3 @@ export default function HomePage() {
     </PageContainer>
   )
 }
-
-// <Link
-//   href={setParams(searchParams, { filter: id })}
-//   className="grid justify-center text-center"
-// >
-//   <Icons
-//     variant={icon}
-//     className={`text-7 ${id === filter ? "text-base-content" : "text-base-300"}`}
-//     weight={id === filter ? "fill" : "duotone"}
-//   />
-//   <div
-//     className={`font-semibold -mb-[4px] ${
-//       id === filter ? "text-base-content" : "text-base-300"
-//     }`}
-//   >
-//     {title}
-//   </div>
-//   <div className={`text-3 font-semibold text-base-300`}>{subtitle}</div>
-// </Link>
