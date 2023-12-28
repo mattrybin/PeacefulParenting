@@ -48,7 +48,7 @@ export const HeaderController = () => {
   const isAuth = session.status === "authenticated"
   if (isAuth) {
     return (
-      <div className="grid grid-flow-col items-center">
+      <div className="grid grid-flow-col items-center justify-end">
         <div className="avatar btn btn-ghost btn-square">
           <div className="w-7 h-7 rounded-lg border-2 border-base-content">
             <img
@@ -69,7 +69,7 @@ export const HeaderController = () => {
     )
   } else {
     return (
-      <div className="grid grid-flow-col items-center">
+      <div className="grid grid-flow-col items-center justify-end">
         <button className="btn btn-square btn-ghost">
           <Icons
             variant="magnifying-glass"

@@ -3,7 +3,7 @@
 import "swiper/css"
 import { Search } from "./Search"
 import { HeaderBranding } from "./Branding"
-import { MobileHeaderController } from "./HeaderController"
+import { HeaderController, MobileHeaderController } from "./HeaderController"
 import { FilterTab } from "./FilterTab"
 import Link from "next/link"
 
@@ -22,8 +22,8 @@ export const Header = () => (
           <HeaderBranding />
           {/* <Search /> */}
           <Menu />
-          <MobileHeaderController />
-          {/* <HeaderController /> */}
+          {/* <MobileHeaderController /> */}
+          <HeaderController />
         </div>
         <FilterTab />
       </div>

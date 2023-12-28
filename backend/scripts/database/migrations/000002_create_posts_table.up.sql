@@ -5,9 +5,9 @@ CREATE TABLE
       id UUID DEFAULT gen_random_uuid () PRIMARY KEY,
       title VARCHAR(255) NOT NULL,
       category VARCHAR(50) NOT NULL,
-      view_count INT,
-      vote_count INT,
-      answer_count INT
+      view_count INT DEFAULT 0,
+      vote_count INT DEFAULT 0,
+      answer_count INT DEFAULT 0
    );
 
 CREATE TRIGGER update_modified_time BEFORE

@@ -1,11 +1,57 @@
 package utils
 
 import (
+	"bytes"
+	"database/sql"
 	"encoding/json"
-	"strconv"
+	"fmt"
+	"log"
+	"net/http"
+	"net/http/httptest"
 	"strings"
 	"unicode"
 )
+
+const (
+	host     = "localhost"
+	port     = 5432
+	user     = "postgres"
+	password = "password"
+	dbname   = "postgres"
+)
+
+func Json(input interface{}) *bytes.Reader {
+	b, _ := json.Marshal(input)
+	return bytes.NewReader(b)
+}
+
+func NewTestRequest(method string, url string, body *bytes.Reader) *http.Request {
+	if body != nil {
+		req := httptest.NewRequest(method, url, body)
+		req.Header.Add("Content-Type", "application/json")
+		return req
+	} else {
+		req := httptest.NewRequest(method, url, nil)
+		req.Header.Add("Content-Type", "application/json")
+		return req
+	}
+}
+
+func SetupPostgres() *sql.DB {
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname)
+
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		log.Fatalf("Failed to connect to database, error: %s", err)
+	}
+
+	err = db.Ping()
+	if err != nil {
+		log.Fatalf("Failed to ping to database, error: %s", err)
+	}
+	return db
+}
 
 func CamelToSnake(s string) string {
 	var result string
@@ -24,7 +70,7 @@ func CamelToSnake(s string) string {
 	return strings.Join(words, "_")
 }
 
-func GetSort(param string) []string {
+func GetSort(param string) (string, string) {
 	defaultParams := []string{"id", "DESC"}
 	var sortParams []string
 	err := json.Unmarshal([]byte(param), &sortParams)
@@ -32,7 +78,7 @@ func GetSort(param string) []string {
 	if err != nil {
 		sortParams = defaultParams
 	}
-	return sortParams
+	return CamelToSnake(sortParams[0]), sortParams[1]
 }
 
 type Filter struct {
@@ -47,7 +93,7 @@ func GetFilter(param string) (filterParams Filter) {
 	return filterParams
 }
 
-func GetRange(param string) (string, string) {
+func GetRange(param string) (uint, uint) {
 	defaultParams := []int{0, 9}
 	var rangeParams []int
 	err := json.Unmarshal([]byte(param), &rangeParams)
@@ -55,5 +101,5 @@ func GetRange(param string) (string, string) {
 	if err != nil {
 		rangeParams = defaultParams
 	}
-	return strconv.Itoa(rangeParams[1] - rangeParams[0] + 1), strconv.Itoa(rangeParams[0])
+	return uint(rangeParams[1] - rangeParams[0] + 1), uint(rangeParams[0])
 }

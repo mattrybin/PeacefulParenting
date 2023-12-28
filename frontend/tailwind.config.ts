@@ -5,10 +5,6 @@ import typography from '@tailwindcss/typography';
 import forms from '@tailwindcss/forms';
 
 const config: Config = {
-  content: [
-    './src/shared/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
   theme: {
     extend: {
       fontSize: {
@@ -23,6 +19,10 @@ const config: Config = {
     }
   },
 
+  content: [
+    './src/shared/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
   daisyui: {
     themes: [{
       light: {

@@ -14,7 +14,7 @@ export const QuestionsHeader = ({ item }: H<typeof useQuestions, "header">) => {
               className="fill-base-content text-8"
               weight="fill"
             />
-            <div className="">
+            <div>
               <div className="font-semibold text-4">{item.title}</div>
               <div className="font-semibold text-5 -mt-2 -mb-[3px]">Questions</div>
               <div className="font-semibold text-3 text-base-300">{item.subtitle}</div>

@@ -14,11 +14,26 @@ import {
   Show,
   SimpleShowLayout,
   ShowButton,
+  CreateButton,
+  TopToolbar,
+  Create,
+  DateInput,
+  SimpleForm,
+  TextInput,
+  required,
+  SelectField,
+  SelectInput,
 } from "react-admin";
 import { dataProvider } from "./dataProvider";
 import { Card, CardContent } from "@mui/material";
 import MailIcon from "@mui/icons-material/MailOutline";
 import CategoryIcon from "@mui/icons-material/LocalOffer";
+
+const ListActions = () => (
+  <TopToolbar>
+    <CreateButton />
+  </TopToolbar>
+);
 
 export const PostFilterSidebar = () => (
   <Card sx={{ order: -1, mr: 2, mt: 9, width: 200 }}>
@@ -45,7 +60,7 @@ export const PostFilterSidebar = () => (
 );
 
 export const PostList = () => (
-  <List aside={<PostFilterSidebar />}>
+  <List actions={<ListActions />} aside={<PostFilterSidebar />}>
     <Datagrid>
       <TextField source="id" />
       <TextField source="title" />
@@ -68,6 +83,31 @@ export const PostShow = () => (
   </Show>
 );
 
+export const categories = [
+  { id: "infant", name: "Infant" },
+  { id: "toddler", name: "Toddler" },
+  { id: "child", name: "Child" },
+  { id: "preteen", name: "Preteen" },
+  { id: "teen", name: "Teen" },
+  { id: "adult", name: "Adult" },
+  { id: "household", name: "Household" },
+  { id: "relatives", name: "Relatives" },
+  { id: "other", name: "Other" },
+];
+
+export const QuestionCreate = () => (
+  <Create>
+    <SimpleForm>
+      <TextInput source="title" validate={[required()]} />
+      <SelectInput
+        source="category"
+        choices={categories}
+        validate={[required()]}
+      />
+    </SimpleForm>
+  </Create>
+);
+
 export const App = () => (
   <Admin dataProvider={dataProvider}>
     <Resource
@@ -75,6 +115,7 @@ export const App = () => (
       list={PostList}
       edit={EditGuesser}
       show={PostShow}
+      create={QuestionCreate}
     />
   </Admin>
 );
