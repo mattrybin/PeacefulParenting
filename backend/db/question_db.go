@@ -124,11 +124,28 @@ func (s *PostgresQuestionStore) GetListQuestions(sortKey string, sortValue strin
 		questions = append(questions, q)
 
 	}
-
 	var totalCount int
-	if err = s.client.QueryRow("SELECT COUNT(*) FROM questions").Scan(&totalCount); err != nil {
+
+	// Prepare base count query.
+	countQuery := goqu.From("questions").Select(goqu.COUNT("*"))
+
+	if filter.Category != "" {
+		// Add category filter to the count query if category is specified.
+		countQuery = countQuery.Where(goqu.I("category").Eq(filter.Category))
+	}
+
+	// Convert the count query to SQL query string.
+	countSql, _, _ := countQuery.ToSQL()
+
+	// Execute the SQL query and scan the result into the totalCount.
+	if err = s.client.QueryRow(countSql).Scan(&totalCount); err != nil {
 		panic(err)
 	}
+
+	// var totalCount int
+	// if err = s.client.QueryRow("SELECT COUNT(*) FROM questions").Scan(&totalCount); err != nil {
+	// 	panic(err)
+	// }
 	return questions, totalCount, err
 }
 

@@ -1,6 +1,7 @@
 import {
   Admin,
   Resource,
+  EditGuesser,
   Datagrid,
   DateField,
   List,
@@ -20,12 +21,15 @@ import {
   TextInput,
   required,
   SelectInput,
+  DateInput,
+  Edit,
+  EditButton,
+  ReferenceManyField,
 } from "react-admin";
-import { dataProvider } from "./dataProvider";
 import { Card, CardContent } from "@mui/material";
 import MailIcon from "@mui/icons-material/MailOutline";
 import CategoryIcon from "@mui/icons-material/LocalOffer";
-import { questionEdit, questionList, questionShow } from "./api/Questions";
+import { dataProvider } from "../dataProvider";
 
 const ListActions = () => (
   <TopToolbar>
@@ -57,7 +61,7 @@ export const PostFilterSidebar = () => (
   </Card>
 );
 
-export const PostList = () => (
+export const questionList = () => (
   <List actions={<ListActions />} aside={<PostFilterSidebar />}>
     <Datagrid>
       <TextField source="id" />
@@ -71,7 +75,7 @@ export const PostList = () => (
     </Datagrid>
   </List>
 );
-export const PostShow = () => (
+export const questionShow = () => (
   <Show>
     <SimpleShowLayout>
       <TextField source="id" />
@@ -106,14 +110,25 @@ export const QuestionCreate = () => (
   </Create>
 );
 
-export const App = () => (
-  <Admin dataProvider={dataProvider}>
-    <Resource
-      name="questions"
-      list={questionList}
-      edit={questionEdit}
-      show={questionShow}
-      create={QuestionCreate}
-    />
-  </Admin>
+export const questionEdit = () => (
+  <Edit>
+    <SimpleForm>
+      <TextInput source="title" validate={[required()]} />
+      <SelectInput
+        source="category"
+        choices={categories}
+        validate={[required()]}
+      />
+    </SimpleForm>
+  </Edit>
+);
+
+export const Questions = () => (
+  <Resource
+    name="questions"
+    list={questionList}
+    edit={questionEdit}
+    show={questionShow}
+    create={QuestionCreate}
+  />
 );

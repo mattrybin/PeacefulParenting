@@ -35,7 +35,7 @@ func (suite *QuestionsHandlerSuite) TestUpdateQuestion200() {
 	params := types.UpdateQuestionParams{
 		Title: "1111",
 	}
-	request = utils.NewTestRequest("PATCH", fmt.Sprintf("/questions/%s", list[0].Id), utils.Json(params))
+	request = utils.NewTestRequest("PUT", fmt.Sprintf("/questions/%s", list[0].Id), utils.Json(params))
 	response, err := suite.app.Test(request)
 	suite.NoError(err)
 	suite.Equal(http.StatusAccepted, response.StatusCode)
@@ -50,7 +50,8 @@ func (suite *QuestionsHandlerSuite) TestCreateQuestion400() {
 
 func (suite *QuestionsHandlerSuite) TestCreateQuestion422() {
 	params := types.CreateQuestionParams{
-		Category: "child",
+		Title:    "Should not work because category enum",
+		Category: "child123",
 	}
 	request := utils.NewTestRequest("POST", "/questions", utils.Json(params))
 	response, err := suite.app.Test(request)
@@ -132,7 +133,7 @@ func (suite *QuestionsHandlerSuite) SetupTest() {
 	})
 	suite.app.Get("/questions", suite.handler.GetListQuestions)
 	suite.app.Get("/questions/:id", suite.handler.GetQuestion)
-	suite.app.Patch("/questions/:id", suite.handler.UpdateQuestion)
+	suite.app.Put("/questions/:id", suite.handler.UpdateQuestion)
 	suite.app.Post("/questions", suite.handler.CreateQuestion)
 }
 

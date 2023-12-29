@@ -87,7 +87,7 @@ func main() {
 	app.Use(cors.New(cors.Config{
 		AllowCredentials: true,
 		AllowOrigins:     "*",
-		AllowMethods:     "GET,POST,DELETE,PATCH",
+		AllowMethods:     "GET,POST,DELETE,PATCH,PUT",
 		AllowHeaders:     "X-Total-Count,content-type",
 		ExposeHeaders:    "X-Total-Count",
 	}))
@@ -110,8 +110,8 @@ func main() {
 
 	v1.Get("/questions", questionHandler.GetListQuestions)
 	v1.Post("/questions", questionHandler.CreateQuestion)
-	// v1.Get("/questions/:id", api.GetOneQuestion)
-	// v1.Post("/questions", handlers.CreateQuestion)
+	v1.Get("/questions/:id", questionHandler.GetQuestion)
+	v1.Put("/questions/:id", questionHandler.UpdateQuestion)
 	// v1.Delete("/questions/:question_id", handlers.DeleteQuestion)
 	url := fmt.Sprintf(":%s", *port)
 	log.Fatal(app.Listen(url))
