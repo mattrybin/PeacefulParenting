@@ -1,18 +1,18 @@
 "use client"
+import { zodValidator } from "@tanstack/zod-form-adapter"
 import { PageContainer } from "shared/components/Containers"
 import { useAsk } from "./page.hook"
 import { Icons } from "shared/components/Icons"
 import { useRouter } from "next/navigation"
 import { H } from "shared/utils"
 import Link from "next/link"
+import { FieldInfo, useForm } from "@tanstack/react-form"
+import { z } from "zod"
+import clsx from "clsx"
 
 export default function HomePage() {
-  const { content, category, title, description, expand } = useAsk()
+  const { content, category, title, description, expand, form } = useAsk()
   const router = useRouter()
-
-  const goBack = () => {
-    router.back()
-  }
 
   return (
     <PageContainer>
@@ -31,15 +31,25 @@ export default function HomePage() {
         </div>
         <div className="text-5 font-semibold">{content.title}</div>
       </div>
-      <div className="p-6 gap-6 grid">
-        <CategoryField {...category} />
-        {title.isFocused && <TitleHint />}
-        <TitleField {...title} />
-        {description.isFocused && <DescriptionHint />}
-        <DescriptionField {...description} />
-        {expand.isFocused && <ExpandHint />}
-        <ExpectingField {...expand} />
-      </div>
+      <form.Provider>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            void form.handleSubmit()
+          }}
+        >
+          <div className="p-6 gap-6 grid">
+            <CategoryField {...category} />
+            {title.isFocused && <TitleHint />}
+            <TitleField {...title} />
+            {description.isFocused && <DescriptionHint />}
+            <DescriptionField {...description} />
+            {expand.isFocused && <ExpandHint />}
+            <ExpectingField {...expand} />
+          </div>
+        </form>
+      </form.Provider>
     </PageContainer>
   )
 }
@@ -115,7 +125,7 @@ const ExpandHint = () => (
   </div>
 )
 
-const TitleField = ({ action, enabled, isFocused }: any) => (
+const TitleField = ({ form, action, enabled, isFocused }: any) => (
   <div
     className={`relative grid border border-base-200 rounded-box text-sm p-6 gap-2
   ${!enabled ? "opacity-50" : ""}`}
@@ -125,17 +135,46 @@ const TitleField = ({ action, enabled, isFocused }: any) => (
       <div className="text-base font-semibold">Title</div>
       <div>Be specific and imagine you’re asking a question to another person.</div>
     </div>
-    <input
-      type="text"
-      placeholder="e.g. What is the best food for my toddler?"
-      className="input input-bordered w-full max-w-xs text-sm"
+    <form.Field
+      name="title"
+      validators={{
+        onChange: z.string().min(3, "Need be at least 3 characters")
+      }}
+      children={(field: any) => (
+        <>
+          <input
+            type="text"
+            placeholder="e.g. What is the best food for my toddler?"
+            className="input input-bordered w-full max-w-xs text-sm"
+            value={field.state.value}
+            onBlur={field.handleBlur}
+            onChange={(e) => field.handleChange(e.target.value)}
+          />
+          {!isFocused && !!field.state.meta.errors.length ? (
+            <em
+              role="alert"
+              className="alert alert-warning border border-warning-content/10 flex text-left gap-3"
+            >
+              <Icons
+                variant="warning"
+                weight="duotone"
+                size="5"
+              />
+              <div>{field.state.meta.errors.join(", ")}</div>
+            </em>
+          ) : null}
+          <div
+            className={clsx("btn btn-primary", {
+              hidden: !isFocused,
+              "btn-disabled": !field.state.meta.isTouched || !!field.state.meta.errors.length
+            })}
+            onClick={action}
+          >
+            Next
+          </div>
+        </>
+      )}
     />
-    <div
-      className={`btn btn-primary ${!isFocused ? "hidden" : ""}`}
-      onClick={action}
-    >
-      Next
-    </div>
   </div>
 )
 

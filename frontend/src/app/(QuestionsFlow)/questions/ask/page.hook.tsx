@@ -1,3 +1,5 @@
+import { useForm } from "@tanstack/react-form"
+import { zodValidator } from "@tanstack/zod-form-adapter"
 import { useReducer } from "react"
 
 // initial state
@@ -69,15 +71,31 @@ function reducer(state: any, action: any) {
 export const useAsk = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
+  const form = useForm({
+    validatorAdapter: zodValidator,
+    defaultValues: {
+      category: "",
+      title: ""
+    },
+    onSubmit: async ({ value }) => {
+      // Do something with form data
+      console.log(value)
+    }
+  })
+
   return {
+    form,
     category: {
+      form,
       selected: state.category.selected,
       action: (x: string) => {
+        form.setFieldValue("category", () => x)
         dispatch({ type: "selectCategory", value: x })
         dispatch({ type: "enableTitle" })
       }
     },
     title: {
+      form,
       enabled: state.title.enabled,
       isFocused: state.focus === "title",
       action: () => dispatch({ type: "enableDescription" })
