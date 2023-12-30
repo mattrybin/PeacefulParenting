@@ -22,11 +22,6 @@ let array = [
     icon: "book-bookmark",
     title: "Resources"
   }
-  // {
-  //   id: "login",
-  //   icon: "user-circle",
-  //   title: "Log in"
-  // }
 ]
 
 let login = {
@@ -57,14 +52,6 @@ export const Footer = () => {
     // Amount of 'cushion' in pixels for scrolling down
     const scrollCushion = 20
 
-    // When user has scrolled down beyond cushion
-    // if (currentScrollPos > prevScrollPos + scrollCushion) {
-    //   setVisible(false)
-    // }
-    // When user has scrolled up or hit the bottom
-    // else if (isBottom || currentScrollPos < prevScrollPos) {
-    //   setVisible(true)
-    // }
     if (isBottom) {
       setVisible(true)
     } else if (currentScrollPos < prevScrollPos) {

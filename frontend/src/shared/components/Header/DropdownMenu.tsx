@@ -11,7 +11,6 @@ export const DropdownMenu = ({ isUser }: { isUser: boolean }) => {
     isBrowserWindow ? localStorage.getItem("theme") || "auto" : "auto"
   )
   const closeMenu = () => {
-    console.log("CLICKED")
     setOpen(false)
   }
   useEffect(() => {

@@ -12,5 +12,11 @@ export const Icons = ({
   className?: string
   size?: string
 }) => {
-  return <i className={`ph-${weight} ph-${variant.toLowerCase()} text-${size} ${className}`} />
+  return (
+    <i
+      className={`ph-${weight} ph-${
+        typeof variant === "string" && variant.toLowerCase()
+      } text-${size} ${className}`}
+    />
+  )
 }

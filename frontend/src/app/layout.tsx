@@ -87,6 +87,8 @@ const Body = ({ children }: PropsWithChildren) => (
       <Header />
       <div className="pb-20">{children}</div>
     </div>
-    <Footer />
+    <div className="ipad:hidden">
+      <Footer />
+    </div>
   </div>
 )

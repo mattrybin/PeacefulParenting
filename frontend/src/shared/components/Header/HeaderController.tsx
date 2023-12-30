@@ -2,6 +2,7 @@
 import { Icons } from "../Icons"
 import { useSession } from "next-auth/react"
 import { DropdownMenu } from "./DropdownMenu"
+import Link from "next/link"
 
 export const MobileHeaderController = () => {
   const session = useSession()
@@ -9,34 +10,23 @@ export const MobileHeaderController = () => {
   if (isAuth) {
     return (
       <div className="grid grid-flow-col items-center">
-        <div className="avatar btn btn-ghost btn-square">
+        <Link
+          href="/login"
+          className="avatar btn btn-ghost btn-square"
+        >
           <div className="w-7 h-7 rounded-lg border-2 border-base-content">
             <img
               src={session.data.user?.image || ""}
               alt="avatar"
             />
           </div>
-        </div>
-        <button className="btn btn-square btn-ghost">
-          <Icons
-            variant="magnifying-glass"
-            weight="duotone"
-            className="text-8"
-          />
-        </button>
+        </Link>
         <DropdownMenu isUser={isAuth} />
       </div>
     )
   } else {
     return (
       <div className="grid grid-flow-col items-center">
-        <button className="btn btn-square btn-ghost">
-          <Icons
-            variant="magnifying-glass"
-            weight="duotone"
-            className="text-8"
-          />
-        </button>
         <DropdownMenu isUser={isAuth} />
       </div>
     )
@@ -49,34 +39,34 @@ export const HeaderController = () => {
   if (isAuth) {
     return (
       <div className="grid grid-flow-col items-center justify-end">
-        <div className="avatar btn btn-ghost btn-square">
+        <Link
+          href="/login"
+          className="avatar btn btn-ghost btn-square"
+        >
           <div className="w-7 h-7 rounded-lg border-2 border-base-content">
             <img
               src={session.data.user?.image || ""}
               alt="avatar"
             />
           </div>
-        </div>
-        <button className="btn btn-square btn-ghost">
-          <Icons
-            variant="magnifying-glass"
-            weight="duotone"
-            className="text-8"
-          />
-        </button>
+        </Link>
         <DropdownMenu isUser={isAuth} />
       </div>
     )
   } else {
     return (
-      <div className="grid grid-flow-col items-center justify-end">
-        <button className="btn btn-square btn-ghost">
+      <div className="grid grid-flow-col items-center justify-end gap-2">
+        <Link
+          href={"/login"}
+          className="btn"
+        >
           <Icons
-            variant="magnifying-glass"
-            weight="duotone"
-            className="text-8"
+            variant="user-circle"
+            size="7"
+            weight={"duotone"}
           />
-        </button>
+          <div>Login</div>
+        </Link>
         <DropdownMenu isUser={isAuth} />
       </div>
     )
