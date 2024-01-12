@@ -1,1 +1,2 @@
 .hooks/pre-commit.local.json
+.DS_Store
