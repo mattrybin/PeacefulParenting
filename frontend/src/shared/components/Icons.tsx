@@ -13,10 +13,11 @@ export const Icons = ({
   size?: string
 }) => {
   return (
-    <i
-      className={`ph-${weight} ph-${
-        typeof variant === "string" ? variant.toLowerCase() : ""
-      } text-${size} ${typeof className == "string" ? className : ""}`}
-    />
+    // <i
+    //   className={`ph-${weight} ph-${
+    //     typeof variant === "string" ? variant.toLowerCase() : ""
+    //   } text-${size} ${typeof className == "string" ? className : ""}`}
+    // />
+    <i />
   )
 }

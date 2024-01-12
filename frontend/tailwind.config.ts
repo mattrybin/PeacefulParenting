@@ -5,8 +5,12 @@ import typography from '@tailwindcss/typography';
 import forms from '@tailwindcss/forms';
 
 const config: Config = {
+  darkMode: 'class',
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-geist-sans)'],
+      },
       fontSize: {
         ...defaultTheme.spacing
       },
@@ -35,8 +39,8 @@ const config: Config = {
         "base-200": "#E7E5E4",
         "base-300": "#78716C",
         "base-content": "#1C1917",
-        "info": "blue",
-        "info-content": "red",
+        "info": "#bfdbfe",
+        "info-content": "#172554",
         "--rounded-box": "0.5rem", // border radius rounded-box utility class, used in card and other large boxes
         "--rounded-btn": "0.5rem", // border radius rounded-btn utility class, used in buttons and similar element
         "--rounded-badge": "0.5rem", // border radius rounded-badge utility class, used in badges and similar
@@ -57,6 +61,8 @@ const config: Config = {
         "base-200": "#292524",
         "base-300": "#78716C",
         "base-content": "#E7E5E4",
+        "info": "#3b82f6",
+        "info-content": "#bfdbfe",
         "--rounded-box": "1rem", // border radius rounded-box utility class, used in card and other large boxes
         "--rounded-btn": "0.5rem", // border radius rounded-btn utility class, used in buttons and similar element
         "--rounded-badge": "1.9rem", // border radius rounded-badge utility class, used in badges and similar

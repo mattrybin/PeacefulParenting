@@ -9,6 +9,8 @@ import Link from "next/link"
 import { FieldInfo, useForm } from "@tanstack/react-form"
 import { z } from "zod"
 import clsx from "clsx"
+import { MarkdownEditor } from "shared/components/MarkdownEditor"
+import { Suspense } from "react"
 
 export default function HomePage() {
   const { content, category, title, description, expand, form } = useAsk()
@@ -178,11 +180,16 @@ const TitleField = ({ form, action, enabled, isFocused }: any) => (
   </div>
 )
 
+const markdown = `
+# Hello world!
+Check the EditorComponent.tsx file for the code .
+`
+
 const DescriptionField = ({ enabled, action, isFocused }: any) => (
   <div
     id="description"
     className={`relative grid border border-base-200 rounded-box text-sm p-6 gap-2
-  ${!enabled ? "opacity-50" : ""}`}
+  ${!enabled ? "opacity-100" : ""}`}
   >
     {!enabled && <div className="inset-0 bg-base-content/10 absolute rounded-box" />}
     <div>
@@ -191,10 +198,13 @@ const DescriptionField = ({ enabled, action, isFocused }: any) => (
         Introduce the problem and expand on what you put in the title. Minimum 20 characters.
       </div>
     </div>
-    <textarea
+    <Suspense fallback={null}>
+      <MarkdownEditor markdown={""} />
+    </Suspense>
+    {/* <textarea
       className="textarea textarea-bordered"
       placeholder=""
-    ></textarea>
+    ></textarea> */}
     <div
       className={`btn btn-primary ${!isFocused ? "hidden" : ""}`}
       onClick={action}
@@ -217,10 +227,9 @@ const ExpectingField = ({ enabled }: any) => (
         characters.
       </div>
     </div>
-    <textarea
-      className="textarea textarea-bordered"
-      placeholder=""
-    ></textarea>
+    <Suspense fallback={null}>
+      <MarkdownEditor markdown={""} />
+    </Suspense>
     <div
       className={`btn btn-primary ${!enabled ? "hidden" : ""}`}
       // onClick={action}

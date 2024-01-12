@@ -39,6 +39,7 @@
     scrollbehavior: smooth;
   }
   body {
+    font-feature-settings: "rlig" 1, "calt" 1;
     line-height: 1.65;
     position: relative;
     font-size: 100%;
@@ -121,4 +122,64 @@
 
 .max-content {
   @apply ipad:max-w-[704px] desktop:max-w-[900px] mx-auto;
+}
+
+.markdown-editor-toolbar {
+  @apply flex bg-base-200 rounded-t-box border-b border-base-content/10 h-14;
+}
+
+.markdown-editor-toolbar > span:first-child > button {
+  @apply h-14 items-center px-4 gap-2 font-semibold w-36 flex justify-center;
+}
+
+*[role="tooltip"] {
+  /* insert your styles here */
+  color: white;
+  background-color: black;
+}
+
+*[data-radix-popper-content-wrapper] > [data-side="top"] {
+  @apply bg-info text-info-content rounded-box p-2 border border-base-content/20 text-sm font-semibold;
+}
+
+*[role="presentation"] {
+  @apply bg-base-100 text-base-content rounded-box p-2 border border-base-content/20 text-sm font-semibold;
+}
+
+*[role="presentation"] > div {
+  @apply px-3 py-1 cursor-pointer hover:bg-base-content/20 rounded;
+}
+.bold-italic-underline-toggles {
+  @apply flex content-center;
+}
+.bold-italic-underline-toggles > div {
+  @apply grid grid-flow-col justify-center items-center;
+}
+
+.bold-italic-underline-toggles > div button {
+  @apply btn btn-ghost btn-xs h-11 w-11;
+}
+
+.tailwind-prose {
+  @apply prose;
+}
+
+.tailwind-prose h1 {
+  @apply text-6 font-extrabold leading-8 mb-2;
+}
+
+.tailwind-prose h2 {
+  @apply text-5 font-extrabold mt-6 mb-2;
+}
+
+.tailwind-prose h3 {
+  @apply text-4 font-extrabold mt-6 mb-2 text-primary;
+}
+
+.tailwind-prose p {
+  @apply text-base font-normal;
+}
+
+.tailwind-prose p em {
+  @apply text-base italic;
 }

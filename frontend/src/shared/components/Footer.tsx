@@ -4,7 +4,6 @@ import { Icons } from "./Icons"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { checkPath } from "../utils"
-import { useSession } from "next-auth/react"
 
 let array = [
   {
@@ -30,13 +29,11 @@ let login = {
   title: "Log in"
 }
 
-export const Footer = () => {
+export const Footer = ({ user }: any) => {
   const pathname = usePathname()
   const path = checkPath(pathname)
   const [prevScrollPos, setPrevScrollPos] = useState(0)
   const [visible, setVisible] = useState(true)
-  const session = useSession()
-  const isAuth = session.status === "authenticated"
 
   const handleScroll = () => {
     const currentScrollPos = window.scrollY
@@ -108,7 +105,7 @@ export const Footer = () => {
             login.id === path ? "text-base-content" : "text-base-300"
           }`}
         >
-          {isAuth ? "Account" : "Login"}
+          {user ? "Account" : "Login"}
         </div>
       </Link>
     </div>

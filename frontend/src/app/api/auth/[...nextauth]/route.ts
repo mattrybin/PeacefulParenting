@@ -1,5 +1,10 @@
-export { GET, POST } from "../../../../shared/auth"
-export const runtime = "edge"
+import NextAuth from "next-auth"
+import { authOptions } from "shared/auth"
+
+
+const handler = NextAuth(authOptions)
+
+export { handler as GET, handler as POST }
 
 // import NextAuth from "next-auth"
 // import GithubProvider from "next-auth/providers/github"

@@ -1,14 +1,16 @@
 import { signOut } from "next-auth/react"
 import Link from "next/link"
-import { auth } from "shared/auth"
+// import { auth } from "shared/auth"
 import { GoogleSignInButton } from "shared/components/AuthButtons"
 import { SignOutButton } from "../components/SignOutButton"
+import { getCurrentUser } from "shared/session"
 
 export default async function Page() {
-  const session = await auth()
-  const imageUrl = session?.user?.image?.replace("=s96-c", "")
+  const user = await getCurrentUser()
+  // const session = await auth()
+  const imageUrl = user?.image?.replace("=s96-c", "")
   // const imageUrl = session?.user?.image ?? ""
-  if (session) {
+  if (user) {
     return (
       <div className="grid justify-center text-center pt-20 gap-4">
         <div className="w-40 h-40 rounded-box border-2 border-base-content mx-auto">
@@ -18,8 +20,8 @@ export default async function Page() {
           />
         </div>
         <div>
-          <div className="font-semibold">{session.user?.name}</div>
-          <div className="font-semibold text-base-content/50">{session.user?.email}</div>
+          <div className="font-semibold">{user?.name}</div>
+          <div className="font-semibold text-base-content/50">{user?.email}</div>
         </div>
         <SignOutButton />
       </div>

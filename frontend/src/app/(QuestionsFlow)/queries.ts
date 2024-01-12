@@ -49,9 +49,13 @@ export const useQuestionsQuery = ({ category = "", perPage, page, sort = "top" }
   return useQuery({
     queryKey: ['questions', obj],
     queryFn: async () => {
-      const response = await requestV1("questions" + "?" + encodeParams(obj))
-      const data = await response.json()
-      return { count: response.headers.get("X-Total-Count"), response: parseQuery(useQuestionsQuerySchema)(data) }
+      try {
+        const response = await requestV1("questions" + "?" + encodeParams(obj))
+        const data = await response.json()
+        return { count: response.headers.get("X-Total-Count"), response: parseQuery(useQuestionsQuerySchema)(data) }
+      } catch (err) {
+        console.error("ERROR", err)
+      }
     },
   })
 }

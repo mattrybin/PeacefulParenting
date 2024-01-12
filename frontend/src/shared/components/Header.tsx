@@ -1,7 +1,7 @@
 "use client"
 
 import "swiper/css"
-import { HeaderController, MobileHeaderController } from "./Header/HeaderController"
+// import { HeaderController, MobileHeaderController } from "./Header/HeaderController"
 import { HeaderBranding } from "./Header/Branding"
 import { FilterTab } from "./Header/FilterTab"
 
@@ -10,7 +10,7 @@ export const Header = () => (
     <div className="ipad:hidden">
       <div className="h-14 grid grid-flow-col items-center grid-cols-[auto_max-content] px-4">
         <HeaderBranding />
-        <MobileHeaderController />
+        {/* <MobileHeaderController /> */}
       </div>
       <FilterTab />
     </div>
@@ -19,7 +19,7 @@ export const Header = () => (
         <div className="h-16 grid grid-flow-col items-center grid-cols-[max-content_1fr] gap-10 px-4 max-w-[1000px] mx-auto">
           <HeaderBranding />
           {/* <Search /> */}
-          <HeaderController />
+          {/* <HeaderController /> */}
         </div>
         <FilterTab />
       </div>
