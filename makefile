@@ -41,3 +41,8 @@ git-new-feature:
 
 git-checkout-pr:
 	@bash $(GIT_CHECKOUT_PR_SCRIPT)
+
+TESTING = devops/scripts/notion-check.sh
+testing:
+	@bash $(TESTING)
+
