@@ -49,6 +49,9 @@ function check_and_stash_changes() {
 }
 check_and_stash_changes
 
+# Obtain the current PR number
+current_pr_number=$(gh pr view $(git branch --show-current) --json number --jq '.number')
+
 # Fetch the PRs
 prs=$(gh pr list --limit 100 --json number,title --jq '.[] | "\(.number) \(.title)"')
 
@@ -56,8 +59,10 @@ prs=$(gh pr list --limit 100 --json number,title --jq '.[] | "\(.number) \(.titl
 options=()
 prtitles=()
 while IFS=" " read -r number title; do
-    options+=("$number")
-    prtitles+=("$title")
+    if [ "$number" != "$current_pr_number" ]; then
+        options+=("$number")
+        prtitles+=("$title")
+    fi
 done <<< "$prs"
 
 # Display the options and prompt for a selection
