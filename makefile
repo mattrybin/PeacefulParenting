@@ -1,12 +1,15 @@
 .PHONY: setup setup-environment setup-hosts setup-ssl setup-packages dev
 
-# Define your scripts with variable in order to have a consistent format
 MENU_SETUP_SCRIPT = devops/scripts/menu-setup.sh
-SETUP_ENVIRONMENT_SCRIPT = devops/scripts/setup-environment.bash
-
+MENU_GIT_SCRIPT = devops/scripts/menu-git.sh
+git:
+	@bash $(MENU_GIT_SCRIPT)
 setup:
 	@bash $(MENU_SETUP_SCRIPT)
 
+
+
+SETUP_ENVIRONMENT_SCRIPT = devops/scripts/setup-environment.bash
 setup-environment:
 	@bash $(SETUP_ENVIRONMENT_SCRIPT)
 
@@ -37,4 +40,10 @@ git-new-feature:
 	@bash $(GIT_NEW_FEATURE_SCRIPT)
 
 git-checkout-pr:
+	@bash $(GIT_CHECKOUT_PR_SCRIPT)
+
+TESTING = devops/scripts/notion-check.sh
+testing:
+	@bash $(TESTING)
+
 	@bash $(GIT_CHECKOUT_PR_SCRIPT)
