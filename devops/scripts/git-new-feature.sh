@@ -127,3 +127,6 @@ done
 git checkout -b ${issue_id} # use issue_id as a branch name
 git commit --allow-empty -m "${full_title}" # full_title as a commit message
 git push origin ${issue_id} # use issue_id as a branch name
+
+# Create a pull request with the "DRAFT" label
+gh pr create --title "${full_title}" --body "Pull request for ${full_title}." --label DRAFT -B development
