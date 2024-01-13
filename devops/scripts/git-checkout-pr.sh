@@ -22,29 +22,32 @@ function check_local_branch_status() {
     fi
 }
 
-# Check if there are changes in working directory or changes in the index
-if [[ "$(git status --porcelain)" != "" ]]; then
-    current_branch=$(git symbolic-ref --short HEAD)
-    echo "${BOLD}Current branch '${current_branch}' has uncommitted changes. Would you like to stash them now?${NORMAL}"
-    read -p "Stash changes? (y/n) " stash_yn
-    case $stash_yn in
-        [Yy]* )
-            git stash push -u -m "${current_branch}"
-            if [ $? -ne 0 ]; then
-                echo "Error stashing changes."
+function check_and_stash_changes() {
+    # Check if there are changes in working directory or changes in the index
+    if [[ "$(git status --porcelain)" != "" ]]; then
+        current_branch=$(git symbolic-ref --short HEAD)
+        echo "${BOLD}Current branch '${current_branch}' has uncommitted changes. Would you like to stash them now?${NORMAL}"
+        read -p "Stash changes? (y/n) " stash_yn
+        case $stash_yn in
+            [Yy]* )
+                git stash push -u -m "${current_branch}"
+                if [ $? -ne 0 ]; then
+                    echo "Error stashing changes."
+                    exit 1
+                fi
+                ;;
+            [Nn]* )
+                echo "Please commit, stash or discard changes before continuing."
                 exit 1
-            fi
-            ;;
-        [Nn]* )
-            echo "Please commit, stash or discard changes before continuing."
-            exit 1
-            ;;
-        * )
-            echo "Please answer (y)es or (n)o."
-            exit 1
-            ;;
-    esac
-fi
+                ;;
+            * )
+                echo "Please answer (y)es or (n)o."
+                exit 1
+                ;;
+        esac
+    fi
+}
+check_and_stash_changes
 
 # Fetch the PR ```bash
 # Fetch the PRs
