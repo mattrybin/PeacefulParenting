@@ -57,18 +57,18 @@ exit 1
 fi
 
 # Get the issue ID and confirm branch existence
-read -p "Type the issue ID (for example, ${BOLD}st-123${NORMAL}): " issue_id
-if [ "$(git ls-remote --heads origin ${FEATURE_BRANCH_PREFIX}${issue_id})" ]; then
-    echo "${BOLD}Branch '${FEATURE_BRANCH_PREFIX}${issue_id}' already exists. Please use a different issue ID.${NORMAL}"
-    echo "See the branch on GitHub: ${REPO_URL}/tree/${FEATURE_BRANCH_PREFIX}${issue_id}"
+read -p "Type the issue ID (for example, ${BOLD}123${NORMAL}): " issue_id
+if [ "$(git ls-remote --heads origin ${issue_id})" ]; then
+    echo "${BOLD}Branch '${issue_id}' already exists. Please use a different issue ID.${NORMAL}"
+    echo "See the branch on GitHub: ${REPO_URL}/tree/${issue_id}"
     exit 1
 fi
 
 # Validate and confirm feature title
 while true; do
     read -p "Type the feature title (for example, ${BOLD}feat: add filter to table${NORMAL}): " feat_title
-    if [[ ${feat_title} =~ ^feat ]]; then # removed ':' from regex
-        full_title="feat(${FEATURE_BRANCH_PREFIX}${issue_id}): ${feat_title#feat}" # Updated format
+    if [[ ${feat_title} =~ ^feat: ]]; then # removed ':' from regex
+        full_title="feat(${issue_id}): ${feat_title#feat: }" # Updated format
         echo "Full title: ${full_title}"
         read -p "Confirm title? (y/n) " yn
         case $yn in
@@ -77,11 +77,11 @@ while true; do
             * ) echo "Please answer (y)es or (n)o";;
         esac
     else
-        echo "${BOLD}Title validation failed. It should start with 'feat'. Please retry.${NORMAL}"
+        echo "${BOLD}Title validation failed. It should start with 'feat: '. Please retry.${NORMAL}"
     fi
 done
 
 # Create and checkout branch, make a commit, and push to remote
-git checkout -b ${full_title}
-git commit --allow-empty -m "${full_title}"
-git push origin ${full_title}
+git checkout -b ${issue_id} # use issue_id as a branch name
+git commit --allow-empty -m "${full_title}" # full_title as a commit message
+git push origin ${issue_id} # use issue_id as a branch name
