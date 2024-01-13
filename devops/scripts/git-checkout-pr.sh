@@ -49,12 +49,12 @@ function check_and_stash_changes() {
 }
 check_and_stash_changes
 
-# Fetch the PR ```bash
 # Fetch the PRs
 prs=$(gh pr list --limit 100 --json number,title --jq '.[] | "\(.number) \(.title)"')
 
 # Create an array of PR titles
-options=("Quit")
+options=()
+prtitles=()
 while IFS=" " read -r number title; do
     options+=("$number")
     prtitles+=("$title")
@@ -63,12 +63,15 @@ done <<< "$prs"
 # Display the options and prompt for a selection
 prompt="Please select a PR: "
 counter=0
-for option in "${options[@]}"; do 
-    echo "[$counter] ${prtitles[$counter-1]}"
+echo "[$counter] Quit" # Add Quit option here
+((counter++)) # Increment counter
+for title in "${prtitles[@]}"; do 
+    echo "[$counter] $title" # Print title directly
     ((counter++))
 done
 
 read -p "$prompt" selection
+
 
 # Check what was selected and subtract 1 for correct array indexing
 selected_option=${options[$selection]}
