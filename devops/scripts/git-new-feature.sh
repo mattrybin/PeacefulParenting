@@ -37,10 +37,52 @@ if ! gh auth status &> /dev/null; then
     exit 1
 fi
 
+# Check if there are changes in working directory or changes in the index
+if [[ "$(git status --porcelain)" != "" ]]; then
+    current_branch=$(git symbolic-ref --short HEAD)
+    echo "${BOLD}Current branch '${current_branch}' has uncommitted changes. Would you like to stash them now?${NORMAL}"
+    read -p "Stash changes? (y/n) " stash_yn
+    case $stash_yn in
+        [Yy]* )
+            git stash push -u -m "${current_branch}"
+            if [ $? -ne 0 ]; then
+                echo "Error stashing changes."
+                exit 1
+            fi
+            ;;
+        [Nn]* )
+            echo "Please commit, stash or discard changes before continuing."
+            exit 1
+            ;;
+        * )
+            echo "Please answer (y)es or (n)o."
+            exit 1
+            ;;
+    esac
+fi
+
+
 # Check if user is on development branch
 if [[ "$(git symbolic-ref --short HEAD)" != "development" ]]; then
-    echo "${BOLD}Please switch to the development branch before creating a new feature branch.${NORMAL}"
-    exit 1
+    echo "${BOLD}You aren't currently on the 'development' branch. Would you like to switch now?${NORMAL}"
+    read -p "Switch to 'development' branch? (y/n) " switch_yn
+    case $switch_yn in
+        [Yy]* )
+            git checkout development
+            if [ $? -ne 0 ]; then
+                echo "Error switching to 'development' branch. Please verify the branch exists."
+                exit 1
+            fi
+            ;;
+        [Nn]* )
+            echo "Please switch to the 'development' branch before creating a new feature branch."
+            exit 1
+            ;;
+        * )
+            echo "Please answer (y)es or (n)o"
+            exit 1
+            ;;
+    esac
 fi
 
 # Check if development branch is up to date with remote
