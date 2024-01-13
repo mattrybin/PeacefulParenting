@@ -75,21 +75,25 @@ for title in "${prtitles[@]}"; do
     ((counter++))
 done
 
+# Prompt for selection
 read -p "$prompt" selection
 
+# Quit option selected
+if [[ $selection -eq 0 ]]; then
+    echo "Quitting..."
+    exit 0
+fi
 
-# Check what was selected and subtract 1 for correct array indexing
-selected_option=${options[$selection]}
+# Ensure 1 is subtracted for non-zero selection because array indices start from 0
+selected_option=${options[$selection-1]}
 
-if [[ $selected_option == "Quit" ]]; then
-    exit 1
-elif [[ $selected_option =~ ^[0-9]+ ]]; then
+if [[ $selected_option =~ ^[0-9]+ ]]; then
     # The selected option starts with a number, so it's a PR
     pr_number=${selected_option}
     check_local_branch_status
     echo "Checking out PR $pr_number..."
     gh pr checkout $pr_number
     echo "Checked out PR $pr_number!"
-else 
+else
     echo "Invalid option. Please try again."
 fi
