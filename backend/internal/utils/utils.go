@@ -4,20 +4,11 @@ import (
 	"bytes"
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"unicode"
-)
-
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "password"
-	dbname   = "postgres"
 )
 
 func Json(input interface{}) *bytes.Reader {
@@ -37,10 +28,7 @@ func NewTestRequest(method string, url string, body *bytes.Reader) *http.Request
 	}
 }
 
-func SetupPostgres() *sql.DB {
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-
+func SetupPostgres(psqlInfo string) *sql.DB {
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		log.Fatalf("Failed to connect to database, error: %s", err)
@@ -52,6 +40,22 @@ func SetupPostgres() *sql.DB {
 	}
 	return db
 }
+
+// func SetupPostgres() *sql.DB {
+// 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable",
+// 		host, port, user, password, dbname)
+
+// 	db, err := sql.Open("postgres", psqlInfo)
+// 	if err != nil {
+// 		log.Fatalf("Failed to connect to database, error: %s", err)
+// 	}
+
+// 	err = db.Ping()
+// 	if err != nil {
+// 		log.Fatalf("Failed to ping to database, error: %s", err)
+// 	}
+// 	return db
+// }
 
 func CamelToSnake(s string) string {
 	var result string

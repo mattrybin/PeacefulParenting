@@ -1,4 +1,4 @@
-package main
+package database
 
 import (
 	"database/sql"
@@ -6,8 +6,6 @@ import (
 	"time"
 
 	"github.com/bxcodec/faker/v4"
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/lib/pq"
 )
@@ -174,34 +172,22 @@ var questions = []map[string]string{
 	{"category": "relatives", "title": "How can I help my child handle criticism from relatives?"},
 }
 
-// type Question struct {
-// 	Category  string
-// 	Title     string
-// 	ViewCount int
-// 	VoteCount int
-// }
-
 func addValues(questions []map[string]string) []Question {
-	// create our Questions slice
 	var expandedQuestions []Question
 
-	// iterate over the original map and add to the new slice
 	for _, q := range questions {
 		views, _ := faker.RandomInt(1, 500, 1)
 		votes, _ := faker.RandomInt(1, 20, 1)
 		answers, _ := faker.RandomInt(1, 5, 1)
 		createAt, _ := faker.RandomInt(1, 10000, 1)
 		newQuestion := Question{
-			Category: q["category"],
-			Title:    q["title"],
-			// assign a default value for viewCount and voteCount,
-			// change as per your requirement
+			Category:    q["category"],
+			Title:       q["title"],
 			ViewCount:   views[0],
 			VoteCount:   votes[0],
 			AnswerCount: answers[0],
 			CreateAt:    createAt[0],
 		}
-		fmt.Println(newQuestion)
 		expandedQuestions = append(expandedQuestions, newQuestion)
 	}
 
@@ -228,41 +214,13 @@ func createQuestion(index int) Question {
 	return question
 }
 
-func main() {
-	db, err := sql.Open("postgres", "postgres://postgres:password@localhost:5432/postgres?sslmode=disable")
-	if err != nil {
-		panic(err)
-	}
-
-	driver, err := postgres.WithInstance(db, &postgres.Config{})
-
-	if err != nil {
-		panic(err)
-	}
-
-	m, err := migrate.NewWithDatabaseInstance("file://./migrations", "postgres", driver)
-
-	if err != nil {
-		panic(err)
-	}
-
-	err = m.Down()
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	err = m.Up()
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
+func SeedDB(db *sql.DB) error {
 	var listQuestions = addValues(questions)
 	for i := range listQuestions {
 		listQuestions[i] = createQuestion(i)
 	}
-	insertQuestions(db, listQuestions)
+	_, err := insertQuestions(db, listQuestions)
+	return err
 }
 
 func insertQuestions(db *sql.DB, questions []Question) ([]string, error) {

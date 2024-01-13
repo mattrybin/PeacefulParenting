@@ -15,7 +15,7 @@ export type SiteConfig = {
 const site_url = "peacefulparenting.ai"
 
 export const siteConfig: SiteConfig = {
-  name: "SaaS Starter",
+  name: "Frontend",
   description:
     "Get your project off to an explosive start with SaaS Starter! Harness the power of Next.js 14, Prisma, Planetscale, Auth.js, Resend, React Email, Shadcn/ui and Stripe to build your next big thing.",
   url: site_url,
