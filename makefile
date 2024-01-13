@@ -46,3 +46,4 @@ TESTING = devops/scripts/notion-check.sh
 testing:
 	@bash $(TESTING)
 
+	@bash $(GIT_CHECKOUT_PR_SCRIPT)
