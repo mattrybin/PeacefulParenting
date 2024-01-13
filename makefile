@@ -1,8 +1,14 @@
-.PHONY: setup setup-hosts setup-ssl dev
+.PHONY: setup setup-environment setup-hosts setup-ssl setup-packages dev
 
+# Define your scripts with variable in order to have a consistent format
+MENU_SETUP_SCRIPT = devops/scripts/menu-setup.sh
+SETUP_ENVIRONMENT_SCRIPT = devops/scripts/setup-environment.bash
 
 setup:
-	@bash devops/scripts/setup.bash
+	@bash $(MENU_SETUP_SCRIPT)
+
+setup-environment:
+	@bash $(SETUP_ENVIRONMENT_SCRIPT)
 
 setup-hosts:
 	@echo "Setting up local development domains..."
@@ -15,5 +21,16 @@ setup-ssl:
 	@mkdir -p devops/cert
 	@openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout devops/cert/selfsigned.key -out devops/cert/selfsigned.crt -subj "/C=PL/ST=krakow/L=krakow/O=mattrybin/OU=peacefulparenting/CN=peacefulparenting/emailAddress=contact@mattrybin.com"
 
+setup-packages:
+	@echo "Setting up packages"
+	@cd ./admin && pnpm install
+	@cd ./backend && go get ./...
+	@cd ./frontend && pnpm install
+
 dev:
-	docker-compose --env-file development.database.env up --build
+	@docker-compose --env-file development.database.env up --build
+
+GIT_NEW_FEATURE_SCRIPT = devops/scripts/git-new-feature.sh
+
+git-new-feature:
+	@bash $(GIT_NEW_FEATURE_SCRIPT)
