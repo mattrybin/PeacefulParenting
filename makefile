@@ -31,6 +31,10 @@ dev:
 	@docker-compose --env-file development.database.env up --build
 
 GIT_NEW_FEATURE_SCRIPT = devops/scripts/git-new-feature.sh
+GIT_CHECKOUT_PR_SCRIPT = devops/scripts/git-checkout-pr.sh
 
 git-new-feature:
 	@bash $(GIT_NEW_FEATURE_SCRIPT)
+
+git-checkout-pr:
+	@bash $(GIT_CHECKOUT_PR_SCRIPT)
