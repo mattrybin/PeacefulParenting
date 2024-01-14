@@ -74,7 +74,7 @@ function check_pr_build_check_until_timeout {
                 break
                 ;;
             2)
-                gh pr merge $pr_number --squash --merge
+                gh pr merge $pr_number --squash
                 git checkout development
                 git pull origin development
                 break
