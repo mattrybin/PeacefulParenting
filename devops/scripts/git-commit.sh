@@ -26,10 +26,6 @@ function review_select_option {
                 exit 0;;
             1 )
                 echo "Asking for review..."
-                
-                # Makes the current PR ready for review
-                gh pr edit "$PR_NUMBER" --repo origin --ready-for-review
-                
                 # Adding "REVIEW" label to this PR
                 gh pr update "$PR_NUMBER" --add-label "REVIEW" --repo origin
                 
