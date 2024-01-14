@@ -2,6 +2,43 @@
 
 source /Users/mattrybin/SOFTWARE/mattrybin/PeacefulParenting/devops/scripts/utils/validate_working_directory.sh
 
+# Define the webhook URL as a variable
+SLACK_WEBHOOK_URL="https://hooks.slack.com/services/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"
+
+
+function send_to_slack {
+    local pr_link=$1
+    local pr_title="$2"
+    local data='{
+        "blocks": [
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "*<'"$pr_link"'|'"$pr_title"'>*"
+                }
+            },
+            {
+                "type": "actions",
+                "elements": [
+                    {
+                        "type": "button",
+                        "text": { 
+                            "type": "plain_text", 
+                            "text": "Ready for Review" 
+                        }, 
+                        "url": "'"$pr_link"'"
+                    }
+                ]
+            }
+        ]
+    }'
+    curl -X POST -H 'Content-type: application/json' --data "${data}" $SLACK_WEBHOOK_URL
+}
+
+
+# Usage
+
 function exit_if_development_branch {
     current_branch=$(git branch --show-current)
 
@@ -26,6 +63,10 @@ function review_select_option {
                 exit 0;;
             1 )
                 echo "Asking for review..."
+                PR_LINK="https://github.com/mattrybin/peacefulparenting/pull/$PR_NUMBER"
+                PR_TITLE=$(gh pr view $PR_NUMBER --json title --jq .title)
+
+                send_to_slack $PR_LINK "$PR_TITLE"
 
                 # Get PR current labels
                 PR_LABELS=$(gh pr view $PR_NUMBER --json labels --jq '.labels[]?.name' | tr -d '"')
