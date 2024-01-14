@@ -163,18 +163,42 @@ function validate_dev_branch_up_to_date {
     fi
 }
 
-# # Check if development branch is up to date with remote
-# git remote update
-# UPSTREAM=${1:-'@{u}'}
-# LOCAL=$(git rev-parse @)
-# REMOTE=$(git rev-parse "$UPSTREAM")
-# BASE=$(git merge-base @ "$UPSTREAM")
-
-# if [ $LOCAL != $REMOTE ]; then
-#     echo -e "${BOLD}Your development branch is not up to date with the remote branch. Please update your branch.${NORMAL}"
-# exit 1
+function select_notion_task {
+    # Notion API key and database id
+    NOTION_API_KEY="secret_ND2qydCVvlIvQuRAhuMFYvCnmJ9CAvcIc0LNvtYfu0W"
+    DATABASE_ID="e3a6cdc2a2694ef9b824444ac5d9a0e3"
     
-# fi
+    # Get tasks from Notion and convert to an array of JSON objects
+    declare -a JSON_OBJECTS
+    declare -a PLAIN_TEXTS
+    while IFS= read -r line; do
+        JSON_OBJECTS+=("$line")
+        task_title=$(echo "$line" | jq -r '.plain_text')
+        PLAIN_TEXTS+=("$task_title")   # change this line
+    done < <(curl "https://api.notion.com/v1/databases/${DATABASE_ID}/query" \
+        -H "Authorization: Bearer ${NOTION_API_KEY}" \
+        -H "Notion-Version: 2021-08-16" \
+        -X POST -d '{}' | jq -c '.results[] | select(.properties.Status.select.name == "Tasks") | {id: ("PP-" + (.properties.ID.unique_id.number | tostring)), created_time: .created_time, plain_text: .properties.Name.title[0].plain_text, url: .url}')
+
+    # Display each title and prompt for selection
+    echo "Please select a task:"
+    for i in "${!PLAIN_TEXTS[@]}"; do 
+        echo "$((i+1))) ${PLAIN_TEXTS[$i]}"
+    done
+
+    while true; do
+        read -p "Enter choice: " REPLY
+        if [[ -n $REPLY && $REPLY -le ${#PLAIN_TEXTS[@]} && $REPLY -ge 1 ]]; then
+            INDEX=$((REPLY-1))   # Get chosen index
+            issue_id=$(echo "${JSON_OBJECTS[$INDEX]}" | jq -r '.id')
+            full_title=$(echo "${JSON_OBJECTS[$INDEX]}" | jq -r '.plain_text')
+            echo "You have selected: ${full_title} with ID: ${issue_id}"
+            break
+        else
+            echo "Invalid choice. Please retry."
+        fi
+    done
+}
 
 # # Get the issue ID and confirm branch existence
 # read -p "Type the issue ID (for example, ${BOLD}123${NORMAL}): " issue_id
@@ -221,3 +245,4 @@ validate_github_cli
 validate_working_directory
 validate_on_development_branch
 validate_dev_branch_up_to_date
+select_notion_task
