@@ -44,7 +44,6 @@ function validate_github_cli {
     fi
 }
 
-
 function validate_working_directory {
     # Check if there are changes in working directory or changes in the index
     if [[ "$(git status --porcelain)" != "" ]]; then
@@ -53,13 +52,17 @@ function validate_working_directory {
         
         while true; do
             echo "Select an option:"
-            echo "1 - Commit and push changes with a standard commit."
-            echo "2 - Stash changes."
-            echo "3 - Hard reset the branch to remote version."
+            echo "1 - Quit / Do nothing."
+            echo "2 - Commit and push changes with a standard commit."
+            echo "3 - Stash changes."
+            echo "4 - Hard reset the branch to remote version."
             read -p "Your option: " option
 
             case $option in
                 1 )
+                    echo "Exiting without performing any operations..."
+                    exit 1;;
+                2 )
                     git add --all && git commit -m "save: ${current_branch}" && git push origin "$current_branch"
                     if [ $? -ne 0 ]; then
                         echo "Error while committing/pushing changes."
@@ -67,7 +70,7 @@ function validate_working_directory {
                         echo "Changes have been committed and pushed successfully."
                     fi
                     break;;
-                2 )
+                3 )
                     git stash push -u -m "${current_branch}"
                     if [ $? -ne 0 ]; then
                         echo "Error stashing changes."
@@ -75,7 +78,7 @@ function validate_working_directory {
                         echo "Changes have been stashed successfully."
                     fi
                     break;;
-                3 )
+                4 )
                     git fetch origin
                     git reset --hard origin/"$current_branch"
                     if [ $? -ne 0 ]; then
@@ -85,11 +88,12 @@ function validate_working_directory {
                     fi
                     break;;
                 * )
-                    echo "Invalid option. Enter 1, 2 or 3.";;
+                    echo "Invalid option. Enter 1, 2, 3 or 4.";;
             esac
         done
     fi
 }
+
 function validate_on_development_branch {
     # Check if user is on the development branch
     if [[ "$(git symbolic-ref --short HEAD)" != "develop" ]]; then
@@ -120,28 +124,44 @@ function validate_on_development_branch {
     fi
 }
 
-# # Check if user is on development branch
-# if [[ "$(git symbolic-ref --short HEAD)" != "development" ]]; then
-#     echo "${BOLD}You aren't currently on the 'development' branch. Would you like to switch now?${NORMAL}"
-#     read -p "Switch to 'development' branch? (y/n) " switch_yn
-#     case $switch_yn in
-#         [Yy]* )
-#             git checkout development
-#             if [ $? -ne 0 ]; then
-#                 echo "Error switching to 'development' branch. Please verify the branch exists."
-#                 exit 1
-#             fi
-#             ;;
-#         [Nn]* )
-#             echo "Please switch to the 'development' branch before creating a new feature branch."
-#             exit 1
-#             ;;
-#         * )
-#             echo "Please answer (y)es or (n)o"
-#             exit 1
-#             ;;
-#     esac
-# fi
+function validate_dev_branch_up_to_date {
+    # Update remote references
+    git remote update
+    
+    # Configure upstream
+    UPSTREAM=${1:-'@{u}'}
+    
+    LOCAL=$(git rev-parse @)
+    REMOTE=$(git rev-parse "$UPSTREAM")
+    BASE=$(git merge-base @ "$UPSTREAM")
+
+    if [ $LOCAL != $REMOTE ]; then
+        echo "${BOLD}Your 'development' branch is not up-to-date with the remote branch.${NORMAL}"
+        
+        while true; do
+            echo "Select an option:"
+            echo "1 - Quit / Do nothing."
+            echo "2 - Pull latest changes."
+            read -p "Your option: " option
+
+            case $option in
+                1 )
+                    echo "Exiting without pulling changes..."
+                    exit 1;;
+                2 )
+                    git pull --rebase
+                    if [ $? -ne 0 ]; then
+                        echo "Error pulling latest changes. Please ensure no merge conflicts or unstaged changes are present."
+                    else
+                        echo "Successfully pulled latest changes."
+                    fi
+                    break;;
+                * )
+                    echo "Invalid option. Enter 1 or 2.";;
+            esac
+        done
+    fi
+}
 
 # # Check if development branch is up to date with remote
 # git remote update
@@ -200,3 +220,4 @@ validate_git_config
 validate_github_cli
 validate_working_directory
 validate_on_development_branch
+validate_dev_branch_up_to_date
