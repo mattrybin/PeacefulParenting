@@ -1,6 +1,30 @@
 #!/bin/bash
 
+function list_changed_files {
+    # Get file with highest number of changes
+    first_file=$(git diff --numstat | awk '{print $1+$2, $3}' | sort -nr | awk 'NR==1{print $2}')
+
+    # Get array of changed files
+    changed_files_arr=($(git diff --name-only))
+
+    # Get length of array
+    arr_length=${#changed_files_arr[@]}
+
+    # Get total lines changed
+    total_lines_changed=$(git diff --numstat | awk '{ total += $1 + $2 } END { print total }')
+
+    # Check if multiple files have been changed
+    if (( arr_length > 1 )); then
+        other_files_count=$((arr_length-1))
+        echo "save: ${first_file} and ${other_files_count} other files changed with a total of ${total_lines_changed} lines changed"
+    else
+        # Only one file has been changed
+        echo "save: ${first_file} changed with ${total_lines_changed} lines changed"
+    fi
+}
+
 function validate_working_directory {
+    commit_message=$(list_changed_files)
     # Check if there are changes in working directory or changes in the index
     if [[ "$(git status --porcelain)" != "" ]]; then
         current_branch=$(git symbolic-ref --short HEAD)
@@ -19,7 +43,7 @@ function validate_working_directory {
                     echo "Exiting without performing any operations..."
                     exit 1;;
                 2 )
-                    git add --all && git commit -m "save: ${current_branch}" && git push origin "$current_branch"
+                    git add --all && git commit -m "${commit_message}" && git push origin "$current_branch"
                     if [ $? -ne 0 ]; then
                         echo "Error while committing/pushing changes."
                     else
