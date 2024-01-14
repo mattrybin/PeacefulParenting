@@ -219,6 +219,25 @@ function select_notion_task {
     done
 }
 
+function check_if_branch_exists {
+    # Check local branches
+    if git rev-parse --verify --quiet $issue_id > /dev/null; then
+        echo "Branch ${issue_id} exists locally."
+        echo "You should use 'make git-checkout' to checkout to the existing PR."
+        return 0
+    fi
+
+    # Check remote branches
+    if git ls-remote --heads origin $issue_id | grep $issue_id > /dev/null; then
+        echo "Branch ${issue_id} exists remotely."
+        echo "You should use 'make git-checkout' to checkout to the existing PR."
+        return 0
+    fi
+
+    echo "Branch ${issue_id} does not exist either locally or remotely."
+    return 1
+}
+
 # # Get the issue ID and confirm branch existence
 # read -p "Type the issue ID (for example, ${BOLD}123${NORMAL}): " issue_id
 # if [ "$(git ls-remote --heads origin ${issue_id})" ]; then
@@ -268,5 +287,6 @@ validate_dev_branch_up_to_date
 validate_notion_credentials
 
 select_notion_task
+check_if_branch_exists
 echo "Selected title: ${full_title}"
 echo "Selected title: ${issue_id}"
