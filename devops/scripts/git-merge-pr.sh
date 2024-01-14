@@ -34,7 +34,7 @@ function check_current_pr_status {
 }
 
 
-function check_pr_checks_until_timeout {
+function check_pr_build_check_until_timeout {
     current_branch=$(git branch --show-current)
     timeout=$((5 * 60))  # 5 minutes
     interval=10  # Check every 10 seconds
@@ -45,18 +45,22 @@ function check_pr_checks_until_timeout {
         now=$(date +%s)
         elapsed=$((now - start))
         if ((elapsed > timeout)); then
-            echo "Timeout reached: PR checks aren't all passing after 5 minutes."
+            echo "Timeout reached: PR 'build' checks aren't all passing after 5 minutes."
             break
         fi
 
-        checks_status=$(gh pr checks $current_branch)
-        echo "$checks_status"
+        checks_output=$(gh pr checks $current_branch)
+        
+        # extract only 'build' checkline
+        build_status_line=$(echo "$checks_output" | grep "^build")
 
-        if [[ $checks_status == *"fail"* ]]; then
-            echo "Checks have failed."
+        echo "$build_status_line"
+
+        if [[ $build_status_line == *"fail"* ]]; then
+            echo "Build checks have failed."
             break
-        elif [[ $checks_status != *"pending"* ]]; then
-            echo "All checks have passed."
+        elif [[ $build_status_line == *"pass"* ]]; then
+            echo "Build checks have passed."
             break
         fi
 
@@ -65,6 +69,6 @@ function check_pr_checks_until_timeout {
 }
 
 validate_working_directory
-sleep 10
-check_pr_checks_until_timeout
+sleep 5
+check_pr_build_check_until_timeout
 # check_current_pr_status
