@@ -4,11 +4,11 @@ function list_changed_files {
     full_path=$(git diff --numstat | awk '{print $1+$2, $3}' | sort -nr | awk 'NR==1{print $2}')
     
     # Limit to two directories back
-    first_file=$(echo $full_path | awk -F"/" '{OFS="/"; print $(NF-2),$(NF-1),$NF}')
+    first_file=$(echo $full_path | awk -F"/" '{OFS="/"; if(NF>2) print $(NF-2),$(NF-1),$NF; else print $NF}')
     
     # Check the length of the file path, if it's too long (e.g., longer than 50 characters), limit to one directory back
     if (( ${#first_file} > 50 )); then
-        first_file=$(echo $full_path | awk -F"/" '{OFS="/"; print $(NF-1),$NF}') 
+        first_file=$(echo $full_path | awk -F"/" '{OFS="/"; if(NF>1) print $(NF-1),$NF; else print $NF}')
     fi
 
     # Get array of changed files
@@ -34,7 +34,6 @@ function validate_working_directory {
     commit_message=$(list_changed_files)
     if [[ "$(git status --porcelain)" != "" ]]; then
         current_branch=$(git symbolic-ref --short HEAD)
-        echo $current_branch
         echo "${BOLD}Current branch '${current_branch}' has uncommitted changes.${NORMAL}"
         
         while true; do
