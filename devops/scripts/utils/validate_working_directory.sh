@@ -7,7 +7,7 @@ function list_changed_files {
     first_file=$(echo $full_path | awk -F"/" '{OFS="/"; if(NF>2) print $(NF-2),$(NF-1),$NF; else print $NF}')
     
     # Check the length of the file path, if it's too long (e.g., longer than 50 characters), limit to one directory back
-    if (( ${#first_file} > 50 )); then
+    if (( ${#first_file} > 25 )); then
         first_file=$(echo $full_path | awk -F"/" '{OFS="/"; if(NF>1) print $(NF-1),$NF; else print $NF}')
     fi
 
