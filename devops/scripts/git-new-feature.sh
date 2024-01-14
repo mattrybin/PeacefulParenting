@@ -7,6 +7,8 @@ NORMAL=$(tput sgr0)
 NOTION_API_KEY="secret_ND2qydCVvlIvQuRAhuMFYvCnmJ9CAvcIc0LNvtYfu0W"
 DATABASE_ID="e3a6cdc2a2694ef9b824444ac5d9a0e3"
 
+declare issue_id
+declare full_title
 
 function check_git_dir {
     # Check for necessary Git variables
@@ -191,11 +193,11 @@ function select_notion_task {
     while IFS= read -r line; do
         JSON_OBJECTS+=("$line")
         task_title=$(echo "$line" | jq -r '.plain_text')
-        PLAIN_TEXTS+=("$task_title")   # change this line
+        PLAIN_TEXTS+=("$task_title")   
     done < <(curl "https://api.notion.com/v1/databases/${DATABASE_ID}/query" \
         -H "Authorization: Bearer ${NOTION_API_KEY}" \
         -H "Notion-Version: 2021-08-16" \
-        -X POST -d '{}' | jq -c '.results[] | select(.properties.Status.select.name == "Tasks") | {id: ("PP-" + (.properties.ID.unique_id.number | tostring)), created_time: .created_time, plain_text: .properties.Name.title[0].plain_text, url: .url}')
+        -X POST -d '{}' | jq -c '.results[] | select(.properties.Status.select.name == "Tasks") | {id: ("PP-" + (.properties.ID.unique_id.number | tostring)), created_time: (.created_time | fromdateiso8601), plain_text: .properties.Name.title[0].plain_text, url: .url}')
 
     # Display each title and prompt for selection
     echo "Please select a task:"
@@ -266,3 +268,5 @@ validate_dev_branch_up_to_date
 validate_notion_credentials
 
 select_notion_task
+echo "Selected title: ${full_title}"
+echo "Selected title: ${issue_id}"
