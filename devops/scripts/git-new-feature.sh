@@ -9,6 +9,7 @@ DATABASE_ID="e3a6cdc2a2694ef9b824444ac5d9a0e3"
 
 declare issue_id
 declare full_title
+declare issue_title
 
 function check_git_dir {
     # Check for necessary Git variables
@@ -239,29 +240,46 @@ function check_if_branch_exists {
 }
 
 function confirm_title {
-    # Define the proposed titles
-    feat_title="feat(${issue_id}): ${full_title}"
-    fix_title="fix(${issue_id}): ${full_title}"
-    chore_title="chore(${issue_id}): ${full_title}"
-
-    # Loop over each title for confirmation
-    for proposed_title in "$feat_title" "$fix_title" "$chore_title"; do
-        while true; do
-            echo "Proposed title: ${proposed_title}"
-            read -p "Confirm title? (y/n) " yn
-            case $yn in
-                [Yy]* )
-                    echo "Title confirmed: ${proposed_title}"
-                    break 2;; # Break outer loop as well
-                [Nn]* )
-                    echo "Let's try another title format."
-                    break;; # Break inner loop to try the next format
-                * )
-                    echo "Please answer (y)es or (n)o.";;
-            esac
-        done
-    done
+    # Extract the first part of the full title (before the colon)
+    title_prefix=$(echo $full_title | cut -d':' -f1)
+    
+    # Validate the prefix, and then format the issue_title 
+    case $title_prefix in
+        feat | fix | chore )
+            issue_title="${title_prefix}(${issue_id}): ${full_title#*: }"
+            echo "Issue title is set to: ${issue_title}"
+            ;;
+        * )
+            echo "${BOLD}Title validation failed. The title should start with either 'feat:', 'fix:', or 'chore:'.${NORMAL}"
+            exit 1
+    esac
 }
+
+
+# function confirm_title {
+#     # Define the proposed titles
+#     feat_title="feat(${issue_id}): ${full_title}"
+#     fix_title="fix(${issue_id}): ${full_title}"
+#     chore_title="chore(${issue_id}): ${full_title}"
+
+#     # Loop over each title for confirmation
+#     for proposed_title in "$feat_title" "$fix_title" "$chore_title"; do
+#         while true; do
+#             echo "Proposed title: ${proposed_title}"
+#             read -p "Confirm title? (y/n) " yn
+#             case $yn in
+#                 [Yy]* )
+#                     echo "Title confirmed: ${proposed_title}"
+#                     break 2;; # Break outer loop as well
+#                 [Nn]* )
+#                     echo "Let's try another title format."
+#                     break;; # Break inner loop to try the next format
+#                 * )
+#                     echo "Please answer (y)es or (n)o.";;
+#             esac
+#         done
+#     done
+# }
 
 # function confirm_title {
 #     while true; do
