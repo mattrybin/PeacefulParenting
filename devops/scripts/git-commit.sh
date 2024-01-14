@@ -11,6 +11,8 @@ function exit_if_development_branch {
     fi
 }
 
+#!/bin/bash
+
 function review_select_option {
     PR_NUMBER=$(gh pr view --json number --jq .number)
 
@@ -27,9 +29,14 @@ function review_select_option {
             1 )
                 echo "Asking for review..."
 
-                # Removes the "DRAFT" label from this PR
-                gh pr edit "$PR_NUMBER" --remove-label "DRAFT"
-                
+                # Get PR current labels
+                PR_LABELS=$(gh pr view $PR_NUMBER --json labels --jq 'map(.name)')
+                # Check if "DRAFT" label exists
+                if echo "$PR_LABELS" | grep -q '"DRAFT"'; then
+                    # Removes the "DRAFT" label from this PR
+                    gh pr edit "$PR_NUMBER" --remove-label "DRAFT"
+                fi
+
                 # Adding "REVIEW" label to this PR
                 gh pr edit "$PR_NUMBER" --add-label "REVIEW"
                 
@@ -39,6 +46,7 @@ function review_select_option {
         esac
     done
 }
+
 
 
 exit_if_development_branch
