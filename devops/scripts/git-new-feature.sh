@@ -237,27 +237,53 @@ function check_if_branch_exists {
     echo "Branch ${issue_id} does not exist either locally or remotely."
     return 1
 }
+
 function confirm_title {
-    while true; do
-        read -p "Type the feature title (for example, ${BOLD}feat: add filter to table${NORMAL}): " feat_title
-        if [[ ${feat_title} =~ ^feat: ]]; then
-            full_title="feat(${issue_id}): ${feat_title#feat: }"
-            echo "Full title: ${full_title}"
+    # Define the proposed titles
+    feat_title="feat(${issue_id}): ${full_title}"
+    fix_title="fix(${issue_id}): ${full_title}"
+    chore_title="chore(${issue_id}): ${full_title}"
+
+    # Loop over each title for confirmation
+    for proposed_title in "$feat_title" "$fix_title" "$chore_title"; do
+        while true; do
+            echo "Proposed title: ${proposed_title}"
             read -p "Confirm title? (y/n) " yn
             case $yn in
-                [Yy]* ) 
-                    echo "Title confirmed: ${full_title}"
-                    break;;
-                [Nn]* ) 
-                    echo "Let's try again";;
-                * ) 
-                    echo "Please answer (y)es or (n)o";;
+                [Yy]* )
+                    echo "Title confirmed: ${proposed_title}"
+                    break 2;; # Break outer loop as well
+                [Nn]* )
+                    echo "Let's try another title format."
+                    break;; # Break inner loop to try the next format
+                * )
+                    echo "Please answer (y)es or (n)o.";;
             esac
-        else
-            echo "${BOLD}Title validation failed. The title should start with 'feat: '. Please retry.${NORMAL}"
-        fi
+        done
     done
 }
+
+# function confirm_title {
+#     while true; do
+#         read -p "Type the feature title (for example, ${BOLD}feat: add filter to table${NORMAL}): " feat_title
+#         if [[ ${feat_title} =~ ^feat: ]]; then
+#             full_title="feat(${issue_id}): ${feat_title#feat: }"
+#             echo "Full title: ${full_title}"
+#             read -p "Confirm title? (y/n) " yn
+#             case $yn in
+#                 [Yy]* ) 
+#                     echo "Title confirmed: ${full_title}"
+#                     break;;
+#                 [Nn]* ) 
+#                     echo "Let's try again";;
+#                 * ) 
+#                     echo "Please answer (y)es or (n)o";;
+#             esac
+#         else
+#             echo "${BOLD}Title validation failed. The title should start with 'feat: '. Please retry.${NORMAL}"
+#         fi
+#     done
+# }
 
 
 # # Validate and confirm feature title
