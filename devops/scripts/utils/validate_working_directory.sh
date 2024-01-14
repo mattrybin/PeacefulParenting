@@ -32,7 +32,6 @@ function list_changed_files {
 
 function validate_working_directory {
     commit_message=$(list_changed_files)
-    # Check if there are changes in working directory or changes in the index
     if [[ "$(git status --porcelain)" != "" ]]; then
         current_branch=$(git symbolic-ref --short HEAD)
         echo "${BOLD}Current branch '${current_branch}' has uncommitted changes.${NORMAL}"
