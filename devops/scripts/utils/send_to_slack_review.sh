@@ -1,5 +1,7 @@
 
-source ../../../.env.local
+
+# source /Users/mattrybin/SOFTWARE/mattrybin/PeacefulParenting/.env.local
+source ../../../../.env.local
 
 function send_to_slack {
     local pr_link=$1
