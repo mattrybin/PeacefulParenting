@@ -39,6 +39,7 @@ function check_pr_build_check_until_timeout {
     timeout=$((5 * 60))  # 5 minutes
     interval=10  # Check every 10 seconds
 
+    pr_link=$(gh pr view --json url -q '.url' $current_branch)
     start=$(date +%s)
 
     while true; do
@@ -53,11 +54,36 @@ function check_pr_build_check_until_timeout {
         
         # extract only 'build' checkline
         build_status_line=$(echo "$checks_output" | grep "^build")
+        build_status_check_link=$(echo "$build_status_line" | awk '{print $4}')
 
         echo "$build_status_line"
 
         if [[ $build_status_line == *"fail"* ]]; then
             echo "Build checks have failed."
+            echo "1 - Quit"
+            echo "2 - Open link to action"
+            echo "3 - Open link to PR"
+
+            read -r -p "Choose your action: " action_choice
+
+            # case on user's choice
+            case $action_choice in
+            1)
+                break
+                ;;
+            2)
+                open $build_status_check_link
+                break
+                ;;
+            3)
+                open $pr_link
+                break
+                ;;
+            *)
+                echo "Not a valid choice, please choose 1, 2, or 3."
+                ;;
+            esac
+
             break
         elif [[ $build_status_line == *"pass"* ]]; then
             echo "Build checks have passed."
