@@ -2,6 +2,16 @@
 
 source /Users/mattrybin/SOFTWARE/mattrybin/PeacefulParenting/devops/scripts/utils/validate_working_directory.sh
 
+function exit_if_development_branch {
+    current_branch=$(git branch --show-current)
+
+    if [ "$current_branch" == "development" ]; then
+        echo "You're on the 'development' branch. Exiting the script."
+        exit 1
+    fi
+}
+
+
 
 function check_current_pr_status {
     current_branch=$(git branch --show-current)
@@ -91,6 +101,7 @@ function check_pr_build_check_until_timeout {
     done
 }
 
+exit_if_development_branch
 validate_working_directory
 sleep 3
 check_pr_build_check_until_timeout
