@@ -36,15 +36,19 @@ dev:
 GIT_NEW_FEATURE_SCRIPT = devops/scripts/git-new-feature.sh
 GIT_CHECKOUT_PR_SCRIPT = devops/scripts/git-checkout-pr.sh
 GIT_MERGE_PR_SCRIPT = devops/scripts/git-merge-pr.sh
+GIT_COMMIT_SCRIPT = devops/scripts/git-commit.sh
 
-git-new-feature:
+git-new:
 	@bash $(GIT_NEW_FEATURE_SCRIPT)
 
-git-checkout-pr:
+git-checkout:
 	@bash $(GIT_CHECKOUT_PR_SCRIPT)
 
-git-merge-pr:
+git-merge:
 	@bash $(GIT_MERGE_PR_SCRIPT)
+
+git-commit:
+	@bash $(GIT_COMMIT_SCRIPT)
 
 TESTING = devops/scripts/notion-check.sh
 testing:

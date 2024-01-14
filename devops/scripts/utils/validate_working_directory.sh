@@ -4,29 +4,26 @@ function list_changed_files {
     full_path=$(git diff --numstat | awk '{print $1+$2, $3}' | sort -nr | awk 'NR==1{print $2}')
     
     # Limit to two directories back
-    first_file=$(echo $full_path | awk -F"/" '{OFS="/"; print $(NF-2),$(NF-1),$NF}')
+    first_file=$(echo $full_path | awk -F"/" '{OFS="/"; if(NF>2) print $(NF-2),$(NF-1),$NF; else print $NF}')
     
     # Check the length of the file path, if it's too long (e.g., longer than 50 characters), limit to one directory back
-    if (( ${#first_file} > 50 )); then
-        first_file=$(echo $full_path | awk -F"/" '{OFS="/"; print $(NF-1),$NF}') 
+    if (( ${#first_file} > 25 )); then
+        first_file=$(echo $full_path | awk -F"/" '{OFS="/"; if(NF>1) print $(NF-1),$NF; else print $NF}')
     fi
 
-    # Get array of changed files
     changed_files_arr=($(git diff --name-only))
 
-    # Get length of array
     arr_length=${#changed_files_arr[@]}
 
-    # Get total lines changed
     total_lines_changed=$(git diff --numstat | awk '{ total += $1 + $2 } END { print total }')
     
     # Check if multiple files have been changed
     if (( arr_length > 1 )); then
-       other_files_count=$((arr_length-1))
-       echo "save: ${first_file} and ${other_files_count} other files changed with a total of ${total_lines_changed} lines changed"
+       other_files_count=$((arr_length))
+       echo "Biggest ${first_file} | ${other_files_count} files | ${total_lines_changed} lines"
     else
        # Only one file has been changed
-       echo "save: ${first_file} changed with ${total_lines_changed} lines changed"
+       echo "${first_file} changed with ${total_lines_changed} lines changed"
     fi
 }
 
@@ -34,7 +31,6 @@ function validate_working_directory {
     commit_message=$(list_changed_files)
     if [[ "$(git status --porcelain)" != "" ]]; then
         current_branch=$(git symbolic-ref --short HEAD)
-        echo $current_branch
         echo "${BOLD}Current branch '${current_branch}' has uncommitted changes.${NORMAL}"
         
         while true; do
