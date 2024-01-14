@@ -95,6 +95,6 @@ function check_pr_build_check_until_timeout {
 }
 
 validate_working_directory
-sleep 5
+sleep 3
 check_pr_build_check_until_timeout
 # check_current_pr_status
