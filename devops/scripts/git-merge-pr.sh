@@ -18,7 +18,7 @@ function check_current_pr_status {
         return 1
     fi
 
-    status=$(gh pr view --json statusCheckRollup -q 'statusCheckRollup.state' $pr)
+    status=$(gh pr checks $current_branch)
 
     echo "Checks Status: $status"
 
