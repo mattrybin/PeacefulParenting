@@ -6,6 +6,7 @@ source /Users/mattrybin/SOFTWARE/mattrybin/PeacefulParenting/devops/scripts/util
 function check_current_pr_status {
     current_branch=$(git branch --show-current)
 
+echo $current_branch
     if [[ -z "$current_branch" ]]; then
         echo "No branch currently checked out."
         return 1
@@ -17,6 +18,8 @@ function check_current_pr_status {
         echo "No Pull Request associated with the current branch."
         return 1
     fi
+
+echo $pr_number
 
     # Fetch Status
     pr_status=$(gh api -X GET repos/:owner/:repo/commits/$current_branch/check-runs --jq '.check_runs[] | .conclusion' | sort | uniq)
