@@ -4,6 +4,8 @@
 REPO_URL="https://github.com/mattrybin/PeacefulParenting"
 BOLD=$(tput bold)
 NORMAL=$(tput sgr0)
+NOTION_API_KEY="secret_ND2qydCVvlIvQuRAhuMFYvCnmJ9CAvcIc0LNvtYfu0W"
+DATABASE_ID="e3a6cdc2a2694ef9b824444ac5d9a0e3"
 
 
 function check_git_dir {
@@ -163,11 +165,26 @@ function validate_dev_branch_up_to_date {
     fi
 }
 
+function validate_notion_credentials {
+    # Try to fetch a single record from Notion
+    RESPONSE=$(curl "https://api.notion.com/v1/databases/${DATABASE_ID}/query" \
+        -H "Authorization: Bearer ${NOTION_API_KEY}" \
+        -H "Notion-Version: 2021-08-16" \
+        -X POST -d '{"page_size": 1}' \
+        -s \
+        -o /dev/null \
+        -w "%{http_code}")
+
+    # Check status code
+    if [ $RESPONSE -eq 200 ]; then
+        echo "${BOLD}NOTION_API_KEY and DATABASE_ID appear to be valid.${NORMAL}"
+    else
+        echo "${BOLD}The response was not successful. Please verify that NOTION_API_KEY and DATABASE_ID are correct.${NORMAL}"
+        exit 1
+    fi
+}
+
 function select_notion_task {
-    # Notion API key and database id
-    NOTION_API_KEY="secret_ND2qydCVvlIvQuRAhuMFYvCnmJ9CAvcIc0LNvtYfu0W"
-    DATABASE_ID="e3a6cdc2a2694ef9b824444ac5d9a0e3"
-    
     # Get tasks from Notion and convert to an array of JSON objects
     declare -a JSON_OBJECTS
     declare -a PLAIN_TEXTS
@@ -240,9 +257,12 @@ function select_notion_task {
 
 
 check_git_dir
+
 validate_git_config
 validate_github_cli
 validate_working_directory
 validate_on_development_branch
 validate_dev_branch_up_to_date
+validate_notion_credentials
+
 select_notion_task
