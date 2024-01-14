@@ -2,6 +2,11 @@
 
 MENU_SETUP_SCRIPT = devops/scripts/menu-setup.sh
 MENU_GIT_SCRIPT = devops/scripts/menu-git.sh
+MENU_SCRIPT = devops/scripts/menu.sh
+
+default: menu
+menu:
+	@bash $(MENU_SCRIPT)
 git:
 	@bash $(MENU_GIT_SCRIPT)
 setup:
@@ -37,6 +42,9 @@ GIT_NEW_FEATURE_SCRIPT = devops/scripts/git-new-feature.sh
 GIT_CHECKOUT_PR_SCRIPT = devops/scripts/git-checkout-pr.sh
 GIT_MERGE_PR_SCRIPT = devops/scripts/git-merge-pr.sh
 GIT_COMMIT_SCRIPT = devops/scripts/git-commit.sh
+ASK_FOR_HELP = devops/scripts/ask-for-help.sh
+ASK_FOR_REVIEW = devops/scripts/ask-for-review.sh
+GO_NOTION_TICKET = devops/scripts/go-notion-ticket.sh
 
 git-new:
 	@bash $(GIT_NEW_FEATURE_SCRIPT)
@@ -44,14 +52,27 @@ git-new:
 git-checkout:
 	@bash $(GIT_CHECKOUT_PR_SCRIPT)
 
-git-merge:
-	@bash $(GIT_MERGE_PR_SCRIPT)
-
-git-commit:
-	@bash $(GIT_COMMIT_SCRIPT)
 
 TESTING = devops/scripts/notion-check.sh
 testing:
 	@bash $(TESTING)
 
 	# @bash $(GIT_CHECKOUT_PR_SCRIPT)
+
+commit-to-pr:
+	@bash $(GIT_COMMIT_SCRIPT)
+
+merge-pr:
+	@bash $(GIT_MERGE_PR_SCRIPT)
+
+ask-for-help:
+	@bash $(ASK_FOR_HELP)
+
+ask-for-review:
+	@bash $(ASK_FOR_REVIEW)
+
+go-github-pr:
+	@bash $(GO_GITHUB_PR)
+
+go-notion-ticket:
+	@bash $(GO_NOTION_TICKET)
