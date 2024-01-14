@@ -14,7 +14,7 @@ function current_branch() {
 if [[ $(current_branch) == "development" ]]; then
     commands=("quit" "new-pr" "checkout-pr" "go-github" "go-notion" "go-slack")
 else
-    commands=("quit" "commit-to-pr" "merge-pr" "ask-for-help" "ask-for-review" "go-github-pr" "go-notion-ticket" "go-slack")
+    commands=("quit" "commit-to-pr" "merge-pr" "ask-for-help" "ask-for-review" "go-github-pr" "go-notion-ticket")
 fi
 
 # Display the menu
