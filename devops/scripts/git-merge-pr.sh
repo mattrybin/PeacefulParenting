@@ -18,16 +18,18 @@ function check_current_pr_status {
         return 1
     fi
 
-    status=$(gh pr view --json checks -q 'checks(state)' $pr)
+    status=$(gh pr view --json statusCheckRollup -q 'statusCheckRollup.state' $pr)
 
     echo "Checks Status: $status"
 
     if [[ $status == *"FAIL"* ]]; then
         echo "PR for '$current_branch' has failed checks."
-    elif [[ $status == *"PASS"* ]]; then
+    elif [[ $status == *"SUCCESS"* ]]; then
         echo "PR for '$current_branch' has passed checks."
+    elif [[ $status == *"PENDING"* ]]; then
+        echo "PR for '$current_branch' checks are pending."
     else
-        echo "PR for '$current_branch' checks haven't finished yet or no checks are defined."
+        echo "PR for '$current_branch' checks haven't started yet or no checks are defined."
     fi
 }
 
