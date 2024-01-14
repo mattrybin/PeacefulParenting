@@ -1,5 +1,6 @@
 
-source ../../.env.local
+source ../../../.env.local
+
 function send_to_slack {
     local pr_link=$1
     local pr_title="$2"
