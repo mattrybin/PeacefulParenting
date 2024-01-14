@@ -11,4 +11,4 @@ jobs:
 
     steps:
     - name: Wait for 5 seconds
-      run: sleep 100
+      run: sleep 20
