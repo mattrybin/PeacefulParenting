@@ -2,6 +2,11 @@
 
 MENU_SETUP_SCRIPT = devops/scripts/menu-setup.sh
 MENU_GIT_SCRIPT = devops/scripts/menu-git.sh
+MENU_SCRIPT = devops/scripts/menu.sh
+
+default: menu
+menu:
+	@bash $(MENU_SCRIPT)
 git:
 	@bash $(MENU_GIT_SCRIPT)
 setup:
@@ -44,10 +49,10 @@ git-new:
 git-checkout:
 	@bash $(GIT_CHECKOUT_PR_SCRIPT)
 
-git-merge:
+merge-pr:
 	@bash $(GIT_MERGE_PR_SCRIPT)
 
-git-commit:
+commit-to-pr:
 	@bash $(GIT_COMMIT_SCRIPT)
 
 TESTING = devops/scripts/notion-check.sh
