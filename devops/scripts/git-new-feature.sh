@@ -255,79 +255,22 @@ function confirm_title {
     esac
 }
 
+function create_branch_and_pr {
+    # Create and checkout new branch
+    git checkout -b ${issue_id}
 
-# function confirm_title {
-#     # Define the proposed titles
-#     feat_title="feat(${issue_id}): ${full_title}"
-#     fix_title="fix(${issue_id}): ${full_title}"
-#     chore_title="chore(${issue_id}): ${full_title}"
+    # Make an empty commit with full_title as the commit message
+    git commit --allow-empty -m "${full_title}"
 
-#     # Loop over each title for confirmation
-#     for proposed_title in "$feat_title" "$fix_title" "$chore_title"; do
-#         while true; do
-#             echo "Proposed title: ${proposed_title}"
-#             read -p "Confirm title? (y/n) " yn
-#             case $yn in
-#                 [Yy]* )
-#                     echo "Title confirmed: ${proposed_title}"
-#                     break 2;; # Break outer loop as well
-#                 [Nn]* )
-#                     echo "Let's try another title format."
-#                     break;; # Break inner loop to try the next format
-#                 * )
-#                     echo "Please answer (y)es or (n)o.";;
-#             esac
-#         done
-#     done
-# }
+    # Push the branch to remote
+    git push origin ${issue_id}
 
-# function confirm_title {
-#     while true; do
-#         read -p "Type the feature title (for example, ${BOLD}feat: add filter to table${NORMAL}): " feat_title
-#         if [[ ${feat_title} =~ ^feat: ]]; then
-#             full_title="feat(${issue_id}): ${feat_title#feat: }"
-#             echo "Full title: ${full_title}"
-#             read -p "Confirm title? (y/n) " yn
-#             case $yn in
-#                 [Yy]* ) 
-#                     echo "Title confirmed: ${full_title}"
-#                     break;;
-#                 [Nn]* ) 
-#                     echo "Let's try again";;
-#                 * ) 
-#                     echo "Please answer (y)es or (n)o";;
-#             esac
-#         else
-#             echo "${BOLD}Title validation failed. The title should start with 'feat: '. Please retry.${NORMAL}"
-#         fi
-#     done
-# }
+    # Use gh cli to create a Pull Request
+    # This requires https://cli.github.com/ to be installed
+    gh pr create --title "${full_title}" --body "Pull request for ${full_title}." --label DRAFT -B development
+}
 
 
-# # Validate and confirm feature title
-# while true; do
-#     read -p "Type the feature title (for example, ${BOLD}feat: add filter to table${NORMAL}): " feat_title
-#     if [[ ${feat_title} =~ ^feat: ]]; then # removed ':' from regex
-#         full_title="feat(${issue_id}): ${feat_title#feat: }" # Updated format
-#         echo "Full title: ${full_title}"
-#         read -p "Confirm title? (y/n) " yn
-#         case $yn in
-#             [Yy]* ) break;;
-#             [Nn]* ) echo "Let's try again";;
-#             * ) echo "Please answer (y)es or (n)o";;
-#         esac
-#     else
-#         echo "${BOLD}Title validation failed. It should start with 'feat: '. Please retry.${NORMAL}"
-#     fi
-# done
-
-# # Create and checkout branch, make a commit, and push to remote
-# git checkout -b ${issue_id} # use issue_id as a branch name
-# git commit --allow-empty -m "${full_title}" # full_title as a commit message
-# git push origin ${issue_id} # use issue_id as a branch name
-
-# # Create a pull request with the "DRAFT" label
-# gh pr create --title "${full_title}" --body "Pull request for ${full_title}." --label DRAFT -B development
 
 
 
@@ -347,5 +290,5 @@ validate_notion_credentials
 select_notion_task
 check_if_branch_exists
 confirm_title
-echo "Selected title: ${full_title}"
-echo "Selected title: ${issue_id}"
+
+create_branch_and_pr
