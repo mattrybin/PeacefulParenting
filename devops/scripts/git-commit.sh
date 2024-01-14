@@ -1,10 +1,7 @@
 #!/bin/bash
 
 source /Users/mattrybin/SOFTWARE/mattrybin/PeacefulParenting/devops/scripts/utils/validate_working_directory.sh
-
-# Define the webhook URL as a variable
-SLACK_WEBHOOK_URL="https://hooks.slack.com/services/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"
-
+source /Users/mattrybin/SOFTWARE/mattrybin/PeacefulParenting/.env.local
 
 function send_to_slack {
     local pr_link=$1
