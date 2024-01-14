@@ -60,7 +60,7 @@ function review_select_option {
                 exit 0;;
             1 )
                 echo "Asking for review..."
-                PR_LINK="https://github.com/mattrybin/peacefulparenting/pull/$PR_NUMBER"
+                PR_LINK="https://github.com/mattrybin/peacefulparenting/pull/$PR_NUMBER/files"
                 PR_TITLE=$(gh pr view $PR_NUMBER --json title --jq .title)
 
                 send_to_slack $PR_LINK "$PR_TITLE"
