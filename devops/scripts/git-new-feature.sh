@@ -10,6 +10,7 @@ DATABASE_ID="e3a6cdc2a2694ef9b824444ac5d9a0e3"
 declare issue_id
 declare full_title
 declare issue_title
+declare task_id
 
 function check_git_dir {
     # Check for necessary Git variables
@@ -198,7 +199,7 @@ function select_notion_task {
     done < <(curl "https://api.notion.com/v1/databases/${DATABASE_ID}/query" \
         -H "Authorization: Bearer ${NOTION_API_KEY}" \
         -H "Notion-Version: 2021-08-16" \
-        -X POST -d '{}' | jq -c '.results[] | select(.properties.Status.select.name == "Tasks") | {id: ("PP-" + (.properties.ID.unique_id.number | tostring)), plain_text: .properties.Name.title[0].plain_text, url: .url}')
+        -X POST -d '{}' | jq -c '.results[] | select(.properties.Status.select.name == "Tasks") | {id: .id, my_id: ("PP-" + (.properties.ID.unique_id.number | tostring)), plain_text: .properties.Name.title[0].plain_text, url: .url}')
 
     # Display each title and prompt for selection
     echo "Please select a task:"
@@ -210,15 +211,17 @@ function select_notion_task {
         read -p "Enter choice: " REPLY
         if [[ -n $REPLY && $REPLY -le ${#PLAIN_TEXTS[@]} && $REPLY -ge 1 ]]; then
             INDEX=$((REPLY-1))   # Get chosen index
-            issue_id=$(echo "${JSON_OBJECTS[$INDEX]}" | jq -r '.id')
+            task_id=$(echo "${JSON_OBJECTS[$INDEX]}" | jq -r '.id')  # notion task_id
+            issue_id=$(echo "${JSON_OBJECTS[$INDEX]}" | jq -r '.my_id')  # your issue_id
             full_title=$(echo "${JSON_OBJECTS[$INDEX]}" | jq -r '.plain_text')
-            echo "You have selected: ${full_title} with ID: ${issue_id}"
+            echo "You have selected: ${full_title} with ID: ${issue_id}, Notion task_id: ${task_id}"
             break
         else
             echo "Invalid choice. Please retry."
         fi
     done
 }
+
 
 function check_if_branch_exists {
     # Check local branches
@@ -270,12 +273,23 @@ function create_branch_and_pr {
     gh pr create --title "${full_title}" --body "Pull request for ${full_title}." --label DRAFT -B development
 }
 
+function update_notion_task_status {
+    update_payload='{
+        "properties": {
+            "Status": {
+                "select": {
+                    "name": "Progress"
+                }
+            }
+        }
+    }'
 
-
-
-
-
-
+    curl -X PATCH "https://api.notion.com/v1/pages/${task_id}" \
+        -H "Authorization: Bearer ${NOTION_API_KEY}" \
+        -H "Content-Type: application/json" \
+        -H "Notion-Version: 2021-08-16" \
+        -d "${update_payload}"
+}
 
 
 check_git_dir
@@ -292,3 +306,4 @@ check_if_branch_exists
 confirm_title
 
 create_branch_and_pr
+update_notion_task_status
