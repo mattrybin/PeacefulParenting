@@ -180,4 +180,58 @@ function validate_working_directory {
 #     echo "Invalid option. Please try again."
 # fi
 
+function checkout_pr {
+  # Obtain the current PR number
+  current_pr_number=$(gh pr view $(git branch --show-current) --json number --jq '.number')
+
+  # Fetch the PRs
+  prs=$(gh pr list --limit 100 --json number,title --jq '.[] | "\(.number) \(.title)"')
+
+  # Create an array of PR titles
+  options=()
+  prtitles=()
+
+  while IFS=" " read -r number title; do
+    if [ "$number" != "$current_pr_number" ]; then
+      options+=("$number")
+      prtitles+=("$title")
+    fi
+  done <<< "$prs"
+
+  # Display the options and prompt for a selection
+  prompt="Please select a PR: "
+  counter=0
+  echo "[$counter] Quit" # Add Quit option here
+  ((counter++)) # Increment counter
+  
+  for title in "${prtitles[@]}"; do 
+    echo "[$counter] $title" # Print title directly
+    ((counter++))
+  done
+
+  # Prompt for selection
+  read -p "$prompt" selection
+
+  # Quit option selected
+  if [[ $selection -eq 0 ]]; then
+    echo "Quitting..."
+    exit 0
+  fi
+
+  # Ensure 1 is subtracted for non-zero selection because array indices start from 0
+  selected_option=${options[$selection-1]}
+
+  if [[ $selected_option =~ ^[0-9]+ ]]; then
+    # The selected option starts with a number, so it's a PR
+    pr_number=${selected_option}
+    echo "Checking out PR $pr_number..."
+    gh pr checkout $pr_number
+    echo "Checked out PR $pr_number!"
+  else
+    echo "Invalid option. Please try again."
+  fi
+}
+
+
+
 validate_working_directory
