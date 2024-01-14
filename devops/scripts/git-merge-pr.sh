@@ -33,3 +33,4 @@ function check_current_pr_status {
 }
 
 validate_working_directory
+check_current_pr_status
