@@ -235,3 +235,4 @@ function checkout_pr {
 
 
 validate_working_directory
+checkout_pr
