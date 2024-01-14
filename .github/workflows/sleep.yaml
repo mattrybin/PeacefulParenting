@@ -3,7 +3,7 @@ name: Sleep for 5 seconds
 on:
   pull_request:
     branches:
-      - main
+      - development
 
 jobs:
   build:
