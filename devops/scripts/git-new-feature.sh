@@ -237,14 +237,28 @@ function check_if_branch_exists {
     echo "Branch ${issue_id} does not exist either locally or remotely."
     return 1
 }
+function confirm_title {
+    while true; do
+        read -p "Type the feature title (for example, ${BOLD}feat: add filter to table${NORMAL}): " feat_title
+        if [[ ${feat_title} =~ ^feat: ]]; then
+            full_title="feat(${issue_id}): ${feat_title#feat: }"
+            echo "Full title: ${full_title}"
+            read -p "Confirm title? (y/n) " yn
+            case $yn in
+                [Yy]* ) 
+                    echo "Title confirmed: ${full_title}"
+                    break;;
+                [Nn]* ) 
+                    echo "Let's try again";;
+                * ) 
+                    echo "Please answer (y)es or (n)o";;
+            esac
+        else
+            echo "${BOLD}Title validation failed. The title should start with 'feat: '. Please retry.${NORMAL}"
+        fi
+    done
+}
 
-# # Get the issue ID and confirm branch existence
-# read -p "Type the issue ID (for example, ${BOLD}123${NORMAL}): " issue_id
-# if [ "$(git ls-remote --heads origin ${issue_id})" ]; then
-#     echo "${BOLD}Branch '${issue_id}' already exists. Please use a different issue ID.${NORMAL}"
-#     echo "See the branch on GitHub: ${REPO_URL}/tree/${issue_id}"
-#     exit 1
-# fi
 
 # # Validate and confirm feature title
 # while true; do
@@ -288,5 +302,6 @@ validate_notion_credentials
 
 select_notion_task
 check_if_branch_exists
+confirm_title
 echo "Selected title: ${full_title}"
 echo "Selected title: ${issue_id}"
