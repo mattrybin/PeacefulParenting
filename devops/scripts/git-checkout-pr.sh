@@ -18,7 +18,6 @@ function list_changed_files {
         other_files_count=$((arr_length-1))
         echo "save: ${first_file} and ${other_files_count} other files changed with a total of ${total_lines_changed} lines changed"
     else
-        # Only one file has been changed
         echo "save: ${first_file} changed with ${total_lines_changed} lines changed"
     fi
 }
