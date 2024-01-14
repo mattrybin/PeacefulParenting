@@ -32,6 +32,8 @@ function check_current_pr_status {
         echo "PR for '$current_branch' checks haven't started yet or no checks are defined."
     fi
 }
+
+
 function check_pr_checks_until_timeout {
     current_branch=$(git branch --show-current)
     timeout=$((5 * 60))  # 5 minutes
@@ -63,5 +65,6 @@ function check_pr_checks_until_timeout {
 }
 
 validate_working_directory
+sleep 10
 check_pr_checks_until_timeout
 # check_current_pr_status
