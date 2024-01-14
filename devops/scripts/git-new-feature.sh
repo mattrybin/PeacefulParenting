@@ -197,7 +197,7 @@ function select_notion_task {
     done < <(curl "https://api.notion.com/v1/databases/${DATABASE_ID}/query" \
         -H "Authorization: Bearer ${NOTION_API_KEY}" \
         -H "Notion-Version: 2021-08-16" \
-        -X POST -d '{}' | jq -c '.results[] | select(.properties.Status.select.name == "Tasks") | {id: ("PP-" + (.properties.ID.unique_id.number | tostring)), created_time: (.created_time | fromdateiso8601), plain_text: .properties.Name.title[0].plain_text, url: .url}')
+        -X POST -d '{}' | jq -c '.results[] | select(.properties.Status.select.name == "Tasks") | {id: ("PP-" + (.properties.ID.unique_id.number | tostring)), plain_text: .properties.Name.title[0].plain_text, url: .url}')
 
     # Display each title and prompt for selection
     echo "Please select a task:"
