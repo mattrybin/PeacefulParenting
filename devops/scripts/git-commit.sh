@@ -36,8 +36,11 @@ function review_select_option {
                     gh pr edit "$PR_NUMBER" --remove-label "DRAFT"
                 fi
 
-                # Adding "REVIEW" label to this PR
-                gh pr edit "$PR_NUMBER" --add-label "REVIEW"
+                # Check if "REVIEW" label does not exist
+                if [[ ! $PR_LABELS =~ "REVIEW" ]]; then
+                    # Adding "REVIEW" label to this PR
+                    gh pr edit "$PR_NUMBER" --add-label "REVIEW"
+                fi
                 
                 break;;
             * )
