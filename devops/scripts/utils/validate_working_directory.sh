@@ -22,8 +22,8 @@ function list_changed_files {
     
     # Check if multiple files have been changed
     if (( arr_length > 1 )); then
-       other_files_count=$((arr_length-1))
-       echo "${first_file} | ${other_files_count} files | Lines ${total_lines_changed}"
+       other_files_count=$((arr_length))
+       echo "Biggest ${first_file} | ${other_files_count} files | ${total_lines_changed} lines"
     else
        # Only one file has been changed
        echo "${first_file} changed with ${total_lines_changed} lines changed"
