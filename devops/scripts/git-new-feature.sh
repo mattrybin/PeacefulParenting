@@ -102,7 +102,7 @@ function validate_working_directory {
 
 function validate_on_development_branch {
     # Check if user is on the development branch
-    if [[ "$(git symbolic-ref --short HEAD)" != "develop" ]]; then
+    if [[ "$(git symbolic-ref --short HEAD)" != "development" ]]; then
         echo "${BOLD}You aren't currently on the 'development' branch.${NORMAL}"
         
         while true; do
