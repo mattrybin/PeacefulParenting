@@ -82,6 +82,7 @@ function validate_working_directory {
     fi
 }
 
+# /
 function checkout_pr {
   # Obtain the current PR number
   current_pr_number=$(gh pr view $(git branch --show-current) --json number --jq '.number')
