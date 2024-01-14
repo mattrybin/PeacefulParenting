@@ -90,58 +90,35 @@ function validate_working_directory {
         done
     fi
 }
+function validate_on_development_branch {
+    # Check if user is on the development branch
+    if [[ "$(git symbolic-ref --short HEAD)" != "development" ]]; then
+        echo "${BOLD}You aren't currently on the 'development' branch.${NORMAL}"
+        
+        while true; do
+            echo "Select an option:"
+            echo "1 - Quit / Do nothing."
+            echo "2 - Switch to the 'development' branch."
+            read -p "Your option: " option
 
-# function validate_working_directory {
-#     # Check if there are changes in working directory or changes in the index
-#     if [[ "$(git status --porcelain)" != "" ]]; then
-#         current_branch=$(git symbolic-ref --short HEAD)
-#         echo "${BOLD}Current branch '${current_branch}' has uncommitted changes. Would you like to stash them now?${NORMAL}"
-
-#         while true; do
-#             read -p "Stash changes? (y/n) " stash_yn
-#             case $stash_yn in
-#                 [Yy]* )
-#                     git stash push -u -m "${current_branch}"
-#                     if [ $? -ne 0 ]; then
-#                         echo "Error stashing changes."
-#                         exit 1
-#                     fi
-#                     break;;
-#                 [Nn]* )
-#                     echo "Please commit, stash or discard changes before continuing."
-#                     exit 1
-#                     ;;
-#                 * )
-#                     echo "Please answer (y)es or (n)o.";;
-#             esac
-#         done
-#     fi
-# }
-
-# # Check if there are changes in working directory or changes in the index
-# if [[ "$(git status --porcelain)" != "" ]]; then
-#     current_branch=$(git symbolic-ref --short HEAD)
-#     echo "${BOLD}Current branch '${current_branch}' has uncommitted changes. Would you like to stash them now?${NORMAL}"
-#     read -p "Stash changes? (y/n) " stash_yn
-#     case $stash_yn in
-#         [Yy]* )
-#             git stash push -u -m "${current_branch}"
-#             if [ $? -ne 0 ]; then
-#                 echo "Error stashing changes."
-#                 exit 1
-#             fi
-#             ;;
-#         [Nn]* )
-#             echo "Please commit, stash or discard changes before continuing."
-#             exit 1
-#             ;;
-#         * )
-#             echo "Please answer (y)es or (n)o."
-#             exit 1
-#             ;;
-#     esac
-# fi
-
+            case $option in
+                1 )
+                    echo "Exiting without switching branch..."
+                    exit 1;;
+                2 )
+                    git checkout development
+                    if [ $? -ne 0 ]; then
+                        echo "Error switching to the 'development' branch. Please verify the branch exists."
+                    else
+                        echo "Switched to the 'development' branch."
+                    fi
+                    break;;
+                * )
+                    echo "Invalid option. Enter 1 or 2.";;
+            esac
+        done
+    fi
+}
 
 # # Check if user is on development branch
 # if [[ "$(git symbolic-ref --short HEAD)" != "development" ]]; then
@@ -222,3 +199,4 @@ check_git_dir
 validate_git_config
 validate_github_cli
 validate_working_directory
+validate_on_development_branch
