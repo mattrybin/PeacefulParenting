@@ -2,7 +2,7 @@
 
 source /Users/mattrybin/SOFTWARE/mattrybin/PeacefulParenting/devops/scripts/utils/validate_working_directory.sh
 source /Users/mattrybin/SOFTWARE/mattrybin/PeacefulParenting/devops/scripts/utils/send_to_slack_review.sh
-
+source ./.env.local
 # function send_to_slack {
 #     local pr_link=$1
 #     local pr_title="$2"
@@ -63,7 +63,7 @@ function review_select_option {
                 PR_LINK="https://github.com/mattrybin/peacefulparenting/pull/$PR_NUMBER/files"
                 PR_TITLE=$(gh pr view $PR_NUMBER --json title --jq .title)
 
-                send_to_slack $PR_LINK "$PR_TITLE"
+                send_to_slack $PR_LINK "$PR_TITLE" $SLACK_WEBHOOK_URL
 
                 # Get PR current labels
                 PR_LABELS=$(gh pr view $PR_NUMBER --json labels --jq '.labels[]?.name' | tr -d '"')

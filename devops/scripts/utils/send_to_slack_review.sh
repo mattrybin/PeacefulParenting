@@ -1,11 +1,7 @@
-
-
-# source /Users/mattrybin/SOFTWARE/mattrybin/PeacefulParenting/.env.local
-source ../../../../.env.local
-
 function send_to_slack {
     local pr_link=$1
     local pr_title="$2"
+    local hook_url=$3
     local data='{
         "blocks": [
             {
@@ -30,5 +26,5 @@ function send_to_slack {
             }
         ]
     }'
-    curl -X POST -H 'Content-type: application/json' --data "${data}" $SLACK_WEBHOOK_URL
+    curl -X POST -H 'Content-type: application/json' --data "${data}" $hook_url
 }
