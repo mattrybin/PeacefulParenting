@@ -11,13 +11,10 @@ function list_changed_files {
         first_file=$(echo $full_path | awk -F"/" '{OFS="/"; if(NF>1) print $(NF-1),$NF; else print $NF}')
     fi
 
-    # Get array of changed files
     changed_files_arr=($(git diff --name-only))
 
-    # Get length of array
     arr_length=${#changed_files_arr[@]}
 
-    # Get total lines changed
     total_lines_changed=$(git diff --numstat | awk '{ total += $1 + $2 } END { print total }')
     
     # Check if multiple files have been changed
