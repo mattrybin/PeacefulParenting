@@ -34,6 +34,7 @@ function validate_working_directory {
     commit_message=$(list_changed_files)
     if [[ "$(git status --porcelain)" != "" ]]; then
         current_branch=$(git symbolic-ref --short HEAD)
+        echo $current_branch
         echo "${BOLD}Current branch '${current_branch}' has uncommitted changes.${NORMAL}"
         
         while true; do
