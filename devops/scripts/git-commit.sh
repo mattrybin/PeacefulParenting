@@ -26,17 +26,20 @@ function review_select_option {
                 exit 0;;
             1 )
                 echo "Asking for review..."
-                # Adding "REVIEW" label to this PR
-                gh pr update "$PR_NUMBER" --add-label "REVIEW" --repo origin
+
+                # Removes the "DRAFT" label from this PR
+                gh pr edit "$PR_NUMBER" --remove-label "DRAFT"
                 
-                # Removing "DRAFT" label from this PR
-                gh pr update "$PR_NUMBER" --remove-label "DRAFT" --repo origin
+                # Adding "REVIEW" label to this PR
+                gh pr edit "$PR_NUMBER" --add-label "REVIEW"
+                
                 break;;
             * )
                 echo "Invalid option. Enter 0 or 1.";;
         esac
     done
 }
+
 
 exit_if_development_branch
 validate_working_directory
