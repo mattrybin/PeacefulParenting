@@ -1,14 +1,16 @@
-function send_to_slack {
-    local pr_link=$1
-    local pr_title="$2"
-    local hook_url=$3
+source ./.env.local
+
+function send_slack_review {
+    PR_NUMBER=$(gh pr view --json number --jq .number)
+    PR_LINK="https://github.com/mattrybin/peacefulparenting/pull/$PR_NUMBER/files"
+    PR_TITLE=$(gh pr view $PR_NUMBER --json title --jq .title)
     local data='{
         "blocks": [
             {
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": "*<'"$pr_link"'|'"$pr_title"'>*"
+                    "text": "*<'"$PR_LINK"'|'"$PR_TITLE"'>*"
                 }
             },
             {
@@ -20,11 +22,11 @@ function send_to_slack {
                             "type": "plain_text", 
                             "text": "Ready for Review" 
                         }, 
-                        "url": "'"$pr_link"'"
+                        "url": "'"$PR_LINK"'"
                     }
                 ]
             }
         ]
     }'
-    curl -X POST -H 'Content-type: application/json' --data "${data}" $hook_url
+    curl -X POST -H 'Content-type: application/json' --data "${data}" $SLACK_WEBHOOK_URL
 }
