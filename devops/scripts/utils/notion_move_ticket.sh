@@ -2,11 +2,11 @@ source ./.env.local
 
 notion_move_ticket() {
     # Check status
-    if [ "${1}" != "Review" ] && [ "${1}" != "Progress" ]; then
-        echo "Status is neither Review nor Progress"
+    if [ "${1}" != "Review" ] && [ "${1}" != "Progress" ] && [ "${1}" != "Done" ]; then
+        echo "Status is neither Review, Progress, nor Done"
         exit 1
     else
-        echo "Status is either Review or Progress"
+        echo "Status is either Review, Progress, or Done"
     fi
 
     # Find task in Notion
