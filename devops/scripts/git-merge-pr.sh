@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source /Users/mattrybin/SOFTWARE/mattrybin/PeacefulParenting/devops/scripts/utils/validate_working_directory.sh
+source ./.env.local
 
 function exit_if_development_branch {
     current_branch=$(git branch --show-current)
@@ -105,4 +106,3 @@ exit_if_development_branch
 validate_working_directory
 sleep 3
 check_pr_build_check_until_timeout
-# check_current_pr_status
