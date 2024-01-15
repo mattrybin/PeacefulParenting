@@ -89,6 +89,8 @@ function check_pr_build_check_until_timeout {
                 break
                 ;;
             2)
+                notion_move_ticket "Done"
+                send_slack_done
                 gh pr merge $pr_number --squash
                 git checkout development
                 git pull origin development
@@ -110,5 +112,3 @@ exit_if_development_branch
 validate_working_directory
 sleep 3
 check_pr_build_check_until_timeout
-notion_move_ticket "Done"
-send_slack_done
