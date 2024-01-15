@@ -46,7 +46,7 @@ ASK_FOR_HELP = devops/scripts/ask-for-help.sh
 ASK_FOR_REVIEW = devops/scripts/ask-for-review.sh
 GO_NOTION_TICKET = devops/scripts/go-notion-ticket.sh
 
-git-new:
+new-pr:
 	@bash $(GIT_NEW_FEATURE_SCRIPT)
 
 git-checkout:
@@ -56,8 +56,6 @@ git-checkout:
 TESTING = devops/scripts/notion-check.sh
 testing:
 	@bash $(TESTING)
-
-	# @bash $(GIT_CHECKOUT_PR_SCRIPT)
 
 commit-to-pr:
 	@bash $(GIT_COMMIT_SCRIPT)

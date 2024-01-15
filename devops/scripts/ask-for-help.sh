@@ -1,10 +1,6 @@
 #!/bin/bash
 
-source /Users/mattrybin/SOFTWARE/mattrybin/PeacefulParenting/devops/scripts/utils/send_to_slack_help.sh
-source ./.env.local
+SCRIPT_DIR=$(dirname "$BASH_SOURCE")
+source "$SCRIPT_DIR/utils/send_slack_help.sh"
 
-PR_NUMBER=$(gh pr view --json number --jq .number)
-PR_LINK="https://github.com/mattrybin/peacefulparenting/pull/$PR_NUMBER/files"
-PR_TITLE=$(gh pr view $PR_NUMBER --json title --jq .title)
-
-send_to_slack "$PR_LINK" "$PR_TITLE" "$SLACK_WEBHOOK_URL"
+send_slack_help
