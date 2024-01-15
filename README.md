@@ -9,3 +9,4 @@ migrate create -ext sql -dir db/migrations -seq create_posts_table
 ```
 
 Hello peopopl
+Hello peopopl
