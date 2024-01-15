@@ -18,15 +18,15 @@ function review_select_option {
 
     while true; do
         echo "Select an option:"
-        echo "0 - Quit"
-        echo "1 - Ask for review"
+        echo "1 - Quit"
+        echo "2 - Ask for review"
         read -p "Your option: " option
 
         case $option in
-            0 )
+            1 )
                 echo "Exiting..."
                 exit 0;;
-            1 )
+            2 )
                 echo "Asking for review..."
                 PR_LINK="https://github.com/mattrybin/peacefulparenting/pull/$PR_NUMBER/files"
                 PR_TITLE=$(gh pr view $PR_NUMBER --json title --jq .title)
@@ -50,13 +50,10 @@ function review_select_option {
                 
                 break;;
             * )
-                echo "Invalid option. Enter 0 or 1.";;
+                echo "Invalid option. Enter 1 or 2.";;
         esac
     done
 }
-
-
-
 
 exit_if_development_branch
 validate_working_directory
