@@ -4,6 +4,8 @@ source ./.env.local
 
 SCRIPT_DIR=$(dirname "$BASH_SOURCE")
 source "$SCRIPT_DIR/utils/validate_working_directory.sh"
+source "$SCRIPT_DIR/utils/notion_move_ticket.sh"
+source "$SCRIPT_DIR/utils/send_slack_done.sh"
 
 function exit_if_development_branch {
     current_branch=$(git branch --show-current)
@@ -109,3 +111,4 @@ validate_working_directory
 sleep 3
 check_pr_build_check_until_timeout
 notion_move_ticket "Done"
+send_slack_done
