@@ -1,3 +1,7 @@
 export default function Page() {
-  return <div>Resources1123</div>;
+  return (
+    <div className="bg-red-500">
+      Resources1123<div>dsd</div>
+    </div>
+  );
 }
