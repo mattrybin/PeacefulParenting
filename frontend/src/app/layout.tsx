@@ -7,6 +7,11 @@ import { getCurrentUser } from "shared/session"
 import { MainProvider } from "shared/providers"
 import { ReactNode } from "react"
 
+const dev = process.env.NODE_ENV !== "production"
+if (dev) {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+}
+
 export const metadata = {
   title: {
     default: siteConfig.name,

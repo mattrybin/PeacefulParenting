@@ -18,9 +18,10 @@ setup-hosts:
 	@echo "127.0.0.1 backend.peacefulparenting.local" | sudo tee -a /etc/hosts
 
 setup-ssl:
-	@echo "Generating a self-signed SSL certificate..."
+	@echo "Generating a self-signed SSL certificate using mkcert..."
 	@mkdir -p devops/cert
-	@openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout devops/cert/selfsigned.key -out devops/cert/selfsigned.crt -subj "/C=PL/ST=krakow/L=krakow/O=mattrybin/OU=peacefulparenting/CN=peacefulparenting/emailAddress=contact@mattrybin.com"
+	@mkcert -install
+	@mkcert -key-file devops/cert/selfsigned.key -cert-file devops/cert/selfsigned.crt peacefulparenting.local "*.peacefulparenting.local"
 
 setup-packages:
 	@echo "Setting up packages"
@@ -29,6 +30,7 @@ setup-packages:
 	@cd ./frontend && pnpm install
 
 dev:
+	@docker info >/dev/null 2>&1 || (echo "Docker is not running" ; exit 1)
 	@docker-compose --env-file development.database.env up --build
 
 
