@@ -5,7 +5,6 @@ export default function Page() {
         <div className="text-base-content text-xl">
           <i className="ph-bold ph-book-open-text"></i> Books
         </div>
-
         <div className="w-full h-96  rounded relative dark-children-bg bg-[url('/dark-children.jpg')] bg-no-repeat bg-cover bg-center">
           <div className="inset-0 absolute bg-gradient-to-t from-base-100/80" />
           <div className="absolute bottom-12 left-12">dsadsa</div>
