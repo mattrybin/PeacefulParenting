@@ -30,11 +30,6 @@ setup-ssl:
 	@mkcert -install
 	@mkcert -key-file devops/cert/selfsigned.key -cert-file devops/cert/selfsigned.crt peacefulparenting.local "*.peacefulparenting.local"
 
-# setup-ssl:
-# 	@echo "Generating a self-signed SSL certificate..."
-# 	@mkdir -p devops/cert
-# 	@openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout devops/cert/selfsigned.key -out devops/cert/selfsigned.crt -subj "/C=PL/ST=krakow/L=krakow/O=mattrybin/OU=peacefulparenting/CN=peacefulparenting/emailAddress=contact@mattrybin.com"
-
 setup-packages:
 	@echo "Setting up packages"
 	@cd ./admin && pnpm install
