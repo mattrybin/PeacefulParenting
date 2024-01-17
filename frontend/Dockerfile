@@ -5,6 +5,7 @@ FROM node:latest
 WORKDIR /usr/src/app
 
 # Install pnpm globally in the container
+RUN npm install -g local-ssl-proxy
 RUN npm install -g pnpm@8.7.0
 
 # Copy package*.json and pnpm-lock.yaml into the container
@@ -18,3 +19,4 @@ COPY . .
 
 # Expose port 3100 on the container so it can be accessed
 EXPOSE 3100
+EXPOSE 443

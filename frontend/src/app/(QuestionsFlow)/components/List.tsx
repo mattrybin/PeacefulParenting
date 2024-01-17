@@ -1,19 +1,9 @@
 import { Icons } from "shared/components/Icons"
 import { timeAgo } from "shared/instances"
-import { H } from "shared/utils"
-import { useQuestions } from "../questions/page.hook"
 import Link from "next/link"
 
-export const List = ({
-  isLoading,
-  questions,
-  item,
-  items,
-  isSuccess,
-  isError,
-  isEmpty
-}: H<typeof useQuestions, "list">) => {
-  if (isSuccess) {
+export const List = ({ isLoading, questions, item, items, isSuccess, isError, isEmpty }: any) => {
+  if (!isEmpty) {
     return (
       <div className="border-b border-base-200 bg-base-200/75 ipad:bg-base-100 max-content border-l border-r w-full">
         {!isLoading &&
@@ -75,7 +65,7 @@ export const List = ({
                     <div className="text-base-300">answered {timeAgo(createdAt)}</div>
                   </div>
                 </div>
-                {!item && (
+                {/* {!item && (
                   <div className="flex justify-end mb-4 mt-1">
                     <div className="flex w-fit text-base-300 font-medium">
                       <div className="flex gap-2 items-center">
@@ -90,7 +80,7 @@ export const List = ({
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
               </Link>
             )
           )}
