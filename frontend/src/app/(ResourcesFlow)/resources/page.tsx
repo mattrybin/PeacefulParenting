@@ -132,24 +132,27 @@ const Course = ({
   Job,
 }: any) => (
   <div className="py-10">
-    <div className="text-xl font-bold xl:text-3xl">
+    <div className="text-xl font-bold xl:text-4xl">
       {CourseTitle}
-      <div className="h-44 rounded-lg flex bg-base-100ipad:[w-900px] ipad:h-96 ">
+      <div className="h-44 rounded-lg flex bg-base-100 ipad:h-[400px] xl:h-[500px] 2xl:h-[650px]">
         <img
           className="mx-auto md:w-screen rounded-lg py-3"
           src={CourseImg}
         ></img>
       </div>
-      <div className="text-lg font-normal text-white xl:text-2xl">
+      <div className="text-lg font-normal text-white xl:text-3xl">
         {BriefInfo}
       </div>
       <div className="flex gap-3 p-2">
         <div className="flex mx-auto gap-2">
-          <img className="rounded-full w-14 h-14" src={AuthorImg}></img>
+          <img
+            className="rounded-full w-14 h-14 xl:w-24 xl:h-24"
+            src={AuthorImg}
+          ></img>
 
-          <div className="text-lg my-auto font-normal text-base-300">
+          <div className="text-lg my-auto font-normal text-base-300 xl:text-2xl">
             {Author}
-            <div className="text-sm">{Job}</div>
+            <div className="text-sm xl:text-xl">{Job}</div>
           </div>
         </div>
       </div>
