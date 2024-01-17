@@ -13,7 +13,7 @@ function current_branch() {
 # Define the Git commands
 if [[ $(current_branch) == "development" ]]; then
     labels=("Quit" "New Pull Request" "Checkout Pull Request" "Go to GitHub" "Go to Notion" "Go to Slack")
-    commands=("quit" "new-pr" "checkout-pr" "go-github" "go-notion" "go-slack")
+    commands=("quit" "new-pr" "git-checkout" "go-github" "go-notion" "go-slack")
 else
     labels=("Quit" "Commit to Pull Request" "Merge Pull Request" "Ask for Help" "Ask for Review" "Go to GitHub PR" "Go to Notion Ticket" "Go Development Branch")
     commands=("quit" "commit-to-pr" "merge-pr" "ask-for-help" "ask-for-review" "go-github-pr" "go-notion-ticket" "git-checkout-development")
