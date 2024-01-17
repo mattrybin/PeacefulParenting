@@ -1,46 +1,53 @@
 export default function Page() {
   return (
     <div className="p-3">
-      <div>
+      <div className="max-content">
         <div className="text-base-content text-xl">
           <i className="ph-bold ph-book-open-text"></i> Books
         </div>
-        <Book
-          ImgLink="https://m.media-amazon.com/images/I/61YnzoPl9jL._AC_UF894,1000_QL80_.jpg"
-          BookTitle="The Whole-Brain Child"
-          Author="by Daniel J. Siegel and Tina Payne Bryson"
-          BriefInfo=" 12 Revolutionary Strategies to Nurture Your Child's Developing
+
+        <div className="w-full h-96  rounded relative dark-children-bg bg-[url('/dark-children.jpg')] bg-no-repeat bg-cover bg-center">
+          <div className="inset-0 absolute bg-gradient-to-t from-base-100/80" />
+          <div className="absolute bottom-12 left-12">dsadsa</div>
+        </div>
+        <div className="grid desktop:grid-cols-2 desktop:gap-x-8">
+          <Book
+            ImgLink="https://m.media-amazon.com/images/I/61YnzoPl9jL._AC_UF894,1000_QL80_.jpg"
+            BookTitle="The Whole-Brain Child"
+            Author="by Daniel J. Siegel and Tina Payne Bryson"
+            BriefInfo=" 12 Revolutionary Strategies to Nurture Your Child's Developing
       Mind, Survive Everyday Parenting Struggles, and Help Your Family
       Thrive"
-        />
-        <Book
-          ImgLink="https://m.media-amazon.com/images/I/71TWKixwzWL._AC_UF1000,1000_QL80_.jpg"
-          BookTitle="Raising Good Humans"
-          Author="by Daniel J. Siegel and Tina Payne Bryson"
-          BriefInfo=" A Mindful Guide to Breaking the Cycle of Reactive Parenting and
+          />
+          <Book
+            ImgLink="https://m.media-amazon.com/images/I/71TWKixwzWL._AC_UF1000,1000_QL80_.jpg"
+            BookTitle="Raising Good Humans"
+            Author="by Daniel J. Siegel and Tina Payne Bryson"
+            BriefInfo=" A Mindful Guide to Breaking the Cycle of Reactive Parenting and
       Raising Kind, Confident Kids"
-        />
-        <Book
-          ImgLink="https://m.media-amazon.com/images/I/714tZOK0ITL._AC_UF894,1000_QL80_.jpg"
-          BookTitle="The Book You Wish Your Parents Had Read"
-          Author="by Philippa Perry"
-          BriefInfo="  This book is about how we have relationships with our children,
+          />
+          <Book
+            ImgLink="https://m.media-amazon.com/images/I/714tZOK0ITL._AC_UF894,1000_QL80_.jpg"
+            BookTitle="The Book You Wish Your Parents Had Read"
+            Author="by Philippa Perry"
+            BriefInfo="  This book is about how we have relationships with our children,
       what gets in the way of a good connection and what can enhance it"
-        />
-        <Book
-          ImgLink="https://m.media-amazon.com/images/I/61NeGbCiarL._AC_UF1000,1000_QL80_.jpg"
-          BookTitle="Parenting from the Inside Out"
-          Author="by Daniel J. Siegel and Mary Hartzell"
-          BriefInfo=" This book focuses on how your own experiences and emotional
+          />
+          <Book
+            ImgLink="https://m.media-amazon.com/images/I/61NeGbCiarL._AC_UF1000,1000_QL80_.jpg"
+            BookTitle="Parenting from the Inside Out"
+            Author="by Daniel J. Siegel and Mary Hartzell"
+            BriefInfo=" This book focuses on how your own experiences and emotional
       well-being as a parent can impact your parenting style."
-        />
-        <Book
-          ImgLink="https://m.media-amazon.com/images/I/611giknqqrL._AC_UF1000,1000_QL80_.jpg"
-          BookTitle="No Bad Kids"
-          Author="by Janet Lansbury"
-          BriefInfo="Book about common toddler behaviors and how respectful parenting
+          />
+          <Book
+            ImgLink="https://m.media-amazon.com/images/I/611giknqqrL._AC_UF1000,1000_QL80_.jpg"
+            BookTitle="No Bad Kids"
+            Author="by Janet Lansbury"
+            BriefInfo="Book about common toddler behaviors and how respectful parenting
       practices can be applied to benefit both parents and children."
-        />
+          />
+        </div>
       </div>
       <div>
         <div className="text-base-content text-xl">
@@ -100,14 +107,17 @@ export default function Page() {
         />
       </div>
     </div>
-  );
+  )
 }
 
 const YTchannel = ({ Name, Location, About, Subscribers, ChannelImg }: any) => (
   <div className="py-5">
     <div className="text-white text-xl font-bold">{Name}</div>
     <div className="text-base text-white flex gap-2">
-      <img className="w-32 h-32 rounded-lg" src={ChannelImg}></img>
+      <img
+        className="w-32 h-32 rounded-lg"
+        src={ChannelImg}
+      ></img>
 
       <div className=" h-max mt-20 text-base-300">
         <div>
@@ -121,16 +131,9 @@ const YTchannel = ({ Name, Location, About, Subscribers, ChannelImg }: any) => (
     </div>
     <div className="p-3 text-white">{About}</div>
   </div>
-);
+)
 
-const Course = ({
-  CourseTitle,
-  CourseImg,
-  BriefInfo,
-  AuthorImg,
-  Author,
-  Job,
-}: any) => (
+const Course = ({ CourseTitle, CourseImg, BriefInfo, AuthorImg, Author, Job }: any) => (
   <div className="py-10">
     <div className="text-xl font-bold xl:text-4xl">
       {CourseTitle}
@@ -140,9 +143,7 @@ const Course = ({
           src={CourseImg}
         ></img>
       </div>
-      <div className="text-lg font-normal text-white xl:text-3xl">
-        {BriefInfo}
-      </div>
+      <div className="text-lg font-normal text-white xl:text-3xl">{BriefInfo}</div>
       <div className="flex gap-3 p-2">
         <div className="flex mx-auto gap-2">
           <img
@@ -158,12 +159,15 @@ const Course = ({
       </div>
     </div>
   </div>
-);
+)
 
 const Book = ({ ImgLink, BookTitle, Author, BriefInfo }: any) => (
   <div className="flex gap-3 py-4">
     <div className="h-32 w-24">
-      <img className="rounded-sm" src={ImgLink}></img>
+      <img
+        className="rounded-sm"
+        src={ImgLink}
+      ></img>
     </div>
     <div className="w-[350px] text-2xl font-bold">
       {BookTitle}
@@ -173,4 +177,4 @@ const Book = ({ ImgLink, BookTitle, Author, BriefInfo }: any) => (
       </div>
     </div>
   </div>
-);
+)
