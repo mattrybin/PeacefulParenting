@@ -38,6 +38,9 @@ new-pr:
 git-checkout:
 	@bash devops/scripts/git-checkout-pr.sh
 
+git-checkout-development:
+	@bash devops/scripts/git-checkout-development.sh
+
 testing:
 	@bash devops/scripts/_testing.sh
 
