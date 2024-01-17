@@ -42,7 +42,7 @@ git-checkout-development:
 	@bash devops/scripts/git-checkout-development.sh
 
 testing:
-	@bash devops/scripts/_testing.sh
+	@bash devops/scripts/git-checkout-development.sh
 
 commit-to-pr:
 	@bash devops/scripts/git-commit.sh
