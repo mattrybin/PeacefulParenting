@@ -3,6 +3,7 @@ import { PageContainer } from "shared/components/Containers";
 import { useQuestion } from "./page.hook";
 import Markdown from "react-markdown";
 import { Icons } from "shared/components/Icons";
+import { Comments } from "app/(QuestionsFlow)/components/Comments";
 
 const markdown = `Let me be clear. I'm not worried about her behavior or think it is abnormal or anything. I am just looking for feedback on how I handled the situation and/or tips on how to approach similar cases.
 
@@ -77,6 +78,35 @@ export default function HomePage() {
       </div>
       <div>
         <Markdown className="px-6 py-6 prose">{markdown}</Markdown>
+      </div>
+      <div className="">
+        <div className="text-base font-semibold flex justify-center border border-base-content border-x-0 p-2">
+          <span>3 Comments</span>
+        </div>
+        <div>
+          <div className="">
+            <Comments
+              text="Eventually she started to bowl on an empty lane, and when the other children came over she was talking to them."
+              dateTime="May 9, 2023 at 10:23"
+              commentator="Dave Smith"
+            />
+            <Comments
+              text="Eventually she started to bowl on an empty lane, and when the other children came over she was talking to them."
+              dateTime="May 9, 2023 at 10:23"
+              commentator="Dave Smith"
+            />
+            <Comments
+              text="Eventually she started to bowl on an empty lane, and when the other children came over she was talking to them."
+              dateTime="May 9, 2023 at 10:23"
+              commentator="Dave Smith"
+            />
+          </div>
+
+          <div></div>
+          <div></div>
+        </div>
+        <div>Add Comments</div>
+        <div>3 Answers</div>
       </div>
     </PageContainer>
   );
