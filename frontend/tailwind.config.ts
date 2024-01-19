@@ -8,6 +8,10 @@ const config: Config = {
   darkMode: 'class',
   theme: {
     extend: {
+      // backgroundImage: {
+      //   'dark-children-bg': "url('/public/dark-children')",
+      //   'footer-texture': "url('/img/footer-texture.png')",
+      // },
       fontFamily: {
         sans: ['var(--font-geist-sans)'],
       },
