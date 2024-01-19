@@ -1,9 +1,9 @@
-"use client"
-import { ThemeProvider } from "next-themes"
-import { ReactNode } from "react"
+"use client";
+import { ThemeProvider } from "next-themes";
+import { ReactNode } from "react";
 
 interface Props {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export const MainProvider = ({ children }: Props) => (
@@ -15,7 +15,7 @@ export const MainProvider = ({ children }: Props) => (
   >
     {children}
   </ThemeProvider>
-)
+);
 
 // "use client"
 
