@@ -1,9 +1,8 @@
-"use client";
-import { PageContainer } from "shared/components/Containers";
-import { useQuestion } from "./page.hook";
-import Markdown from "react-markdown";
-import { Icons } from "shared/components/Icons";
-import { Comments } from "app/(QuestionsFlow)/components/Comments";
+"use client"
+import { PageContainer } from "shared/components/Containers"
+import { useQuestion } from "./page.hook"
+import Markdown from "react-markdown"
+import { Comments } from "app/(QuestionsFlow)/components/Comments"
 
 const markdown = `Let me be clear. I'm not worried about her behavior or think it is abnormal or anything. I am just looking for feedback on how I handled the situation and/or tips on how to approach similar cases.
 
@@ -12,10 +11,10 @@ My daughter was going to a friend's birthday party at a bowling alley. She knew 
 I think it was her just being overwhelmed, and I think I had the right response. She is diagnosed with ADHD but I don't known if that is a factor. I find it interesting that she was flip a switch between being super outgoing and making friends wherever she goes, or acting very withdrawn and shy. I think either one would be within "normal" healthy limits but I'm seeing a very divergent pattern and can't predict how she'll respond in different situations. Which I guess is expected of a 7 year old.
 
 I added the attachment tag because I had to break away from her hugging my arm and ask her to at least sit (where she could see me) by herself rather than holding on to me for more than a few minutes.
-`;
+`
 
 export default function HomePage() {
-  const { title, category } = useQuestion();
+  const { title } = useQuestion()
   return (
     <PageContainer>
       <div className="text-base-content">
@@ -56,8 +55,7 @@ export default function HomePage() {
                   </div>
                   <div className="p-4 border text-base border-x-0 border-base-300">
                     <div className="flex gap-2 items-center">
-                      <i className="ph-bold ph-calendar text-7"></i>Create 24
-                      days ago
+                      <i className="ph-bold ph-calendar text-7"></i>Create 24 days ago
                     </div>
                   </div>
                 </div>
@@ -103,12 +101,11 @@ export default function HomePage() {
               />
             </div>
           </div>
-          <div className="text-sm font-semibold flex justify-center border-b-0 border border-base-content border-x-0 p-2.5 place-items-center gap-1">
+          <div className="text-sm font-semibold flex justify-center p-2.5 place-items-center gap-2">
             <i className="ph-bold ph-plus-square text-base-content text-base"></i>
             <span>Add Comments</span>
           </div>
-          {/* I could'nt really get the perfect matching colour to the design here, sorry */}
-          <div className="bg-fuchsia-300 border-fuchsia-700 text-base font-semibold flex justify-center border-2 border-x-0 p-2 place-items-center gap-1">
+          <div className="bg-primary border-primary-content font-semibold text-center border-y p-2 place-items-center">
             <span>3 Answers</span>
           </div>
           <div className="flex font-semibold">
@@ -137,5 +134,5 @@ export default function HomePage() {
         </div>
       </div>
     </PageContainer>
-  );
+  )
 }
