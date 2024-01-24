@@ -9,7 +9,15 @@ import (
 	"net/http/httptest"
 	"strings"
 	"unicode"
+
+	"github.com/gofiber/fiber/v2"
 )
+
+func SetHeaders(c *fiber.Ctx) error {
+	c.Set("Access-Control-Expose-Headers", "X-Total-Count")
+	c.Set("Content-Type", "application/json")
+	return c.Next()
+}
 
 func Json(input interface{}) *bytes.Reader {
 	b, _ := json.Marshal(input)

@@ -90,11 +90,10 @@ func (v XValidator) Validate(data interface{}) []ErrorResponse {
 // @title PeacefulParenting API
 // @version 1.0
 // @description This is an API for PeacefulParenting.ai
-
+// @schemes http https
+// @BasePath /api/v1
 // @contact.name Matt Rybin
 // @contact.email contact@mattrybin.com
-
-// @BasePath /api
 func main() {
 	url := os.Getenv("POSTGRES_URL")
 	if url == "" {
@@ -115,14 +114,14 @@ func main() {
 		ExposeHeaders:    "X-Total-Count",
 	}))
 
-	app.Use(func(c *fiber.Ctx) error {
-		c.Set("Access-Control-Expose-Headers", "X-Total-Count")
-		c.Set("Content-Type", "application/json")
-		return c.Next()
-	})
+	app.Use(utils.SetHeaders)
 	app.Use(logger.New())
 
 	app.Get("/docs/*", swagger.HandlerDefault)
+
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.Redirect("/docs")
+	})
 
 	v1 := app.Group("api/v1", func(c *fiber.Ctx) error {
 		c.JSON(fiber.Map{

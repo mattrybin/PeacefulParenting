@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"strconv"
 
 	"dario.cat/mergo"
@@ -58,7 +57,6 @@ func (h *QuestionHandler) UpdateQuestion(c *fiber.Ctx) error {
 	}
 
 	newQuestion := types.UpdateQuestionParams{Title: question.Title, Category: question.Category}
-	fmt.Println(newQuestion)
 	if err := mergo.Merge(&newQuestion, params, mergo.WithOverride); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": true,
@@ -127,6 +125,18 @@ func (h *QuestionHandler) CreateQuestion(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(question)
 }
 
+// GetListQuestions handles the HTTP request for getting a list of questions.
+// @Summary Get a list of questions
+// @Description Get a list of questions with optional sorting, range and filtering parameters.
+// @Tags Questions
+// @Accept  json
+// @Produce  json
+// @Param sort query string false "Sort key and order ['key','order'] (default is ['id','DESC'])"
+// @Param range query string false "Range for pagination [start, end] (default is [75, 99])"
+// @Param filter query file false "Filtering by category field {'category':'value'} (default is {})"
+// @Success 200 {array} types.Question
+// @Header 200 {string} X-Total-Count "Total count of questions"
+// @Router /questions [get]
 func (h *QuestionHandler) GetListQuestions(c *fiber.Ctx) error {
 	sortKey, sortValue := utils.GetSort(c.Query("sort", `["id","DESC"]`))
 	limit, offset := utils.GetRange(c.Query("range", `[75, 99]`))

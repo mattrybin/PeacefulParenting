@@ -1,10 +1,20 @@
-basePath: /api
+basePath: /api/v1
 definitions:
-  handlers.Question:
+  types.Question:
     properties:
       answerCount:
         type: integer
       category:
+        enum:
+        - child
+        - toddler
+        - preteen
+        - infant
+        - teen
+        - adult
+        - household
+        - relatives
+        - other
         type: string
       createdAt:
         type: string
@@ -17,14 +27,6 @@ definitions:
       voteCount:
         type: integer
     type: object
-  handlers.ResponseHTTP:
-    properties:
-      data: {}
-      message:
-        type: string
-      success:
-        type: boolean
-    type: object
 info:
   contact:
     email: contact@mattrybin.com
@@ -33,31 +35,43 @@ info:
   title: PeacefulParenting API
   version: "1.0"
 paths:
-  /v1/questions:
+  /questions:
     get:
       consumes:
       - application/json
-      description: Get all questions
+      description: Get a list of questions with optional sorting, range and filtering
+        parameters.
+      parameters:
+      - description: Sort key and order ['key','order'] (default is ['id','DESC'])
+        in: query
+        name: sort
+        type: string
+      - description: Range for pagination [start, end] (default is [75, 99])
+        in: query
+        name: range
+        type: string
+      - description: Filtering by category field {'category':'value'} (default is
+          {})
+        in: query
+        name: filter
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
+          headers:
+            X-Total-Count:
+              description: Total count of questions
+              type: string
           schema:
-            $ref: '#/definitions/handlers.Question'
-        "301":
-          description: Moved Permanently
-          schema:
-            $ref: '#/definitions/handlers.ResponseHTTP'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/handlers.ResponseHTTP'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/handlers.ResponseHTTP'
-      summary: Get all questions
+            items:
+              $ref: '#/definitions/types.Question'
+            type: array
+      summary: Get a list of questions
       tags:
       - Questions
+schemes:
+- http
+- https
 swagger: "2.0"

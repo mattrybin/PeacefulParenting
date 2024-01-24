@@ -18,9 +18,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/v1/questions": {
+        "/questions": {
             "get": {
-                "description": "Get all questions",
+                "description": "Get a list of questions with optional sorting, range and filtering parameters.",
                 "consumes": [
                     "application/json"
                 ],
@@ -30,30 +30,41 @@ const docTemplate = `{
                 "tags": [
                     "Questions"
                 ],
-                "summary": "Get all questions",
+                "summary": "Get a list of questions",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Sort key and order ['key','order'] (default is ['id','DESC'])",
+                        "name": "sort",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Range for pagination [start, end] (default is [75, 99])",
+                        "name": "range",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Filtering by category field {'category':'value'} (default is {})",
+                        "name": "filter",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/handlers.Question"
-                        }
-                    },
-                    "301": {
-                        "description": "Moved Permanently",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.ResponseHTTP"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.ResponseHTTP"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.ResponseHTTP"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/types.Question"
+                            }
+                        },
+                        "headers": {
+                            "X-Total-Count": {
+                                "type": "string",
+                                "description": "Total count of questions"
+                            }
                         }
                     }
                 }
@@ -61,14 +72,25 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "handlers.Question": {
+        "types.Question": {
             "type": "object",
             "properties": {
                 "answerCount": {
                     "type": "integer"
                 },
                 "category": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                        "child",
+                        "toddler",
+                        "preteen",
+                        "infant",
+                        "teen",
+                        "adult",
+                        "household",
+                        "relatives",
+                        "other"
+                    ]
                 },
                 "createdAt": {
                     "type": "string"
@@ -86,18 +108,6 @@ const docTemplate = `{
                     "type": "integer"
                 }
             }
-        },
-        "handlers.ResponseHTTP": {
-            "type": "object",
-            "properties": {
-                "data": {},
-                "message": {
-                    "type": "string"
-                },
-                "success": {
-                    "type": "boolean"
-                }
-            }
         }
     }
 }`
@@ -106,8 +116,8 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
-	BasePath:         "/api",
-	Schemes:          []string{},
+	BasePath:         "/api/v1",
+	Schemes:          []string{"http", "https"},
 	Title:            "PeacefulParenting API",
 	Description:      "This is an API for PeacefulParenting.ai",
 	InfoInstanceName: "swagger",

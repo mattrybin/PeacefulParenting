@@ -32,6 +32,8 @@ services:
       - /usr/src/app/node_modules
     expose:
       - "3200"
+    links:
+      - backend
 
   frontend:
     build:
