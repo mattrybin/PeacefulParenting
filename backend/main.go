@@ -6,6 +6,8 @@ import (
 	"log"
 	"os"
 
+	"github.com/gofiber/fiber/v2/middleware/recover"
+
 	"github.com/go-playground/validator"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -114,6 +116,7 @@ func main() {
 		ExposeHeaders:    "X-Total-Count",
 	}))
 
+	app.Use(recover.New())
 	app.Use(utils.SetHeaders)
 	app.Use(logger.New())
 
