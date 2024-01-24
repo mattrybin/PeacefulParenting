@@ -25,6 +25,7 @@ import (
 )
 
 func RunMigrations(db *sql.DB) error {
+	fmt.Println("HELLO WORLD")
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
 	if err != nil {
 		return err
@@ -37,7 +38,7 @@ func RunMigrations(db *sql.DB) error {
 	}
 	err = m.Down()
 	if err != nil {
-		return err
+		fmt.Println("Can't migrate down")
 	}
 	err = m.Up()
 	return err
