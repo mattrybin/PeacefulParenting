@@ -42,10 +42,17 @@ export const createAPIMethod: CreateAPIMethod =
       }));
   };
 
-export const getQuestions = createAPIMethod<
-  {},
-  { count: number, data: [{ name: string }] }
->({
-  method: "GET",
-  url: "http://backend:4100/api/v1/questions",
-});
+// export const getQuestions = createAPIMethod<
+//   {},
+//   { count: number, data: [{ name: string }] }
+// >({
+//   method: "GET",
+//   url: "http://backend:4100/api/v1/questions",
+// });
+
+export const getQuestions = async () => {
+  const response = await fetch("http://backend:4100/api/v1/questions")
+  const count = response.headers.get("X-Total-Count")
+  const data = await response.json()
+  return {count: count, data: data}
+}

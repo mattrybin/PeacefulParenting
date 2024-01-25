@@ -4,6 +4,9 @@ import { useQuestion } from "./page.hook";
 import Markdown from "react-markdown";
 import { Icons } from "shared/components/Icons";
 import { Comments } from "app/(QuestionsFlow)/components/Comments";
+import { Answer } from "app/(QuestionsFlow)/components/Answer";
+import { QuestionHeader } from "app/(QuestionsFlow)/components/QuestionHeader";
+import { AnswerSection } from "app/(QuestionsFlow)/components/AnswerSection";
 
 const markdown = `Let me be clear. I'm not worried about her behavior or think it is abnormal or anything. I am just looking for feedback on how I handled the situation and/or tips on how to approach similar cases.
 
@@ -22,45 +25,17 @@ export default function HomePage() {
         <div className=" grid gap-2">
           <div className="text-xl font-semibold">
             <div className="p-6">
-              <div className="py-2 text-lg">
+              <div className="py-2 text-lg ipad:text-xl">
                 <i className="ph-bold ph-baby"></i> Toddler
               </div>
-              <div>{title}</div>
+              <div className="ipad:text-3xl">{title}</div>
             </div>
-            <div className="flex">
-              <div className="w-max text-3xl border border-base-content border-l-0 content-center grid">
-                <div
-                  className="cursor-pointer p-2 px-6 hover:opacity-60 transition"
-                  onClick={() => console.log("UP")}
-                >
-                  <i className="ph-bold ph-arrow-circle-up"></i>
-                </div>
-                <div className="text-xl flex justify-center py-1">23</div>
-                <div
-                  className="cursor-pointer p-2 px-6 hover:opacity-60 transition"
-                  onClick={() => console.log("DOWN")}
-                >
-                  <i className="ph-bold ph-arrow-circle-down"></i>
-                </div>
-              </div>
-              <div className="w-full">
-                <div className="flex p-4 gap-2 h-max w-full border border-base-content border-x-0">
-                  <div className="bg-base-300 h-6 w-6 rounded border border-base-300/35"></div>
-                  <div className="text-base">Matt Rybin</div>
-                </div>
-                <div className="flex justify-around text-base border border-r-0">
-                  <div className="p-4 mx-auto">4 Answers</div>
-                  <div className="bg-base-content w-[1px]"></div>
-                  <div className="p-4 mx-auto">123 Views</div>
-                </div>
-                <div className="p-4 border text-base border-r-0">
-                  <div className="flex gap-2 items-center">
-                    <i className="ph-bold ph-calendar text-7"></i>Create 24 days
-                    ago
-                  </div>
-                </div>
-              </div>
-            </div>
+            <QuestionHeader
+              author="Matt Rybin"
+              amountOfAnswers="3"
+              amountOfViews="243"
+              createdWhen="23 days ago"
+            />
           </div>
         </div>
         {/* <div className="grid grid-flow-col grid-cols-2 justify-between border-t text-center h-16">
@@ -77,13 +52,15 @@ export default function HomePage() {
         </div> */}
       </div>
       <div>
-        <Markdown className="px-6 py-6 prose">{markdown}</Markdown>
+        <Markdown className="px-6 py-6 prose text-lg mx-auto ipad:text-xl">
+          {markdown}
+        </Markdown>
       </div>
       <div className="">
-        <div className="text-base font-semibold flex justify-center border border-base-content border-x-0 p-2">
+        {/* <div className="text-base font-semibold flex justify-center border border-base-content border-x-0 p-2">
           <span>3 Comments</span>
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <div className="">
             <Comments
               text="Eventually she started to bowl on an empty lane, and when the other children came over she was talking to them."
@@ -101,12 +78,54 @@ export default function HomePage() {
               commentator="Dave Smith"
             />
           </div>
+        </div> */}
+        <div>
+          <div className="flex bg-primary justify-center border-y p-2 gap-2 font-bold items-center ipad:text-lg">
+            <i className="ph-bold ph-plus"></i> <div>Add Answer</div>
+          </div>
+          <div>
+            {/* make it stand out a litle!? */}
+            <div className="flex justify-center p-2 gap-2 font-bold bg-gray-800 ipad:text-lg">
+              <div>3 Answers</div>
+            </div>
 
-          <div></div>
-          <div></div>
+            <div>
+              <Answer
+                rating="23"
+                author="Will Smith"
+                createdWhen="23 days ago"
+                answer="Hello, I think the problem is in the pickles"
+                commentStatus="Add comment"
+              />
+              <Answer
+                rating="12"
+                author="Arnold Schwarzeneger"
+                createdWhen="14 days ago"
+                answer="That's a cool thingy. A lot of text here to check.A lot of text here to check.A lot of text here to check.A lot of text here to check.A lot of text here to check. I am terminator"
+                commentStatus="Show 2 comment"
+              />
+              <div>
+                <Comments
+                  text="Eventually she started to bowl on an empty lane, and when the other children came over she was talking to them."
+                  dateTime="May 9, 2023 at 10:23"
+                  commentator="Dave Smith"
+                />
+                <Comments
+                  text="Eventually she started to bowl on an empty lane, and when the other children came over she was talking to them."
+                  dateTime="May 9, 2023 at 10:23"
+                  commentator="Dave Smith"
+                />
+              </div>
+              <Answer
+                rating="5"
+                author="Jackie Chan"
+                createdWhen="3 days ago"
+                answer="I am a cool actor. Your question is interesting but not as good as me. a lot of text.a lot of text.a lot of text.a lot of text.a lot of text.a lot of text.a lot of text.a lot of text.a lot of text."
+                commentStatus="Add Comment"
+              />
+            </div>
+          </div>
         </div>
-        <div>Add Comments</div>
-        <div>3 Answers</div>
       </div>
     </PageContainer>
   );
