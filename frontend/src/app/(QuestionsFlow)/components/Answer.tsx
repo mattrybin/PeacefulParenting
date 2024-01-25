@@ -3,6 +3,9 @@ export const Answer = ({
   author,
   createdWhen,
   answer,
+  commentatorText,
+  commentator,
+  dateTime,
   //   amountOfComments,
   commentStatus,
 }: {
@@ -11,6 +14,9 @@ export const Answer = ({
   createdWhen: string;
   answer: string;
   commentStatus: string;
+  commentatorText: string;
+  commentator: string;
+  dateTime: string;
   //   amountOfComments: string;
 }) => (
   <div>
@@ -56,6 +62,17 @@ export const Answer = ({
     <div className="p-6 text-lg ipad:text-2xl">{answer}</div>
     <div className="flex justify-end p-6 text-base-300 items-center gap-2">
       <button className="ipad:text-xl">{commentStatus}</button>
+    </div>
+    <div>
+      <div className="px-6 pt-6 pb-2 border-y border-base-300 text-lg ipad:text-2xl">
+        {commentatorText}
+        <div>
+          <div className="flex justify-end gap-2 font-semibold pt-4 ipad:text-xl">
+            <span className="font-medium text-base-300">{commentator}</span>
+            <span className="text-base-300"> {dateTime}</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 );

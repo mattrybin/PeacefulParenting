@@ -7,7 +7,7 @@ import { Comments } from "app/(QuestionsFlow)/components/Comments";
 import { Answer } from "app/(QuestionsFlow)/components/Answer";
 import { QuestionHeader } from "app/(QuestionsFlow)/components/QuestionHeader";
 import { AnswerSection } from "app/(QuestionsFlow)/components/AnswerSection";
-
+import { Answers } from "./page.data";
 const markdown = `Let me be clear. I'm not worried about her behavior or think it is abnormal or anything. I am just looking for feedback on how I handled the situation and/or tips on how to approach similar cases.
 
 My daughter was going to a friend's birthday party at a bowling alley. She knew ~50% of the kids. When she got there she sat alone for over 15 minutes, saying she didn't know everyone and that she didn't want to play or talk to anyone. I asked her if she was having fun and she said s was not, and then she wanted to hug on me, holding on to my arm for several minutes. I told her I'd give her a quick hug but that I'd sit behind her so that she could approach other kids and to only come to me if she needed to. My intent was to show support without being a crutch or a replacement for talking to people. Eventually she started to bowl on an empty lane, and when the other children came over she was talking to them. But even so she took her stuffed toy with her and wouldn't put it down even while bowling.
@@ -80,7 +80,7 @@ export default function HomePage() {
           </div>
         </div> */}
         <div>
-          <div className="flex bg-primary justify-center border-y p-2 gap-2 font-bold items-center ipad:text-lg">
+          <div className="flex bg-primary justify-center border-y border-base-300 p-2 gap-2 font-bold items-center ipad:text-lg">
             <i className="ph-bold ph-plus"></i> <div>Add Answer</div>
           </div>
           <div>
@@ -90,7 +90,10 @@ export default function HomePage() {
             </div>
 
             <div>
-              <Answer
+              {Answers.map((item) => (
+                <Answer {...item} />
+              ))}
+              {/* <Answer
                 rating="23"
                 author="Will Smith"
                 createdWhen="23 days ago"
@@ -103,8 +106,11 @@ export default function HomePage() {
                 createdWhen="14 days ago"
                 answer="That's a cool thingy. A lot of text here to check.A lot of text here to check.A lot of text here to check.A lot of text here to check.A lot of text here to check. I am terminator"
                 commentStatus="Show 2 comment"
-              />
-              <div>
+                commentatorText="Eventually she started to bowl on an empty lane, and when the other children came over she was talking to them."
+                commentator={"David Smith"}
+                dateTime="May 9, 2023 at 10:23"
+              /> */}
+              {/* <div>
                 <Comments
                   text="Eventually she started to bowl on an empty lane, and when the other children came over she was talking to them."
                   dateTime="May 9, 2023 at 10:23"
@@ -115,14 +121,14 @@ export default function HomePage() {
                   dateTime="May 9, 2023 at 10:23"
                   commentator="Dave Smith"
                 />
-              </div>
-              <Answer
+              </div> */}
+              {/* <Answer
                 rating="5"
                 author="Jackie Chan"
                 createdWhen="3 days ago"
                 answer="I am a cool actor. Your question is interesting but not as good as me. a lot of text.a lot of text.a lot of text.a lot of text.a lot of text.a lot of text.a lot of text.a lot of text.a lot of text."
                 commentStatus="Add Comment"
-              />
+              /> */}
             </div>
           </div>
         </div>
