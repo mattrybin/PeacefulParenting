@@ -1,4 +1,4 @@
-import { Answer } from "./Answer";
+import { Answer } from "./Answer"
 
 export const AnswerSection = () => (
   <div>
@@ -38,4 +38,4 @@ export const AnswerSection = () => (
       </div>
     </div>
   </div>
-);
+)

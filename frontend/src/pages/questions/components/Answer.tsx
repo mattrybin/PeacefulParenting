@@ -1,5 +1,5 @@
-import { Comments } from "./Comments";
-import { RatingClicker, RatingClicker2 } from "./RatingClicker";
+import { Comments } from "./Comments"
+import { RatingClicker, RatingClicker2 } from "./RatingClicker"
 
 export const Answer = ({
   rating,
@@ -9,16 +9,16 @@ export const Answer = ({
   commentatorText,
   commentator,
   dateTime,
-  commentStatus,
+  commentStatus
 }: {
-  rating: string;
-  author: string;
-  createdWhen: string;
-  answer: string;
-  commentStatus?: string;
-  commentatorText?: string;
-  commentator?: string;
-  dateTime?: string;
+  rating: string
+  author: string
+  createdWhen: string
+  answer: string
+  commentStatus?: string
+  commentatorText?: string
+  commentator?: string
+  dateTime?: string
 }) => (
   <div>
     <div className="flex font-semibold border-y border-base-300">
@@ -71,4 +71,4 @@ export const Answer = ({
       </details>
     </div>
   </div>
-);
+)

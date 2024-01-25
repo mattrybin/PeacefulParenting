@@ -35,7 +35,7 @@ if [[ $selection -ge 1 && $selection -le ${#commands[@]} ]]; then
   # Do not attempt to execute 'quit' as a command, just exit
   if [[ $command == "quit" ]]; then
     echo -e "${BLUE}Quitting...${NC}"
-    exit 0
+    exit 1
   fi
   
   echo -e " "

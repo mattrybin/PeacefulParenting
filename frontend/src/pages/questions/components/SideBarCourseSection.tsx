@@ -1,12 +1,16 @@
-import { Icons } from "shared/components/Icons";
-import { SideBarCourse } from "./SideBarCourse";
-import Link from "next/link";
+import { Icons } from "shared/components/Icons"
+import { SideBarCourse } from "./SideBarCourse"
+import Link from "next/link"
 export const SideBarCourseSection = () => {
   return (
     <div className="pt-10">
       <div className="text-xl font-bold items-center gap-2 ">
         <div className="flex pb-2">
-          <Icons weight="bold" variant="certificate" size="xl" />
+          <Icons
+            weight="bold"
+            variant="certificate"
+            size="xl"
+          />
           <div>Courses</div>
         </div>
         <SideBarCourse
@@ -33,5 +37,5 @@ export const SideBarCourseSection = () => {
         </Link>
       </div>
     </div>
-  );
-};
+  )
+}

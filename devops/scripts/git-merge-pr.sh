@@ -67,10 +67,11 @@ function check_pr_build_check_until_timeout {
 
         checks_output=$(gh pr checks $current_branch)
         
+        echo $checks_output
         # extract only 'build' checkline
-        build_status_line=$(echo "$checks_output" | grep "^build")
+        build_status_line=$(echo "$checks_output" | grep "^Run tests")
 
-        echo "$build_status_line"
+        # echo "$build_status_line"
 
         if [[ $build_status_line == *"fail"* ]]; then
             echo "Build checks have failed."
