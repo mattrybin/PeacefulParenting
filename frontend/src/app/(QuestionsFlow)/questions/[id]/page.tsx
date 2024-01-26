@@ -90,10 +90,10 @@ export default function HomePage() {
             </div>
 
             <div>
-              {Answers.map((item) => (
+              {/* {Answers.map((item) => (
                 <Answer {...item} />
-              ))}
-              {/* <Answer
+              ))} */}
+              <Answer
                 rating="23"
                 author="Will Smith"
                 createdWhen="23 days ago"
@@ -109,8 +109,8 @@ export default function HomePage() {
                 commentatorText="Eventually she started to bowl on an empty lane, and when the other children came over she was talking to them."
                 commentator={"David Smith"}
                 dateTime="May 9, 2023 at 10:23"
-              /> */}
-              {/* <div>
+              />
+              <div>
                 <Comments
                   text="Eventually she started to bowl on an empty lane, and when the other children came over she was talking to them."
                   dateTime="May 9, 2023 at 10:23"
@@ -121,14 +121,14 @@ export default function HomePage() {
                   dateTime="May 9, 2023 at 10:23"
                   commentator="Dave Smith"
                 />
-              </div> */}
-              {/* <Answer
+              </div>
+              <Answer
                 rating="5"
                 author="Jackie Chan"
                 createdWhen="3 days ago"
                 answer="I am a cool actor. Your question is interesting but not as good as me. a lot of text.a lot of text.a lot of text.a lot of text.a lot of text.a lot of text.a lot of text.a lot of text.a lot of text."
                 commentStatus="Add Comment"
-              /> */}
+              />
             </div>
           </div>
         </div>
