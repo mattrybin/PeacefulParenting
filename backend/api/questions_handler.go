@@ -127,6 +127,34 @@ func (h *QuestionHandler) CreateQuestion(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(question)
 }
 
+// swagger:operation GET /questions questions getQuestionList
+// ---
+// summary: Get list of questions
+// description: Returns a list of all questions from the database
+// parameters:
+//   - name: sort
+//     in: query
+//     description: column to sort by and it's order, default is `"["id","DESC"]"`
+//     type: string
+//   - name: range
+//     in: query
+//     description: range for the questions, default is `[75, 99]`
+//     type: string
+//   - name: filter
+//     in: query
+//     description: Filter options, default is `{}`
+//     type: string
+//
+// responses:
+//
+//	'200':
+//	  description: A successful response. Returns an array of questions. The `X-Total-count` field is set in the header.
+//	  schema:
+//	    type: array
+//	    items:
+//	      $ref: '#/definitions/Question'
+//	'500':
+//	  description: An unexpected error occurred during processing.
 func (h *QuestionHandler) GetListQuestions(c *fiber.Ctx) error {
 	sortKey, sortValue := utils.GetSort(c.Query("sort", `["id","DESC"]`))
 	limit, offset := utils.GetRange(c.Query("range", `[75, 99]`))
