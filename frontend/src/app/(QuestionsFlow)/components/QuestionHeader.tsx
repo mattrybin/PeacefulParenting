@@ -1,30 +1,33 @@
+import { useState } from "react";
+import { RatingClicker } from "./RatingClicker";
 export const QuestionHeader = ({
   author,
   amountOfAnswers,
   amountOfViews,
-  createdWhen
+  createdWhen,
 }: {
-  author: string
-  amountOfAnswers: string
-  amountOfViews: string
-  createdWhen: string
+  author: string;
+  amountOfAnswers: string;
+  amountOfViews: string;
+  createdWhen: string;
 }) => (
   <div className="flex text-base-content border-y border-base-300">
-    <div className="w-max text-3xl ipad:text-4xl content-center grid border-r border-base-300">
+    <RatingClicker/>
+    {/* <div className="w-max text-3xl ipad:text-4xl content-center grid border-r border-base-300">
       <div
         className="cursor-pointer p-2 px-6 hover:opacity-60 transition"
         onClick={() => console.log("UP")}
       >
         <i className="ph-bold ph-arrow-circle-up"></i>
       </div>
-      <div className="text-xl flex justify-center py-1 ipad:text-2xl">23</div>
+      <div className="text-xl flex justify-center py-1 ipad:text-2xl">24</div>
       <div
         className="cursor-pointer p-2 px-6 hover:opacity-60 transition"
         onClick={() => console.log("DOWN")}
       >
         <i className="ph-bold ph-arrow-circle-down"></i>
       </div>
-    </div>
+    </div> */}
 
     <div className="w-full">
       <div className="flex p-3 gap-2 h-max w-full items-center border-b border-base-300">
@@ -44,4 +47,7 @@ export const QuestionHeader = ({
       </div>
     </div>
   </div>
-)
+);
+function clicker(event: MouseEvent<HTMLDivElement, MouseEvent>): void {
+  throw new Error("Function not implemented.");
+}
