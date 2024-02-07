@@ -4,34 +4,11 @@ import { useSession } from "next-auth/react"
 import { DropdownMenu } from "./DropdownMenu"
 import Link from "next/link"
 
-export const MobileHeaderController = () => {
-  const session = useSession()
-  const isAuth = session.status === "authenticated"
-  if (isAuth) {
-    return (
-      <div className="grid grid-flow-col items-center">
-        <Link
-          href="/login"
-          className="avatar btn btn-ghost btn-square"
-        >
-          <div className="w-7 h-7 rounded-lg border-2 border-base-content">
-            <img
-              src={session.data.user?.image || ""}
-              alt="avatar"
-            />
-          </div>
-        </Link>
-        <DropdownMenu isUser={isAuth} />
-      </div>
-    )
-  } else {
-    return (
-      <div className="grid grid-flow-col items-center">
-        <DropdownMenu isUser={isAuth} />
-      </div>
-    )
-  }
-}
+export const MobileHeaderController = () => (
+  /* const session = useSession()*/ /* const isAuth = session.status === "authenticated"*/ /* if (isAuth) {*/ /*   return (*/ /*     <div className="grid grid-flow-col items-center">*/ /*       <Link*/ /*         href="/login"*/ /*         className="avatar btn btn-ghost btn-square"*/ /*       >*/ /*         <div className="w-7 h-7 rounded-lg border-2 border-base-content">*/ /*           <img*/ /*             src={session.data.user?.image || ""}*/ /*             alt="avatar"*/ /*           />*/ /*         </div>*/ /*       </Link>*/ /*       <DropdownMenu isUser={isAuth} />*/ /*     </div>*/ /*   )*/ /* } else {*/ <div className="grid grid-flow-col items-center">
+    <DropdownMenu isUser={false} />
+  </div>
+)
 
 export const HeaderController = () => {
   const session = useSession()
