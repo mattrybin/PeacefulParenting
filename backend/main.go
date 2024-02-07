@@ -22,6 +22,19 @@ import (
 	"github.com/mattrybin/PeacefulParenting/backend/scripts/database"
 )
 
+func Seed(client *sql.DB) func(c *fiber.Ctx) error {
+	return func(c *fiber.Ctx) error {
+		err := database.SeedDB(client)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"message": "Error seeding database",
+				"error":   err.Error(),
+			})
+		}
+		return c.JSON(fiber.Map{"message": "Seeding done!"})
+	}
+}
+
 func RunMigrations(db *sql.DB) error {
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
 	if err != nil {
@@ -146,13 +159,16 @@ func main() {
 		return c.SendStatus(fiber.StatusOK)
 	})
 
-	app.Get("/commands/seed", func(c *fiber.Ctx) error {
-		err := database.SeedDB(client)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error seeding database", "error": err.Error()})
-		}
-		return c.JSON(fiber.Map{"message": "Seeding done!"})
-	})
+	// app.Get("/commands/seed", func(c *fiber.Ctx) error {
+	// 	err := database.SeedDB(client)
+	// 	if err != nil {
+	// 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error seeding database", "error": err.Error()})
+	// 	}
+	// 	return c.JSON(fiber.Map{"message": "Seeding done!"})
+	// })
+
+	app.Get("/commands/seed", Seed(client))
+	// app.Get("/commands/seed", Seed(c, client))
 
 	v1.Get("/questions", questionHandler.GetListQuestions)
 	v1.Post("/questions", questionHandler.CreateQuestion)
