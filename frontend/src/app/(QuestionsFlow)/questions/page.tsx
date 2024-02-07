@@ -10,7 +10,7 @@ export default async function HomePage() {
     <PageContainer>
       {/* <MyComponent /> */}
       {/* <QuestionsHeader {...header} />
-      <Tabs {...tabs} /> */}
+      // <Tabs {...tabs} /> */}
       <List
         questions={data}
         isEmpty={count === 0}
