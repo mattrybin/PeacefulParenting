@@ -1,30 +1,4 @@
 basePath: /api
-definitions:
-  handlers.Question:
-    properties:
-      answerCount:
-        type: integer
-      category:
-        type: string
-      createdAt:
-        type: string
-      id:
-        type: string
-      title:
-        type: string
-      viewCount:
-        type: integer
-      voteCount:
-        type: integer
-    type: object
-  handlers.ResponseHTTP:
-    properties:
-      data: {}
-      message:
-        type: string
-      success:
-        type: boolean
-    type: object
 info:
   contact:
     email: contact@mattrybin.com
@@ -32,32 +6,5 @@ info:
   description: This is an API for PeacefulParenting.ai
   title: PeacefulParenting API
   version: "1.0"
-paths:
-  /v1/questions:
-    get:
-      consumes:
-      - application/json
-      description: Get all questions
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/handlers.Question'
-        "301":
-          description: Moved Permanently
-          schema:
-            $ref: '#/definitions/handlers.ResponseHTTP'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/handlers.ResponseHTTP'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/handlers.ResponseHTTP'
-      summary: Get all questions
-      tags:
-      - Questions
+paths: {}
 swagger: "2.0"
