@@ -2,8 +2,7 @@
 // import { getQuestions } from "app/testing"
 import { PageContainer } from "shared/components/Containers";
 import { getQuestions } from "shared/queries/questions";
-import { List } from "./components/List";
-
+import { List } from "../components/List";
 const array = [{ id: "2342" }];
 export default async function HomePage() {
   const { data, count } = await getQuestions({});
