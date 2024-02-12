@@ -6,18 +6,43 @@ import (
 	"strings"
 
 	"github.com/doug-martin/goqu/v9"
-	"github.com/doug-martin/goqu/v9/exp"
 	"github.com/jmoiron/sqlx"
 	"github.com/mattrybin/PeacefulParenting/backend/internal/utils"
 	"github.com/mattrybin/PeacefulParenting/backend/types"
 )
 
+type GetListParams struct {
+	Pagination struct {
+		Page    uint `json:"page"`
+		PerPage uint `json:"perPage"`
+	} `json:"pagination"`
+	Sort struct {
+		Field string `json:"field"`
+		Order string `json:"order"` // "ASC" or "DESC"
+	} `json:"sort"`
+}
+type PageInfo struct {
+	HasNextPage     bool `json:"hasNextPage,omitempty"`
+	HasPreviousPage bool `json:"hasPreviousPage,omitempty"`
+}
+
+type GetListResult struct {
+	Data     interface{} `json:"data"`
+	Total    int         `json:"total,omitempty"`
+	PageInfo *PageInfo   `json:"pageInfo,omitempty"`
+}
+
+type GetOneResult struct {
+	Data interface{} `json:"data"`
+}
+
 type QuestionStore interface {
 	GetListQuestions(sortKey string, sortValue string, limit uint, offset uint, filter utils.Filter) ([]types.Question, int, error)
-	CreateQuestion(params types.CreateQuestionParams) (string, error)
-	GetQuestion(id string) (types.Question, error)
+	// CreateQuestion(params types.CreateQuestionParams) (string, error)
+	// GetQuestion(id string) (types.Question, error)
 	// UpdateQuestion(id string, params types.UpdateQuestionParams) (string, error)
-	GetOne(resourceName string, id string, output interface{}) error
+	GetOne(resourceName string, id string, output interface{}) (*GetOneResult, error)
+	GetList(resourceName string, params GetListParams, output interface{}) (*GetListResult, error)
 	// DeleteQuestion
 }
 
@@ -33,10 +58,6 @@ func NewPostgresQuestionStore(client *sqlx.DB) *PostgresQuestionStore {
 
 type GetOneParams struct {
 	ID string
-}
-
-type GetOneResult struct {
-	Row map[string]interface{}
 }
 
 func getColumnNamesFromStructTags(i interface{}) []string {
@@ -64,7 +85,61 @@ func getColumnNamesFromStructTags(i interface{}) []string {
 	return fieldNames
 }
 
-func (s *PostgresQuestionStore) GetOne(resourceName string, id string, dest interface{}) error {
+func (s *PostgresQuestionStore) GetList(resourceName string, params GetListParams, dest interface{}) (*GetListResult, error) {
+	singleStruct := reflect.New(reflect.TypeOf(dest).Elem().Elem()).Interface()
+	i := goqu.From(resourceName)
+	stringColumns := getColumnNamesFromStructTags(singleStruct)
+	columns := make([]interface{}, len(stringColumns))
+	for i, v := range stringColumns {
+		columns[i] = v
+	}
+
+	dataset := i.Select(columns...)
+	if params.Sort.Field != "" {
+		if params.Sort.Order == "DESC" {
+			dataset = dataset.Order(goqu.I(params.Sort.Field).Desc())
+		} else {
+			dataset = dataset.Order(goqu.I(params.Sort.Field).Asc())
+		}
+	}
+
+	// Consider page and perPage as 1 indexed
+	offset := (params.Pagination.Page - 1) * params.Pagination.PerPage
+	limit := params.Pagination.PerPage
+
+	dataset = dataset.Offset(uint(offset)).Limit(uint(limit))
+
+	sql, _, _ := dataset.ToSQL()
+
+	err := s.client.Select(dest, sql)
+	if err != nil {
+		return nil, fmt.Errorf("GetList error: failed to get resources from %s. %w", resourceName, err)
+	}
+
+	// Find total rows
+	var total int
+	err = s.client.Get(&total, fmt.Sprintf("SELECT COUNT(*) FROM %s", resourceName))
+	if err != nil {
+		return nil, fmt.Errorf("GetList error: failed to get count of resources from %s. %w", resourceName, err)
+	}
+
+	// Determine if we have a next or a previous page
+	hasNextPage := uint(total) > offset+limit
+	hasPreviousPage := offset > 0
+
+	result := &GetListResult{
+		Data:  dest,
+		Total: total,
+		PageInfo: &PageInfo{
+			HasNextPage:     hasNextPage,
+			HasPreviousPage: hasPreviousPage,
+		},
+	}
+
+	return result, nil
+}
+
+func (s *PostgresQuestionStore) GetOne(resourceName string, id string, dest interface{}) (*GetOneResult, error) {
 	i := goqu.From(resourceName)
 	stringColumns := getColumnNamesFromStructTags(dest)
 	columns := make([]interface{}, len(stringColumns))
@@ -75,98 +150,13 @@ func (s *PostgresQuestionStore) GetOne(resourceName string, id string, dest inte
 
 	err := s.client.Get(dest, sql)
 	if err != nil {
-		return fmt.Errorf("GetOne error: failed to get resource %s with id %s. %w", resourceName, id, err)
-	}
-	return nil
-}
-
-func (s *PostgresQuestionStore) GetQuestion(id string) (types.Question, error) {
-	columns := []interface{}{
-		"id",
-		"title",
-		"category",
-		"view_count",
-		"vote_count",
-		"answer_count",
-		"created_at",
+		return nil, fmt.Errorf("GetOne error: failed to get resource %s with id %s. %w", resourceName, id, err)
 	}
 
-	query := goqu.From("questions").Select(columns...).Where(goqu.C("id").Eq(id))
-	sql, _, _ := query.ToSQL()
-	row := s.client.QueryRow(sql)
-
-	var question types.Question
-	if err := row.Scan(&question.Id, &question.Title, &question.Category, &question.ViewCount, &question.VoteCount, &question.AnswerCount, &question.CreatedAt); err != nil {
-		return types.Question{}, err
+	result := &GetOneResult{
+		Data: dest,
 	}
-
-	return question, nil
-}
-
-func (s *PostgresQuestionStore) GetListQuestions(sortKey string, sortValue string, limit uint, offset uint, filter utils.Filter) ([]types.Question, int, error) {
-
-	// FIXME Move this to a sort function and pass down the exp instead
-	var sort exp.OrderedExpression
-	if sortValue == "ASC" {
-		sort = goqu.I(sortKey).Asc()
-	} else {
-		sort = goqu.I(sortKey).Desc()
-	}
-	columns := []interface{}{
-		"id",
-		"title",
-		"category",
-		"view_count",
-		"vote_count",
-		"answer_count",
-		"created_at"}
-
-	query := goqu.From("questions").Select(columns...).Order(sort).Limit(limit).Offset(offset)
-
-	if filter.Category != "" {
-		query = query.Where(goqu.I("category").Eq(filter.Category))
-	}
-
-	sql, _, _ := query.ToSQL()
-
-	rows, err := s.client.Query(sql)
-	if err != nil {
-		panic(err)
-	}
-	defer rows.Close()
-
-	var questions []types.Question
-	for rows.Next() {
-		var q types.Question
-		if err := rows.Scan(&q.Id, &q.Title, &q.Category, &q.ViewCount, &q.VoteCount, &q.AnswerCount, &q.CreatedAt); err != nil {
-			panic(err)
-		}
-		questions = append(questions, q)
-
-	}
-	var totalCount int
-
-	// Prepare base count query.
-	countQuery := goqu.From("questions").Select(goqu.COUNT("*"))
-
-	if filter.Category != "" {
-		// Add category filter to the count query if category is specified.
-		countQuery = countQuery.Where(goqu.I("category").Eq(filter.Category))
-	}
-
-	// Convert the count query to SQL query string.
-	countSql, _, _ := countQuery.ToSQL()
-
-	// Execute the SQL query and scan the result into the totalCount.
-	if err = s.client.QueryRow(countSql).Scan(&totalCount); err != nil {
-		panic(err)
-	}
-
-	// var totalCount int
-	// if err = s.client.QueryRow("SELECT COUNT(*) FROM questions").Scan(&totalCount); err != nil {
-	// 	panic(err)
-	// }
-	return questions, totalCount, err
+	return result, nil
 }
 
 func (s *PostgresQuestionStore) CreateQuestion(params types.CreateQuestionParams) (string, error) {

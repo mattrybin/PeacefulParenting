@@ -3,7 +3,6 @@ package api
 import (
 	"database/sql"
 	"errors"
-	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/mattrybin/PeacefulParenting/backend/db"
@@ -28,18 +27,22 @@ func NewQuestionHandler(questionStore db.QuestionStore) *QuestionHandler {
 	}
 }
 
+type GetOneResult struct {
+	Data interface{} `json:"data"`
+}
+
 func (h *QuestionHandler) GetQuestion(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	question := types.Question{}
-	err := h.questionStore.GetOne("questions", id, &question)
+	result, err := h.questionStore.GetOne("questions", id, &question)
 	if errors.Is(err, sql.ErrNoRows) {
 		return utils.ErrorMessage(c, fiber.StatusNotFound, questionNotFound)
 	} else if err != nil {
 		return utils.ErrorMessage(c, fiber.StatusInternalServerError, err.Error())
 	}
 
-	return c.Status(fiber.StatusAccepted).JSON(question)
+	return c.Status(fiber.StatusOK).JSON(result)
 }
 
 // func (h *QuestionHandler) UpdateQuestion(c *fiber.Ctx) error {
@@ -100,35 +103,66 @@ func (h *QuestionHandler) GetQuestion(c *fiber.Ctx) error {
 // 	return c.Status(fiber.StatusCreated).JSON(question)
 // }
 
+// func (h *QuestionHandler) GetListQuestions(c *fiber.Ctx) error {
+// 	sortKey, sortValue := utils.GetSort(c.Query("sort", `["id","DESC"]`))
+// 	limit, offset := utils.GetRange(c.Query("range", `[75, 99]`))
+// 	filter := utils.GetFilter(c.Query("filter", `{}`))
+
+// 	// params := db.GetOneParams{
+// 	// 	ID: "013bcd73-17c6-4127-a609-0369342f3dec",
+// 	// 	Meta: map[string]interface{}{
+// 	// 		"columns": []string{"id", "title"},
+// 	// 	},
+// 	// }
+
+// 	// result, err := h.questionStore.GetOne("questions", params)
+// 	// if err != nil {
+// 	// Handle error
+// 	// }
+// 	// fmt.Println("AWESOME")
+// 	// fmt.Println(result)
+
+// 	questions, totalCount, err := h.questionStore.GetListQuestions(sortKey, sortValue, limit, offset, filter)
+// 	if err != nil {
+// 		return utils.ErrorMessage(c, fiber.StatusInternalServerError, dbRequestFailed)
+// 	}
+
+// 	if len(questions) == 0 {
+// 		c.Set("X-Total-Count", "0")
+// 		return c.JSON([]types.Question{})
+// 	}
+
+// 	c.Set("X-Total-Count", strconv.Itoa(totalCount))
+// 	return c.JSON(questions)
+// }
+
 func (h *QuestionHandler) GetListQuestions(c *fiber.Ctx) error {
 	sortKey, sortValue := utils.GetSort(c.Query("sort", `["id","DESC"]`))
 	limit, offset := utils.GetRange(c.Query("range", `[75, 99]`))
-	filter := utils.GetFilter(c.Query("filter", `{}`))
-
-	// params := db.GetOneParams{
-	// 	ID: "013bcd73-17c6-4127-a609-0369342f3dec",
-	// 	Meta: map[string]interface{}{
-	// 		"columns": []string{"id", "title"},
-	// 	},
-	// }
-
-	// result, err := h.questionStore.GetOne("questions", params)
-	// if err != nil {
-	// Handle error
-	// }
-	// fmt.Println("AWESOME")
-	// fmt.Println(result)
-
-	questions, totalCount, err := h.questionStore.GetListQuestions(sortKey, sortValue, limit, offset, filter)
+	params := db.GetListParams{
+		Pagination: struct {
+			Page    uint `json:"page"`
+			PerPage uint `json:"perPage"`
+		}{
+			Page:    uint(offset/limit) + 1, // Converting the range values to 1-indexed page and perPage values
+			PerPage: uint(limit),
+		},
+		Sort: struct {
+			Field string `json:"field"`
+			Order string `json:"order"`
+		}{
+			Field: sortKey,
+			Order: sortValue,
+		},
+	}
+	var questions []types.Question
+	result, err := h.questionStore.GetList("questions", params, &questions)
 	if err != nil {
-		return utils.ErrorMessage(c, fiber.StatusInternalServerError, dbRequestFailed)
+		// Adjust error handling as you need
+		if errors.Is(err, sql.ErrNoRows) {
+			return utils.ErrorMessage(c, fiber.StatusNotFound, questionNotFound)
+		}
+		return utils.ErrorMessage(c, fiber.StatusInternalServerError, err.Error())
 	}
-
-	if len(questions) == 0 {
-		c.Set("X-Total-Count", "0")
-		return c.JSON([]types.Question{})
-	}
-
-	c.Set("X-Total-Count", strconv.Itoa(totalCount))
-	return c.JSON(questions)
+	return c.JSON(result)
 }
