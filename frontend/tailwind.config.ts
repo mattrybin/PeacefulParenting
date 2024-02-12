@@ -30,6 +30,7 @@ const config: Config = {
   content: [
     './src/shared/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   daisyui: {
     themes: [{
