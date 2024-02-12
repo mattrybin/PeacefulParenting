@@ -1,10 +1,10 @@
 package api
 
 import (
-	"fmt"
+	"database/sql"
+	"errors"
 	"strconv"
 
-	"dario.cat/mergo"
 	"github.com/gofiber/fiber/v2"
 	"github.com/mattrybin/PeacefulParenting/backend/db"
 	"github.com/mattrybin/PeacefulParenting/backend/internal/utils"
@@ -30,141 +30,98 @@ func NewQuestionHandler(questionStore db.QuestionStore) *QuestionHandler {
 
 func (h *QuestionHandler) GetQuestion(c *fiber.Ctx) error {
 	id := c.Params("id")
-	question, err := h.questionStore.GetQuestion(id)
-	if err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": true,
-			"msg":   questionNotFound,
-		})
-	}
-	return c.JSON(question)
-}
 
-func (h *QuestionHandler) UpdateQuestion(c *fiber.Ctx) error {
-	id := c.Params("id")
-	question, err := h.questionStore.GetQuestion(id)
-	if err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": true,
-			"msg":   questionNotFound,
-		})
-	}
-	var params types.UpdateQuestionParams
-	if err := c.BodyParser(&params); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": true,
-			"msg":   couldNotParseBody,
-		})
-	}
-
-	newQuestion := types.UpdateQuestionParams{Title: question.Title, Category: question.Category}
-	fmt.Println(newQuestion)
-	if err := mergo.Merge(&newQuestion, params, mergo.WithOverride); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": true,
-			"msg":   couldNotParseBody,
-		})
-	}
-
-	validate := utils.NewValidator()
-	if err := validate.Struct(newQuestion); err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{
-			"error": true,
-			"msg":   utils.ValidatorErrors(err),
-		})
-	}
-
-	id, err = h.questionStore.UpdateQuestion(id, params)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": true,
-			"msg":   dbRequestFailed,
-		})
-	}
-
-	question, err = h.questionStore.GetQuestion(id)
-	if err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": true,
-			"msg":   questionNotFound,
-		})
+	question := types.Question{}
+	err := h.questionStore.GetOne("questions", id, &question)
+	if errors.Is(err, sql.ErrNoRows) {
+		return utils.ErrorMessage(c, fiber.StatusNotFound, questionNotFound)
+	} else if err != nil {
+		return utils.ErrorMessage(c, fiber.StatusInternalServerError, err.Error())
 	}
 
 	return c.Status(fiber.StatusAccepted).JSON(question)
 }
 
-func (h *QuestionHandler) CreateQuestion(c *fiber.Ctx) error {
-	var params types.CreateQuestionParams
-	if err := c.BodyParser(&params); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": true,
-			"msg":   couldNotParseBody,
-		})
-	}
+// func (h *QuestionHandler) UpdateQuestion(c *fiber.Ctx) error {
+// 	id := c.Params("id")
 
-	validate := utils.NewValidator()
-	if err := validate.Struct(params); err != nil {
-		return c.Status(fiber.StatusUnprocessableEntity).JSON(fiber.Map{
-			"error": true,
-			"msg":   utils.ValidatorErrors(err),
-		})
-	}
+// 	question, err := h.questionStore.GetQuestion(id)
+// 	if err != nil {
+// 		return utils.ErrorMessage(c, fiber.StatusNotFound, questionNotFound)
+// 	}
 
-	id, err := h.questionStore.CreateQuestion(params)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": true,
-			"msg":   dbRequestFailed,
-		})
-	}
-	question, err := h.questionStore.GetQuestion(id)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": true,
-			"msg":   retrievingResourceFailed,
-		})
-	}
-	return c.Status(fiber.StatusCreated).JSON(question)
-}
+// 	var params types.UpdateQuestionParams
+// 	if err := c.BodyParser(&params); err != nil {
+// 		return utils.ErrorMessage(c, fiber.StatusBadRequest, couldNotParseBody)
+// 	}
 
-// swagger:operation GET /questions questions getQuestionList
-// ---
-// summary: Get list of questions
-// description: Returns a list of all questions from the database
-// parameters:
-//   - name: sort
-//     in: query
-//     description: column to sort by and it's order, default is `"["id","DESC"]"`
-//     type: string
-//   - name: range
-//     in: query
-//     description: range for the questions, default is `[75, 99]`
-//     type: string
-//   - name: filter
-//     in: query
-//     description: Filter options, default is `{}`
-//     type: string
-//
-// responses:
-//
-//	'200':
-//	  description: A successful response. Returns an array of questions. The `X-Total-count` field is set in the header.
-//	  schema:
-//	    type: array
-//	    items:
-//	      $ref: '#/definitions/Question'
-//	'500':
-//	  description: An unexpected error occurred during processing.
+// 	newQuestion := types.UpdateQuestionParams{Title: question.Title, Category: question.Category}
+// 	if err := mergo.Merge(&newQuestion, params, mergo.WithOverride); err != nil {
+// 		return utils.ErrorMessage(c, fiber.StatusBadRequest, couldNotParseBody)
+// 	}
+
+// 	validate := utils.NewValidator()
+// 	if err := validate.Struct(newQuestion); err != nil {
+// 		return utils.ErrorMessage(c, fiber.StatusUnprocessableEntity, utils.ValidatorErrors(err))
+// 	}
+
+// 	id, err = h.questionStore.UpdateQuestion(id, params)
+// 	if err != nil {
+// 		return utils.ErrorMessage(c, fiber.StatusInternalServerError, dbRequestFailed)
+// 	}
+
+// 	question, err = h.questionStore.GetQuestion(id)
+// 	if err != nil {
+// 		return utils.ErrorMessage(c, fiber.StatusNotFound, questionNotFound)
+// 	}
+
+// 	return c.Status(fiber.StatusAccepted).JSON(question)
+// }
+
+// func (h *QuestionHandler) CreateQuestion(c *fiber.Ctx) error {
+// 	var params types.CreateQuestionParams
+// 	if err := c.BodyParser(&params); err != nil {
+// 		return utils.ErrorMessage(c, fiber.StatusBadRequest, couldNotParseBody)
+// 	}
+
+// 	validate := utils.NewValidator()
+// 	if err := validate.Struct(params); err != nil {
+// 		return utils.ErrorMessage(c, fiber.StatusUnprocessableEntity, utils.ValidatorErrors(err))
+// 	}
+
+// 	id, err := h.questionStore.CreateQuestion(params)
+// 	if err != nil {
+// 		return utils.ErrorMessage(c, fiber.StatusInternalServerError, dbRequestFailed)
+// 	}
+// 	question, err := h.questionStore.GetQuestion(id)
+// 	if err != nil {
+// 		return utils.ErrorMessage(c, fiber.StatusInternalServerError, retrievingResourceFailed)
+// 	}
+// 	return c.Status(fiber.StatusCreated).JSON(question)
+// }
+
 func (h *QuestionHandler) GetListQuestions(c *fiber.Ctx) error {
 	sortKey, sortValue := utils.GetSort(c.Query("sort", `["id","DESC"]`))
 	limit, offset := utils.GetRange(c.Query("range", `[75, 99]`))
 	filter := utils.GetFilter(c.Query("filter", `{}`))
+
+	// params := db.GetOneParams{
+	// 	ID: "013bcd73-17c6-4127-a609-0369342f3dec",
+	// 	Meta: map[string]interface{}{
+	// 		"columns": []string{"id", "title"},
+	// 	},
+	// }
+
+	// result, err := h.questionStore.GetOne("questions", params)
+	// if err != nil {
+	// Handle error
+	// }
+	// fmt.Println("AWESOME")
+	// fmt.Println(result)
+
 	questions, totalCount, err := h.questionStore.GetListQuestions(sortKey, sortValue, limit, offset, filter)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": true,
-			"msg":   dbRequestFailed,
-		})
+		return utils.ErrorMessage(c, fiber.StatusInternalServerError, dbRequestFailed)
 	}
 
 	if len(questions) == 0 {

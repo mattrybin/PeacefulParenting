@@ -1,12 +1,12 @@
 package database
 
 import (
-	"database/sql"
 	"fmt"
 	"time"
 
 	"github.com/bxcodec/faker/v4"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
+	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 )
 
@@ -214,7 +214,7 @@ func createQuestion(index int) Question {
 	return question
 }
 
-func SeedDB(db *sql.DB) error {
+func SeedDB(db *sqlx.DB) error {
 	var listQuestions = addValues(questions)
 	for i := range listQuestions {
 		listQuestions[i] = createQuestion(i)
@@ -223,7 +223,7 @@ func SeedDB(db *sql.DB) error {
 	return err
 }
 
-func insertQuestions(db *sql.DB, questions []Question) ([]string, error) {
+func insertQuestions(db *sqlx.DB, questions []Question) ([]string, error) {
 	sqlStatement := "INSERT INTO questions (created_at, title, category, view_count, vote_count, answer_count) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;"
 	ids := make([]string, len(questions))
 	var err error

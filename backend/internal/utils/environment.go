@@ -12,11 +12,14 @@ func SetupEnv() *EnvVars {
 	port := os.Getenv("PORT")
 
 	if port == "" {
-		port = "4100" // default port
+		port = "4100"
 	}
 	if postgresUrl == "" {
-		postgresUrl = "host=db port=5432 user=postgres password=password dbname=pp-db-development sslmode=disable" // Default value
+		postgresUrl = "host=db port=5432 user=postgres password=password dbname=pp-db-development sslmode=disable"
 	}
 
-	return &EnvVars{PostgresUrl: postgresUrl, Port: port}
+	return &EnvVars{
+		PostgresUrl: postgresUrl,
+		Port:        port,
+	}
 }

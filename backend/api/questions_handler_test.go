@@ -1,11 +1,11 @@
 package api
 
 import (
-	"database/sql"
 	"fmt"
 	"net/http"
 	"testing"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/stretchr/testify/suite"
 
 	"github.com/gofiber/fiber/v2"
@@ -117,7 +117,7 @@ func (suite *QuestionsHandlerSuite) TestGetQuestion200() {
 
 type QuestionsHandlerSuite struct {
 	suite.Suite
-	databaseClient *sql.DB
+	databaseClient *sqlx.DB
 	handler        *QuestionHandler
 	app            *fiber.App
 }

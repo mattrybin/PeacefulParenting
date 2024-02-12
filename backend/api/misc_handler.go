@@ -1,10 +1,9 @@
 package api
 
 import (
-	"database/sql"
-
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/swagger"
+	"github.com/jmoiron/sqlx"
 )
 
 func HealthCheck() func(c *fiber.Ctx) error {
@@ -15,16 +14,16 @@ func HealthCheck() func(c *fiber.Ctx) error {
 	}
 }
 
-func SetupRoutes(app *fiber.App, questionHandler *QuestionHandler, client *sql.DB) {
+func SetupRoutes(app *fiber.App, questionHandler *QuestionHandler, client *sqlx.DB) {
 	app.Get("/docs/*", swagger.HandlerDefault)
 	app.Get("/healthcheck", HealthCheck())
 	app.Get("/commands/seed", Seed(client))
 	app.Get("/commands/migrate", Migrate(client))
 
-	v1 := app.Group("api/v1")
+	// questions := app.Group("api/v1/questions")
 
-	v1.Get("/questions", questionHandler.GetListQuestions)
-	v1.Post("/questions", questionHandler.CreateQuestion)
-	v1.Get("/questions/:id", questionHandler.GetQuestion)
-	v1.Put("/questions/:id", questionHandler.UpdateQuestion)
+	// questions.Get("/", questionHandler.GetListQuestions)
+	// v1.Post("/questions", questionHandler.CreateQuestion)
+	// questions.Get("/questions/:id", questionHandler.GetQuestion)
+	// v1.Put("/questions/:id", questionHandler.UpdateQuestion)
 }

@@ -2,18 +2,35 @@ package utils
 
 import (
 	"bytes"
-	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"unicode"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
 func Json(input interface{}) *bytes.Reader {
 	b, _ := json.Marshal(input)
 	return bytes.NewReader(b)
+}
+
+//	func ErrorMessage(c *fiber.Ctx, status int, msg string) error {
+//		return c.Status(status).JSON(fiber.Map{
+//			"error": true,
+//			"msg":   msg,
+//		})
+//	}
+func ErrorMessage(c *fiber.Ctx, status int, msg interface{}) error {
+	return c.Status(status).JSON(fiber.Map{
+		"error": true,
+		"msg":   msg,
+	})
 }
 
 func NewTestRequest(method string, url string, body *bytes.Reader) *http.Request {
@@ -28,8 +45,9 @@ func NewTestRequest(method string, url string, body *bytes.Reader) *http.Request
 	}
 }
 
-func SetupPostgres(psqlInfo string) *sql.DB {
-	db, err := sql.Open("postgres", psqlInfo)
+func SetupPostgres(env *EnvVars) *sqlx.DB {
+	fmt.Print(env.PostgresUrl)
+	db, err := sqlx.Connect("postgres", env.PostgresUrl)
 	if err != nil {
 		log.Fatalf("Failed to connect to database, error: %s", err)
 	}
@@ -40,22 +58,6 @@ func SetupPostgres(psqlInfo string) *sql.DB {
 	}
 	return db
 }
-
-// func SetupPostgres() *sql.DB {
-// 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable",
-// 		host, port, user, password, dbname)
-
-// 	db, err := sql.Open("postgres", psqlInfo)
-// 	if err != nil {
-// 		log.Fatalf("Failed to connect to database, error: %s", err)
-// 	}
-
-// 	err = db.Ping()
-// 	if err != nil {
-// 		log.Fatalf("Failed to ping to database, error: %s", err)
-// 	}
-// 	return db
-// }
 
 func CamelToSnake(s string) string {
 	var result string
