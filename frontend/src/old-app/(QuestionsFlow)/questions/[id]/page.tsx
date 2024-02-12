@@ -2,7 +2,7 @@
 import { PageContainer } from "shared/components/Containers"
 import { useQuestion } from "./page.hook"
 import Markdown from "react-markdown"
-import { Comments } from "app/(QuestionsFlow)/components/Comments"
+import { Comments } from "old-app/(QuestionsFlow)/components/Comments"
 
 const markdown = `Let me be clear. I'm not worried about her behavior or think it is abnormal or anything. I am just looking for feedback on how I handled the situation and/or tips on how to approach similar cases.
 

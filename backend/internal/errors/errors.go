@@ -1,6 +1,8 @@
 package errors
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+)
 
 type ResponseError struct {
 	Success bool        `json:"success"`
@@ -18,4 +20,11 @@ func HandleStatusNotFoundError(c *fiber.Ctx, message string) error {
 		return c.Status(fiber.StatusNotFound).JSON(resErr)
 	}
 	return nil
+}
+
+func Message(c *fiber.Ctx, status int, msg string) error {
+	return c.Status(status).JSON(fiber.Map{
+		"error": true,
+		"msg":   msg,
+	})
 }
