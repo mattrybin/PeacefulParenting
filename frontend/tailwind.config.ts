@@ -20,6 +20,7 @@ const config: Config = {
       },
     },
     screens: {
+      'small': '1px',
       'ipad': '768px',
       'desktop': '1024px',
       'xl': '1280px',

@@ -6,7 +6,7 @@ export const YoutubeChannel = ({
   channelImg,
 }: any) => (
   <div className="grid gap-4">
-    <div className="text-white text-xl font-bold">{name}</div>
+    <div className="text-base-content text-xl font-bold">{name}</div>
     <div className="text-base text-white flex gap-2">
       <img className="w-32 h-32 rounded-lg" src={channelImg}></img>
 
@@ -20,6 +20,6 @@ export const YoutubeChannel = ({
         </div>
       </div>
     </div>
-    <div className="p-3 text-white">{about}</div>
+    <div className="p-3 text-base-content">{about}</div>
   </div>
 );
