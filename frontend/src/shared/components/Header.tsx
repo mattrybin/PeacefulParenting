@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import "swiper/css"
+import "swiper/css";
 // import { HeaderController, MobileHeaderController } from "./Header/HeaderController"
-import { HeaderBranding } from "./Header/Branding"
-import { FilterTab } from "./Header/FilterTab"
-import { MobileHeaderController } from "./Header/HeaderController"
+import { HeaderBranding } from "./Header/Branding";
+import { FilterTab } from "./Header/FilterTab";
+import { MobileHeaderController } from "./Header/HeaderController";
 
 export const Header = () => (
   <div className="header border-b border-base-200 bg-base-100">
@@ -20,10 +20,10 @@ export const Header = () => (
         <div className="h-16 grid grid-flow-col items-center grid-cols-[max-content_1fr] gap-10 px-4 max-content desktop:px-0">
           <HeaderBranding />
           {/* <Search /> */}
-          {/* <HeaderController /> */}
+          <MobileHeaderController />
         </div>
         <FilterTab />
       </div>
     </div>
   </div>
-)
+);
