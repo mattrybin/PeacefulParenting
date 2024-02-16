@@ -10,7 +10,9 @@ import (
 	"github.com/gofiber/swagger"
 	"github.com/jmoiron/sqlx"
 	"github.com/mattrybin/PeacefulParenting/backend/api"
+	"github.com/mattrybin/PeacefulParenting/backend/db"
 	"github.com/mattrybin/PeacefulParenting/backend/internal/utils"
+	"github.com/mattrybin/PeacefulParenting/backend/types"
 	"go.uber.org/fx"
 )
 
@@ -38,10 +40,13 @@ func newFiberServer(lc fx.Lifecycle, env *utils.EnvVars, client *sqlx.DB) *fiber
 	app.Get("/commands/seed", api.Seed(client))
 	app.Get("/commands/migrate", api.Migrate(client))
 
-	// questionHandler := api.NewQuestionHandler(db.NewPostgresQuestionStore(client))
-	// questions := app.Group("api/v1/questions")
-	// questions.Get("/:id", questionHandler.GetQuestion)
-	// questions.Get("/", questionHandler.GetListQuestions)
+	questionHandler := api.NewGenericHandler("questions", db.NewPostgresGenericStore(client))
+	// questionHandler := genericHandler("questions")
+	questions := app.Group("api/v1/questions")
+	questions.Get("/:id", func(c *fiber.Ctx) error {
+		question := types.Question{}
+		return questionHandler.GetOne(c, &question)
+	})
 
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {

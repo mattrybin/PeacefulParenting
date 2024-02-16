@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"strings"
 	"unicode"
 
@@ -18,6 +19,31 @@ import (
 func Json(input interface{}) *bytes.Reader {
 	b, _ := json.Marshal(input)
 	return bytes.NewReader(b)
+}
+
+func GetColumnNamesFromStructTags(i interface{}) []string {
+	var t reflect.Type
+
+	// Check if the interface{} is a pointer and get Elem if necessary
+	val := reflect.ValueOf(i)
+	if val.Kind() == reflect.Ptr {
+		t = val.Elem().Type()
+	} else {
+		t = reflect.TypeOf(i)
+	}
+
+	var fieldNames []string
+	for i := 0; i < t.NumField(); i++ {
+		field := t.Field(i)
+		dbTag := field.Tag.Get("db")
+		if dbTag != "" && dbTag != "-" {
+			fieldNames = append(
+				fieldNames,
+				strings.Split(dbTag, ",")[0], // in case the tags have options such as `db:"col,option"`
+			)
+		}
+	}
+	return fieldNames
 }
 
 //	func ErrorMessage(c *fiber.Ctx, status int, msg string) error {
