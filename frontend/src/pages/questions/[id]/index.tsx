@@ -1,20 +1,20 @@
-"use client";
-import { PageContainer } from "shared/components/Containers";
+"use client"
+import { PageContainer } from "shared/components/Containers"
 
-import Markdown from "react-markdown";
+import Markdown from "react-markdown"
 
-import { useQuestion } from "./index.hook";
-import { Comments } from "../components/Comments";
-import { QuestionHeader } from "../components/QuestionHeader";
-import { Answer } from "../components/Answer";
-import { Header } from "../components/Header";
-import { CommentSection } from "../components/CommentsSection";
-import { AnswerSection } from "../components/AnswerSection";
-import { Icons } from "shared/components/Icons";
-import { Book } from "pages/resources/components/Book";
-import { SideBarBook } from "../components/SideBarBook";
-import Link from "next/link";
-import { RightSideBar } from "../components/RightSideBar";
+import { useQuestion } from "./index.hook"
+import { Comments } from "../components/Comments"
+import { QuestionHeader } from "../components/QuestionHeader"
+import { Answer } from "../components/Answer"
+import { Header } from "../components/Header"
+import { CommentSection } from "../components/CommentsSection"
+import { AnswerSection } from "../components/AnswerSection"
+import { Icons } from "shared/components/Icons"
+import { Book } from "pages/resources/components/Book"
+import { SideBarBook } from "../components/SideBarBook"
+import Link from "next/link"
+import { RightSideBar } from "../components/RightSideBar"
 
 const markdown = `Let me be clear. I'm not worried about her behavior or think it is abnormal or anything. I am just looking for feedback on how I handled the situation and/or tips on how to approach similar cases.
 
@@ -23,18 +23,16 @@ My daughter was going to a friend's birthday party at a bowling alley. She knew 
 I think it was her just being overwhelmed, and I think I had the right response. She is diagnosed with ADHD but I don't known if that is a factor. I find it interesting that she was flip a switch between being super outgoing and making friends wherever she goes, or acting very withdrawn and shy. I think either one would be within "normal" healthy limits but I'm seeing a very divergent pattern and can't predict how she'll respond in different situations. Which I guess is expected of a 7 year old.
 
 I added the attachment tag because I had to break away from her hugging my arm and ask her to at least sit (where she could see me) by herself rather than holding on to me for more than a few minutes.
-`;
+`
 
 export default function HomePage() {
-  const { title } = useQuestion();
+  const { title } = useQuestion()
   return (
     <PageContainer>
       <div className="flex desktop:mx-auto">
         <div className="desktop:w-[1100px] desktop:border-x desktop:border-base-300">
           <Header />
-          <Markdown className="px-6 py-6 prose-lg mx-auto ipad:text-xl">
-            {markdown}
-          </Markdown>
+          <Markdown className="px-6 py-6 prose-lg mx-auto ipad:text-xl">{markdown}</Markdown>
           <CommentSection />
           <AnswerSection />
         </div>
@@ -43,5 +41,5 @@ export default function HomePage() {
         </div>
       </div>
     </PageContainer>
-  );
+  )
 }
