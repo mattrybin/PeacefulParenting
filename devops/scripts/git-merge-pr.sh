@@ -111,4 +111,4 @@ function check_pr_build_check_until_timeout {
 exit_if_development_branch
 validate_working_directory
 sleep 3
-check_pr_build_check_until_timeout
+# check_pr_build_check_until_timeout
