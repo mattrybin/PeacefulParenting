@@ -12,6 +12,7 @@ import (
 
 type Question struct {
 	Title       string
+	Body        string
 	Category    string
 	ViewCount   int
 	VoteCount   int
@@ -205,11 +206,14 @@ func createQuestion(index int) Question {
 	views, _ := faker.RandomInt(1, 500, 1)
 	votes, _ := faker.RandomInt(1, 20, 1)
 	answers, _ := faker.RandomInt(1, 5, 1)
+	body := faker.Paragraph()
+
 	question.Title = questions[index]["title"]
 	question.Category = questions[index]["category"]
 	question.ViewCount = views[0]
 	question.VoteCount = votes[0]
 	question.AnswerCount = answers[0]
+	question.Body = body
 
 	return question
 }
@@ -224,7 +228,7 @@ func SeedDB(db *sqlx.DB) error {
 }
 
 func insertQuestions(db *sqlx.DB, questions []Question) ([]string, error) {
-	sqlStatement := "INSERT INTO questions (created_at, title, category, view_count, vote_count, answer_count) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id;"
+	sqlStatement := "INSERT INTO questions (created_at, title, body, category, view_count, vote_count, answer_count) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;"
 	ids := make([]string, len(questions))
 	var err error
 
@@ -235,7 +239,7 @@ func insertQuestions(db *sqlx.DB, questions []Question) ([]string, error) {
 
 	for i, question := range questions {
 		lastInsertId := ""
-		err = tx.QueryRow(sqlStatement, time.Now().Add(-time.Duration(question.CreateAt)*time.Hour), question.Title, question.Category, question.ViewCount, question.VoteCount, question.AnswerCount).Scan(&lastInsertId)
+		err = tx.QueryRow(sqlStatement, time.Now().Add(-time.Duration(question.CreateAt)*time.Hour), question.Title, question.Body, question.Category, question.ViewCount, question.VoteCount, question.AnswerCount).Scan(&lastInsertId)
 		if err != nil {
 			fmt.Println("ERROR", err)
 			tx.Rollback()

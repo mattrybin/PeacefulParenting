@@ -5,6 +5,7 @@ CREATE TABLE
       id UUID DEFAULT gen_random_uuid () PRIMARY KEY,
       title VARCHAR(255) NOT NULL,
       category VARCHAR(50) NOT NULL,
+      body TEXT,
       view_count INT DEFAULT 0,
       vote_count INT DEFAULT 0,
       answer_count INT DEFAULT 0

@@ -1,9 +1,16 @@
 package api
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/swagger"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
+	_ "github.com/mattrybin/PeacefulParenting/backend/docs"
+	"github.com/mattrybin/PeacefulParenting/backend/scripts/database"
 )
 
 func HealthCheck() func(c *fiber.Ctx) error {
@@ -14,16 +21,43 @@ func HealthCheck() func(c *fiber.Ctx) error {
 	}
 }
 
-func SetupRoutes(app *fiber.App, questionHandler *QuestionHandler, client *sqlx.DB) {
-	app.Get("/docs/*", swagger.HandlerDefault)
-	app.Get("/healthcheck", HealthCheck())
-	app.Get("/commands/seed", Seed(client))
-	app.Get("/commands/migrate", Migrate(client))
+func Seed(client *sqlx.DB) func(c *fiber.Ctx) error {
+	return func(c *fiber.Ctx) error {
+		err := database.SeedDB(client)
+		if err != nil {
+			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+				"message": "Error seeding database",
+				"error":   err.Error(),
+			})
+		}
+		return c.JSON(fiber.Map{"message": "Seeding done!"})
+	}
+}
 
-	// questions := app.Group("api/v1/questions")
+func Migrate(client *sqlx.DB) func(c *fiber.Ctx) error {
+	return func(c *fiber.Ctx) error {
+		driver, err := postgres.WithInstance(client.DB, &postgres.Config{})
+		if err != nil {
+			return c.Status(500).JSON(fiber.Map{"error": "Failed to create postgres instance", "detail": err})
+		}
 
-	// questions.Get("/", questionHandler.GetListQuestions)
-	// v1.Post("/questions", questionHandler.CreateQuestion)
-	// questions.Get("/questions/:id", questionHandler.GetQuestion)
-	// v1.Put("/questions/:id", questionHandler.UpdateQuestion)
+		m, err := migrate.NewWithDatabaseInstance(
+			"file://scripts/database/migrations",
+			"postgres", driver)
+		if err != nil {
+			return c.Status(500).JSON(fiber.Map{"error": "Failed to create migration instance", "detail": err})
+		}
+
+		err = m.Down()
+		if err != nil {
+			fmt.Println("Down is not needed to run")
+		}
+
+		err = m.Up()
+		if err != nil {
+			return c.Status(500).JSON(fiber.Map{"error": "Migration Up failed", "detail": err})
+		}
+
+		return c.SendStatus(fiber.StatusOK)
+	}
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/gofiber/swagger"
 	"github.com/jmoiron/sqlx"
 	"github.com/mattrybin/PeacefulParenting/backend/api"
+	generic_handler "github.com/mattrybin/PeacefulParenting/backend/api/generic"
 	"github.com/mattrybin/PeacefulParenting/backend/db"
 	"github.com/mattrybin/PeacefulParenting/backend/internal/utils"
 	"github.com/mattrybin/PeacefulParenting/backend/types"
@@ -40,9 +41,13 @@ func newFiberServer(lc fx.Lifecycle, env *utils.EnvVars, client *sqlx.DB) *fiber
 	app.Get("/commands/seed", api.Seed(client))
 	app.Get("/commands/migrate", api.Migrate(client))
 
-	questionHandler := api.NewGenericHandler("questions", db.NewPostgresGenericStore(client))
-	// questionHandler := genericHandler("questions")
+	questionHandler := generic_handler.NewGenericHandler("questions", db.NewPostgresGenericStore(client))
 	questions := app.Group("api/v1/questions")
+	questions.Get("/", func(c *fiber.Ctx) error {
+		questions := []types.Question{}
+		return questionHandler.GetList(c, &questions)
+	})
+
 	questions.Get("/:id", func(c *fiber.Ctx) error {
 		question := types.Question{}
 		return questionHandler.GetOne(c, &question)

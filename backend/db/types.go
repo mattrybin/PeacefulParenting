@@ -1,15 +1,20 @@
 package db
 
-type GetListParams struct {
-	Pagination struct {
-		Page    uint `json:"page"`
-		PerPage uint `json:"perPage"`
-	} `json:"pagination"`
-	Sort struct {
-		Field string `json:"field"`
-		Order string `json:"order"` // "ASC" or "DESC"
-	} `json:"sort"`
+type SortParams struct {
+	Field string `json:"field"`
+	Order string `json:"order"` // "ASC" or "DESC"
 }
+
+type PaginationParams struct {
+	Page    uint `json:"page"`
+	PerPage uint `json:"perPage"`
+}
+
+type GetListParams struct {
+	Sort       SortParams       `json:"sort"`
+	Pagination PaginationParams `json:"pagination"`
+}
+
 type PageInfo struct {
 	HasNextPage     bool `json:"hasNextPage,omitempty"`
 	HasPreviousPage bool `json:"hasPreviousPage,omitempty"`
