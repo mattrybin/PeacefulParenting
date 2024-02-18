@@ -8,21 +8,19 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 export default function App({ Component, pageProps }: AppProps) {
   // return <Component {...pageProps} />
   return (
-    <>
-      <div className="root-container">
-        <div className="content-container">
-          <Header />
-          <div className="pb-20">
-            <Component {...pageProps} />
-          </div>
-        </div>
-        <div className="ipad:hidden">
-          <Footer user={true} />
+    <div className="root-container">
+      <div className="content-container">
+        <Header />
+        <div className="pb-20">
+          <Component {...pageProps} />
+          <Analytics />
+          <SpeedInsights />
         </div>
       </div>
-      <Analytics />
-      <SpeedInsights />
-    </>
+      <div className="ipad:hidden">
+        <Footer user={true} />
+      </div>
+    </div>
   )
 }
 
