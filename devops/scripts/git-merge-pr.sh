@@ -67,6 +67,7 @@ function check_pr_build_check_until_timeout {
 
         checks_output=$(gh pr checks $current_branch)
         
+        echo $checks_output
         # extract only 'build' checkline
         build_status_line=$(echo "$checks_output" | grep "^build")
 
@@ -111,4 +112,4 @@ function check_pr_build_check_until_timeout {
 exit_if_development_branch
 validate_working_directory
 sleep 3
-# check_pr_build_check_until_timeout
+check_pr_build_check_until_timeout
