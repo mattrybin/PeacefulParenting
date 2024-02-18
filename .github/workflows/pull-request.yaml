@@ -24,4 +24,4 @@ jobs:
 
       - name: Run backend test
         working-directory: ./backend
-        run: make test  # or replace with `make test` if you prefer to use Makefile
+        run: go test ./...
