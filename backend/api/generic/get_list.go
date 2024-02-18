@@ -25,3 +25,7 @@ func (h *GenericHandler) GetList(c *fiber.Ctx, output interface{}) error {
 
 	return c.Status(fiber.StatusOK).JSON(results)
 }
+
+func Add(x, y int) int {
+	return x + y
+}
