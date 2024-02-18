@@ -69,7 +69,7 @@ function check_pr_build_check_until_timeout {
         
         echo $checks_output
         # extract only 'build' checkline
-        build_status_line=$(echo "$checks_output" | grep "^build")
+        build_status_line=$(echo "$checks_output" | grep "^Run tests")
 
         echo "$build_status_line"
 
