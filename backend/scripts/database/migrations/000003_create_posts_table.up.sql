@@ -2,7 +2,7 @@ CREATE TABLE
    IF NOT EXISTS questions (
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT null,
-      id UUID DEFAULT gen_random_uuid () PRIMARY KEY,
+      id BIGINT DEFAULT public.id_generator () PRIMARY KEY,
       title VARCHAR(255) NOT NULL,
       category VARCHAR(50) NOT NULL,
       body TEXT,
