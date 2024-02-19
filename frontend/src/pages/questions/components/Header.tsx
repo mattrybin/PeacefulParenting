@@ -6,11 +6,11 @@ export const Header = () => (
   <div>
     <div className=" grid gap-2">
       <div className="font-semibold">
-        <div className="p-6">
-          <div className="py-2 text-lg ipad:text-2xl">
-            <i className="ph-bold ph-baby"></i> Toddler
+        <div className="py-3 px-6">
+          <div className="items-center flex gap-1 btn btn-sm btn-outline w-max text-sm mb-2">
+            <i className="ph-bold ph-baby text-base"></i> <span>Toddler</span>
           </div>
-          <div className="text-xl ipad:text-3xl">{title}</div>
+          <div className="text-xl ipad:text-2xl">{title}</div>
           <div className="gap-2 flex text-base-300 pt-1 items-center">
             <Icons weight="bold" variant="calendar" size="xl" />
             23 days ago

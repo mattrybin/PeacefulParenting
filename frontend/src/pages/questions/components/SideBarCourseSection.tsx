@@ -10,6 +10,7 @@ export const SideBarCourseSection = () => {
           <div>Courses</div>
         </div>
         <SideBarCourse
+          href="https://www.coursera.org/learn/everyday-parenting"
           courseTitle="Everyday Parenting: The ABCs of Child Rearing"
           courseImg="/resources-flow/course-1.jpg"
           briefInfo=" gives you access to a toolkit of behavior-change techniques that  will make your typical day in the home easier as you develop the behaviors you would like to see in your child."
@@ -18,6 +19,7 @@ export const SideBarCourseSection = () => {
           job="Proffesor of Psychology/Child Psychiatry"
         />
         <SideBarCourse
+          href="https://www.coursera.org/learn/adhd-treatment "
           courseTitle="ADHD: Everyday Strategies for Elementary Students"
           courseImg="/resources-flow/course-2.jpg"
           briefInfo="This course will provide an overview of ADHD diagnosis and treatment. Course participants can expect to learn about ADHD as a developmental disorder that begins..."

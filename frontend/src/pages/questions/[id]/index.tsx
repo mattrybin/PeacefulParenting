@@ -15,6 +15,7 @@ import { Book } from "pages/resources/components/Book";
 import { SideBarBook } from "../components/SideBarBook";
 import Link from "next/link";
 import { RightSideBar } from "../components/RightSideBar";
+import { LeftSideBar } from "../components/LeftSideBar";
 
 const markdown = `Let me be clear. I'm not worried about her behavior or think it is abnormal or anything. I am just looking for feedback on how I handled the situation and/or tips on how to approach similar cases.
 
@@ -30,7 +31,8 @@ export default function HomePage() {
   return (
     <PageContainer>
       <div className="flex desktop:mx-auto">
-        <div className="desktop:w-[1100px] desktop:border-x desktop:border-base-300">
+        <LeftSideBar />
+        <div className="desktop:w-[900px] desktop:border-x desktop:border-base-content/20">
           <Header />
           <Markdown className="px-6 py-6 prose-lg mx-auto ipad:text-xl">
             {markdown}
@@ -38,9 +40,7 @@ export default function HomePage() {
           <CommentSection />
           <AnswerSection />
         </div>
-        <div className="small:hidden desktop:block">
-          <RightSideBar />
-        </div>
+        <RightSideBar />
       </div>
     </PageContainer>
   );

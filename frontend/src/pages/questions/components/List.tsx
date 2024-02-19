@@ -1,11 +1,20 @@
-import { Icons } from "shared/components/Icons"
-import { timeAgo } from "shared/instances"
-import Link from "next/link"
+import { Icons } from "shared/components/Icons";
+import { timeAgo } from "shared/instances";
+import Link from "next/link";
 
-export const List = ({ isLoading, questions, item, items, isSuccess, isError, isEmpty }: any) => {
+export const List = ({
+  isLoading,
+  questions,
+  item,
+  items,
+  isSuccess,
+  isError,
+  isEmpty,
+}: any) => {
   if (!isEmpty) {
     return (
-      <div className="border-b border-base-200 bg-base-200/75 ipad:bg-base-100 max-content border-l border-r w-full">
+      <div className=" desktop:w-[1100px] w-full border-b border-base-200 bg-base-200/75 ipad:bg-base-100 max-content border-l border-r">
+        <div></div>
         {!isLoading &&
           questions?.map(
             ({
@@ -17,7 +26,7 @@ export const List = ({ isLoading, questions, item, items, isSuccess, isError, is
               viewCount,
               user,
               createdAt,
-              approved
+              approved,
             }: any) => (
               <Link
                 href={`/questions/${id}`}
@@ -43,26 +52,29 @@ export const List = ({ isLoading, questions, item, items, isSuccess, isError, is
                         : "text-base-300"
                     } `}
                   >
-                    {answerCount !== 1 ? `${answerCount} answers` : `${answerCount} answer`}
+                    {answerCount !== 1
+                      ? `${answerCount} answers`
+                      : `${answerCount} answer`}
                   </div>
                   <div className="w-1 h-1 bg-base-300 rounded-full" />
                   <div>{voteCount} votes</div>
                   <div className="w-1 h-1 bg-base-300 rounded-full" />
                   <div>{viewCount} views</div>
                 </div>
-                <div className="my-2 mb-3 font-medium group-hover:text-primary">{title}</div>
+                <div className="my-2 mb-3 font-medium group-hover:text-primary">
+                  {title}
+                </div>
                 <div className="text-right flex justify-end items-center">
                   <div className="avatar">
                     <div className="w-5 h-5 rounded border-2 border-base-content mr-[6px]">
-                      <img
-                        src={user?.image}
-                        alt="avatar"
-                      />
+                      <img src={user?.image} alt="avatar" />
                     </div>
                   </div>
                   <div className="flex gap-1 font-medium">
                     <div className="text-accent">{user?.username}</div>
-                    <div className="text-base-300">answered {timeAgo(createdAt)}</div>
+                    <div className="text-base-300">
+                      answered {timeAgo(createdAt)}
+                    </div>
                   </div>
                 </div>
                 {/* {!item && (
@@ -85,7 +97,7 @@ export const List = ({ isLoading, questions, item, items, isSuccess, isError, is
             )
           )}
       </div>
-    )
+    );
   }
   if (isLoading) {
     return (
@@ -93,33 +105,25 @@ export const List = ({ isLoading, questions, item, items, isSuccess, isError, is
         <span className="loading loading-infinity loading-lg"></span>
         <div className="font-semibold">Loading Questions</div>
       </div>
-    )
+    );
   }
   if (isError) {
     return (
       <div className="text-center text-base-300 pt-10 px-10">
-        <Icons
-          variant="warning"
-          weight="duotone"
-          className="text-10"
-        />
+        <Icons variant="warning" weight="duotone" className="text-10" />
         <div className="font-semibold">
-          We are sorry, an unexpected error occurred. Please refresh your browser or try again
-          later.
+          We are sorry, an unexpected error occurred. Please refresh your
+          browser or try again later.
         </div>
       </div>
-    )
+    );
   }
   if (isEmpty) {
     return (
       <div className="text-center text-base-300 pt-10">
-        <Icons
-          variant="smiley-meh"
-          weight="duotone"
-          className="text-10"
-        />
+        <Icons variant="smiley-meh" weight="duotone" className="text-10" />
         <div className="font-semibold">No questions found</div>
       </div>
-    )
+    );
   }
-}
+};

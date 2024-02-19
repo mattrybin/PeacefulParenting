@@ -31,28 +31,28 @@ export const RatingClicker = () => {
 export const RatingClicker2 = () => {
   const [count, setCount] = useState(0);
   return (
-    <div>
-      <div className="flex justify-center h-14">
-        <div className="my-auto ipad:text-2xl">{count}</div>
+    <div className="border-r border-base-content/20">
+      <div className="flex justify-center h-14 ">
+        <div className="my-auto text-xl">{count}</div>
       </div>
 
-      <div className="flex w-max gap-4 border-t border-base-300 h-14">
+      <div className="flex border-t border-base-content/20 h-14">
         <div
-          className="cursor-pointer hover:opacity-60 transition"
+          className="grid place-content-center w-14 cursor-pointer hover:opacity-60 transition border-r border-base-content/20"
           onClick={() => {
             setCount(count + 1);
           }}
         >
-          <Icons variant="thumbs-up" weight="bold" />
+          <Icons variant="thumbs-up" weight="bold" size="5" />
         </div>
         {/* <div className="bg-base-300 w-[1px]"></div> */}
         <div
-          className="cursor-pointer hover:opacity-60 transition"
+          className="grid place-content-center w-14 cursor-pointer hover:opacity-60 transition border-r border-base-content/20"
           onClick={() => {
             setCount(count - 1);
           }}
         >
-          <Icons variant="thumbs-down" weight="bold" />
+          <Icons variant="thumbs-down" weight="bold" size="5" />
         </div>
       </div>
     </div>

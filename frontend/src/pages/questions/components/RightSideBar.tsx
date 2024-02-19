@@ -8,7 +8,7 @@ import { SideBarCourseSection } from "./SideBarCourseSection";
 
 export const RightSideBar = () => {
   return (
-    <div className="pl-10">
+    <div className="small:hidden desktop:block pl-10 pt-6 w-[440px]">
       <div className="items-center  w-[400px]">
         <SideBarBookSection />
       </div>

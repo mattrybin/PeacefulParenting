@@ -2,7 +2,7 @@ import { Answer } from "./Answer";
 
 export const AnswerSection = () => (
   <div>
-    <div className="flex bg-primary text-primary-content justify-center border-y border-base-300 p-2 gap-2 font-bold items-center ipad:text-lg ipad:p-4">
+    <div className="flex bg-primary text-primary-content justify-center border-y border-base-content/20 p-2 gap-2 font-bold items-center ipad:text-lg ipad:p-4">
       <i className="ph-bold ph-plus"></i> <div>Add Answer</div>
     </div>
     <div>
