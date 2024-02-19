@@ -3,6 +3,7 @@
 default: menu
 menu:
 	@bash devops/scripts/menu.sh
+	make
 git:
 	@bash devops/scripts/menu-git.sh
 setup:
