@@ -1,4 +1,4 @@
-CREATE SEQUENCE public.global_id_seq;
+CREATE SEQUENCE IF NOT EXISTS public.global_id_seq;
 ALTER SEQUENCE public.global_id_seq OWNER TO postgres;
 
 CREATE OR REPLACE FUNCTION public.id_generator()

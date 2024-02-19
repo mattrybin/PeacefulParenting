@@ -228,7 +228,7 @@ func SeedDB(db *sqlx.DB) error {
 }
 
 func insertQuestions(db *sqlx.DB, questions []Question) ([]string, error) {
-	sqlStatement := "INSERT INTO questions (created_at, title, body, category, view_count, vote_count, answer_count) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;"
+	sqlStatement := "INSERT INTO posts (created_at, title, body, category, view_count, vote_count, answer_count) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id;"
 	ids := make([]string, len(questions))
 	var err error
 
