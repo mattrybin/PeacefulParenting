@@ -41,7 +41,7 @@ func newFiberServer(lc fx.Lifecycle, env *utils.EnvVars, client *sqlx.DB) *fiber
 	app.Get("/commands/seed", api.Seed(client))
 	app.Get("/commands/migrate", api.Migrate(client))
 
-	questionHandler := generic_handler.NewGenericHandler("questions", db.NewPostgresGenericStore(client))
+	questionHandler := generic_handler.NewGenericHandler("posts", db.NewPostgresGenericStore(client))
 	questions := app.Group("api/v1/questions")
 	questions.Get("/", func(c *fiber.Ctx) error {
 		questions := []types.Question{}

@@ -1,5 +1,5 @@
 CREATE TABLE
-   IF NOT EXISTS questions (
+   IF NOT EXISTS posts (
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT null,
       id BIGINT DEFAULT public.id_generator () PRIMARY KEY,
@@ -12,4 +12,4 @@ CREATE TABLE
    );
 
 CREATE TRIGGER update_modified_time BEFORE
-UPDATE ON questions FOR EACH ROW EXECUTE PROCEDURE update_modified_column ();
+UPDATE ON posts FOR EACH ROW EXECUTE PROCEDURE update_modified_column ();
