@@ -1,6 +1,8 @@
 package errors
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+)
 
 type ResponseError struct {
 	Success bool        `json:"success"`
