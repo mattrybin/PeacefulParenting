@@ -3,9 +3,9 @@
 import { PageContainer } from "shared/components/Containers";
 import { getQuestions } from "shared/queries/questions";
 import { List } from "./components/List";
-// import { List } from "./components/List";
 import { RightSideBar } from "./components/RightSideBar";
-// import { LeftSideBar } from "./components/LeftSideBar";
+import { LeftSideBar } from "./components/LeftSideBar";
+import { MyComponent } from "./components/Component";
 
 const array = [
   {
@@ -69,8 +69,10 @@ export default function HomePage() {
       // <Tabs {...tabs} /> */}
 
       <div className=" desktop:w-max desktop:mx-auto desktop:flex">
-        {/* <LeftSideBar /> */}
-        <List className="" questions={array} isEmpty={false} />
+        <LeftSideBar />
+        <div className="desktop:w-[600px]">
+          <List questions={array} isEmpty={false} />
+        </div>
         <div className="small:hidden desktop:block desktop:w-max">
           <RightSideBar />
         </div>

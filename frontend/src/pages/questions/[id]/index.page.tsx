@@ -1,19 +1,9 @@
-"use client";
 import { PageContainer } from "shared/components/Containers";
-
 import Markdown from "react-markdown";
-
 import { useQuestion } from "./index.hook";
-import { Comments } from "../components/Comments";
-import { QuestionHeader } from "../components/QuestionHeader";
-import { Answer } from "../components/Answer";
 import { Header } from "../components/Header";
-import { CommentSection } from "../components/CommentsSection";
+import { CommentSection } from "../components/CommentSection";
 import { AnswerSection } from "../components/AnswerSection";
-import { Icons } from "shared/components/Icons";
-import { Book } from "pages/resources/components/Book";
-import { SideBarBook } from "../components/SideBarBook";
-import Link from "next/link";
 import { RightSideBar } from "../components/RightSideBar";
 
 const markdown = `Let me be clear. I'm not worried about her behavior or think it is abnormal or anything. I am just looking for feedback on how I handled the situation and/or tips on how to approach similar cases.
