@@ -17,102 +17,7 @@ import (
 	"go.uber.org/fx"
 )
 
-func Seed(client *sql.DB) func(c *fiber.Ctx) error {
-	return func(c *fiber.Ctx) error {
-		err := database.SeedDB(client)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"message": "Error seeding database",
-				"error":   err.Error(),
-			})
-		}
-		return c.JSON(fiber.Map{"message": "Seeding done!"})
-	}
-}
-
-func RunMigrations(db *sql.DB) error {
-	fmt.Println("HELLO WORLD")
-	driver, err := postgres.WithInstance(db, &postgres.Config{})
-	if err != nil {
-		return err
-	}
-	m, err := migrate.NewWithDatabaseInstance(
-		"file://scripts/database/migrations",
-		"postgres", driver)
-	if err != nil {
-		return err
-	}
-	err = m.Down()
-	if err != nil {
-		fmt.Println("Can't migrate down")
-	}
-	err = m.Up()
-	return err
-}
-
-type (
-	CreateQuestionParams struct {
-		Title    string `json:"title" validate:"required"`
-		Category string `json:"category" validate:"required"`
-	}
-
-	ErrorResponse struct {
-		Error       bool
-		FailedField string
-		Tag         string
-		Value       interface{}
-	}
-
-	XValidator struct {
-		validator *validator.Validate
-	}
-
-	GlobalErrorHandlerResp struct {
-		Success bool   `json:"success"`
-		Message string `json:"message"`
-	}
-)
-
-var validate = validator.New()
-
-func (v XValidator) Validate(data interface{}) []ErrorResponse {
-	validationErrors := []ErrorResponse{}
-
-	errs := validate.Struct(data)
-	if errs != nil {
-		for _, err := range errs.(validator.ValidationErrors) {
-			// In this case data object is actually holding the User struct
-			var elem ErrorResponse
-
-			elem.FailedField = err.Field() // Export struct field name
-			elem.Tag = err.Tag()           // Export struct tag
-			elem.Value = err.Value()       // Export field value
-			elem.Error = true
-
-			validationErrors = append(validationErrors, elem)
-		}
-	}
-
-	return validationErrors
-}
-
-// @title PeacefulParenting API
-// @version 1.0
-// @description This is an API for PeacefulParenting.ai
-// @schemes http https
-// @BasePath /api/v1
-// @contact.name Matt Rybin
-// @contact.email contact@mattrybin.com
-func main() {
-	url := os.Getenv("POSTGRES_URL")
-	if url == "" {
-		url = "host=db port=5432 user=postgres password=password dbname=pp-db-development sslmode=disable" // default value
-	}
-	client := utils.SetupPostgres(url)
-	defer client.Close()
-
-	questionHandler := api.NewQuestionHandler(db.NewPostgresQuestionStore(client))
-
+func newFiberServer(lc fx.Lifecycle, env *utils.EnvVars, client *sqlx.DB) *fiber.App {
 	app := fiber.New()
 
 	app.Use(cors.New(cors.Config{
@@ -165,16 +70,8 @@ func main() {
 // @version 1.0
 // @description This is an API for PeacefulParenting.ai
 
-	// app.Get("/commands/seed", func(c *fiber.Ctx) error {
-	// 	err := database.SeedDB(client)
-	// 	if err != nil {
-	// 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Error seeding database", "error": err.Error()})
-	// 	}
-	// 	return c.JSON(fiber.Map{"message": "Seeding done!"})
-	// })
-
-	app.Get("/commands/seed", Seed(client))
-	// app.Get("/commands/seed", Seed(c, client))
+// @contact.name Matt Rybin
+// @contact.email contact@mattrybin.com
 
 // @BasePath /api
 func main() {

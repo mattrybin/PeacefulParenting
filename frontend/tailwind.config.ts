@@ -20,7 +20,6 @@ const config: Config = {
       },
     },
     screens: {
-      'small': '1px',
       'ipad': '768px',
       'desktop': '1024px',
       'xl': '1280px',
@@ -31,7 +30,6 @@ const config: Config = {
   content: [
     './src/shared/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   daisyui: {
     themes: [{
