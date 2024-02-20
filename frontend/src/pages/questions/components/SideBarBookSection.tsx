@@ -5,7 +5,7 @@ import { Icons } from "shared/components/Icons";
 export const SideBarBookSection = () => {
   return (
     <div>
-      <div className="flex text-xl font-bold items-center gap-2 pb-2 ">
+      <div className="flex text-lg font-bold items-center gap-2 pb-2 ">
         <Icons weight="bold" variant="book-open-text" size="xl" />
         <div>Books</div>
       </div>
@@ -24,7 +24,7 @@ export const SideBarBookSection = () => {
         href="https://www.amazon.pl/Raising-Good-Humans-Parenting-Confident/dp/1684033888/ref=sr_1_1?crid=3MANKNTU7G6O8&dib=eyJ2IjoiMSJ9.M-w28wc1X0Z2vNwYlsYSh2gfLDpEY4Ri0cVXhbifwpwX6OwrSSUE8oLXpncMdfMv7HLQJgDZF-fqkgLxdOtJ80ZjD6UJynkpzbLdOqzOnF1LnTHpj2smFKfawxFSo_1k07qgJhHDhUuiL26TXwM4ZQ_uhQT-1oUf3BXkqD7RcNHD5f9dBeHiaoUTx3a7KvlOpAVFMs2AugNVzWAdEbOaYDEFrQwQ6fRsLrglKV5saY2EH3VON5UabbIq9mT1iKSCOka0r1e7ExbT-KrBHFUwJyva5p3nNu1Y35P9_U3gpfQ.pFt6IBgHIKdkyNyIRbr0pcH9Y5E9D3DjvMQE-dg4zI8&dib_tag=se&keywords=raising+good+humans&qid=1708007963&sprefix=raising+%2Caps%2C239&sr=8-1"
       />
       <Link
-        className="font-bold text-xl pt-3 hover:underline-offset-4 hover:underline-offset-3"
+        className="font-bold text-lg pt-3 hover:underline-offset-4 hover:underline-offset-3"
         href="http://frontend.peacefulparenting.local/resources"
       >
         More books...

@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "next/link";
 
 export const HeaderBranding = () => (
   <Link
@@ -8,4 +8,4 @@ export const HeaderBranding = () => (
     <span>PeacefulParenting</span>
     <span className="text-base-300">.ai</span>
   </Link>
-)
+);

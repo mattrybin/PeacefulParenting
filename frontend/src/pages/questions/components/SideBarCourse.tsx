@@ -14,7 +14,7 @@ export const SideBarCourse = ({
       <div>
         <div className="w-[400px]">
           <div className="grid justify-start p-2">
-            <div className="text-xl font-bold pt-2 text-white">
+            <div className="text-lg font-bold pt-2 text-white">
               {courseTitle}
             </div>
             <div className="text-sm font-normal text-white pt-2 ipad:text-base">

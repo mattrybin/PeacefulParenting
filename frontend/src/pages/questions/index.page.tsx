@@ -69,8 +69,8 @@ export default function HomePage() {
       // <Tabs {...tabs} /> */}
 
       <div className=" desktop:w-max desktop:mx-auto desktop:flex">
-        <LeftSideBar />
-        <div className="desktop:w-[600px]">
+        {/* <LeftSideBar /> */}
+        <div className="desktop:w-[800px] desktop:border-x desktop:border-base-content/20">
           <List questions={array} isEmpty={false} />
         </div>
         <div className="small:hidden desktop:block desktop:w-max">
