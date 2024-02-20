@@ -1,9 +1,9 @@
-import { Header } from "shared/components/Header"
-import "../shared/styles/globals.css"
-import type { AppProps } from "next/app"
-import { Footer } from "shared/components/Footer"
-import { Analytics } from "@vercel/analytics/react"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Header } from "shared/components/Header";
+import "../shared/styles/globals.css";
+import type { AppProps } from "next/app";
+import { Footer } from "shared/components/Footer";
+// import { Analytics } from "@vercel/analytics/react"
+// import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function App({ Component, pageProps }: AppProps) {
   // return <Component {...pageProps} />
@@ -13,15 +13,15 @@ export default function App({ Component, pageProps }: AppProps) {
         <Header />
         <div className="pb-20">
           <Component {...pageProps} />
-          <Analytics />
-          <SpeedInsights />
+          {/* <Analytics />
+          <SpeedInsights /> */}
         </div>
       </div>
       <div className="ipad:hidden">
         <Footer user={true} />
       </div>
     </div>
-  )
+  );
 }
 
 // const MainBody = ({ children, user }: { children: ReactNode; user: any }) => (
