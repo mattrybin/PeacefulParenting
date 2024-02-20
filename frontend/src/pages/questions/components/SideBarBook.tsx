@@ -16,14 +16,14 @@ export const SideBarBook = ({
   <Link
     href={href}
     target="_blank"
-    className="grid grid-flow-col grid-cols-[120px_auto] ipad:grid-cols-[150px_auto]"
+    className="grid grid-flow-col grid-cols-[120px_auto] "
   >
-    <div className="w-32 pb-5">
+    <div className="w-28 pb-5">
       <img className="rounded-sm" src={imgLink} />
     </div>
-    <div className="font-bold text-xl">
+    <div className="font-bold text-lg">
       {bookTitle}
-      <div className="text-base-300 pt-1 text-sm">
+      <div className="text-base-300 pt-1 text-xs">
         {author}
         <div className="text-base-content  pt-1 font-normal">{briefInfo}</div>
       </div>

@@ -17,7 +17,7 @@ export default function HomePage() {
   return (
     <PageContainer>
       <div className="flex desktop:mx-auto">
-        <div className="desktop:w-[1100px] desktop:border-x desktop:border-base-300">
+        <div className="desktop:w-[800px] desktop:border-x desktop:border-base-content/20">
           <Header />
           <Markdown className="px-6 py-6 prose-lg mx-auto ipad:text-xl">
             {markdown}

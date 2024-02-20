@@ -4,8 +4,8 @@ import Link from "next/link";
 export const SideBarCourseSection = () => {
   return (
     <div className="pt-10">
-      <div className="text-xl font-bold items-center gap-2 ">
-        <div className="flex pb-2">
+      <div className="text-lg font-bold items-center gap-2 ">
+        <div className="flex pb-2 gap-2">
           <Icons weight="bold" variant="certificate" size="xl" />
           <div>Courses</div>
         </div>
@@ -26,7 +26,7 @@ export const SideBarCourseSection = () => {
           job="Professor of School/Educational Psychology"
         />
         <Link
-          className="font-bold text-xl pt-3 hover:underline-offset-4 hover:underline-offset-3"
+          className="font-bold text-lg pt-3 hover:underline-offset-4 hover:underline-offset-3"
           href="http://frontend.peacefulparenting.local/resources"
         >
           More courses...

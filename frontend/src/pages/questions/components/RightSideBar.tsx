@@ -6,7 +6,7 @@ import { SideBarCourseSection } from "./SideBarCourseSection";
 
 export const RightSideBar = () => {
   return (
-    <div className="pl-10">
+    <div className="pl-6 pt-3">
       <div className="items-center  w-[400px]">
         <SideBarBookSection />
       </div>

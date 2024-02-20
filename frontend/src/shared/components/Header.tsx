@@ -18,7 +18,7 @@ export const Header = () => (
     </div>
     <div className="hidden ipad:block">
       <div className="header border-b border-base-200 gap-2">
-        <div className="h-16 grid grid-flow-col items-center grid-cols-[max-content_max-content] justify-between ap-10 px-4 max-content desktop:px-0">
+        <div className="small:max-content desktop:mx-auto desktop:w-[1240px] h-16 grid grid-flow-col items-center grid-cols-[max-content_max-content] justify-between ap-10 px-4">
           <HeaderBranding />
           {/* <Menu /> */}
           <MobileHeaderController />

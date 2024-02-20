@@ -13,7 +13,7 @@ export const List = ({
 }: any) => {
   if (!isEmpty) {
     return (
-      <div className="border-b border-base-200 bg-base-200/75 ipad:bg-base-100 max-content border-l border-r w-full">
+      <div className="px-3 py-6 border-b border-base-200 bg-base-200/75 ipad:bg-base-100 max-content border-l border-r w-full">
         {!isLoading &&
           questions?.map(
             ({
