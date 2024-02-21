@@ -29,7 +29,7 @@ export default function Page() {
         {youtubechannels.map((item, index) => (
           <YoutubeChannel key={index} {...item} />
         ))}
-      </SectionContainer>
+      </SectionContainer>   
     </PageContainer>
   );
 }
