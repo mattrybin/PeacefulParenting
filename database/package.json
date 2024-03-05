@@ -1,0 +1,25 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "studio": "drizzle-kit studio",
+    "drop": "drizzle-kit drop --config=drizzle.config.ts",
+    "migrate": "pnpm tsx src/migrate.ts",
+    "generate": "drizzle-kit generate:pg",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "drizzle-orm": "^0.29.4",
+    "pg": "^8.11.3",
+    "postgres": "^3.4.3",
+    "tsx": "^4.7.1"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.20.14"
+  }
+}

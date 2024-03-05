@@ -3,7 +3,7 @@ import { Comments } from "./Comments";
 export const CommentSection = () => (
   <div>
     <details className="collapse bg-base-200 rounded-none">
-      <summary className="collapse-title text-xl font-medium btn">
+      <summary className="collapse-title font-medium btn text-lg font-bold">
         {/* How to center that? It's so hard lol. I struggled for a while */}
         <div className="text-center">Show 3 Comments</div>
       </summary>
