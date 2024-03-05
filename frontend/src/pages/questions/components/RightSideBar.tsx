@@ -1,8 +1,8 @@
-"use client";
-import Link from "next/link";
-import { Icons } from "shared/components/Icons";
-import { SideBarBookSection } from "./SideBarBookSection";
-import { SideBarCourseSection } from "./SideBarCourseSection";
+"use client"
+import Link from "next/link"
+import { Icons } from "shared/components/Icons"
+import { SideBarBookSection } from "./SideBarBookSection"
+import { SideBarCourseSection } from "./SideBarCourseSection"
 
 export const RightSideBar = () => {
   return (
@@ -12,5 +12,5 @@ export const RightSideBar = () => {
       </div>
       <SideBarCourseSection />
     </div>
-  );
-};
+  )
+}

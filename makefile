@@ -32,6 +32,7 @@ setup-packages:
 
 dev:
 	@docker info >/dev/null 2>&1 || (echo "Docker is not running" ; exit 1)
+	@open http://frontend.peacefulparenting.local
 	@docker-compose --env-file development.database.env up --build
 
 

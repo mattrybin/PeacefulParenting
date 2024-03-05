@@ -1,11 +1,11 @@
 // import { useQuestions } from "./page.hook"
 // import { getQuestions } from "app/testing"
-import { PageContainer } from "shared/components/Containers";
-import { getQuestions } from "shared/queries/questions";
-import { List } from "./components/List";
-import { RightSideBar } from "./components/RightSideBar";
-import { LeftSideBar } from "./components/LeftSideBar";
-import { MyComponent } from "./components/Component";
+import { PageContainer } from "shared/components/Containers"
+import { getQuestions } from "shared/queries/questions"
+import { List } from "./components/List"
+import { RightSideBar } from "./components/RightSideBar"
+import { LeftSideBar } from "./components/LeftSideBar"
+import { MyComponent } from "./components/Component"
 
 const array = [
   {
@@ -16,7 +16,7 @@ const array = [
     viewCount: 0,
     title: "AWESOME",
     user: { username: "GOOD" },
-    createdAt: "2024-02-09 16:56:38.969927",
+    createdAt: "2024-02-09 16:56:38.969927"
   },
   {
     id: "123",
@@ -26,7 +26,7 @@ const array = [
     viewCount: 0,
     title: "GOOD",
     user: { username: "GOOD" },
-    createdAt: "2024-02-09 16:56:38.969927",
+    createdAt: "2024-02-09 16:56:38.969927"
   },
   {
     id: "124",
@@ -37,7 +37,7 @@ const array = [
     title: "GOOD",
     user: { username: "GOOD" },
 
-    createdAt: "2024-02-09 16:56:38.969927",
+    createdAt: "2024-02-09 16:56:38.969927"
   },
   {
     id: "125",
@@ -47,7 +47,7 @@ const array = [
     viewCount: 0,
     title: "GOOD",
     user: { username: "GOOD" },
-    createdAt: "2024-02-09 16:56:38.969927",
+    createdAt: "2024-02-09 16:56:38.969927"
   },
   {
     id: "126",
@@ -57,9 +57,9 @@ const array = [
     viewCount: 0,
     title: "GOOD",
     user: { username: "GOOD" },
-    createdAt: "2024-02-09 16:56:38.969927",
-  },
-];
+    createdAt: "2024-02-09 16:56:38.969927"
+  }
+]
 export default function HomePage() {
   // const { data, count } = await getQuestions({})
   return (
@@ -71,14 +71,17 @@ export default function HomePage() {
       <div className=" desktop:w-max desktop:mx-auto desktop:flex">
         {/* <LeftSideBar /> */}
         <div className="desktop:w-[800px] desktop:border-x desktop:border-base-content/20">
-          <List questions={array} isEmpty={false} />
+          <List
+            questions={array}
+            isEmpty={false}
+          />
         </div>
-        <div className="small:hidden desktop:block desktop:w-max">
+        <div className="hidden desktop:block desktop:w-max">
           <RightSideBar />
         </div>
       </div>
 
       {/* <Pagination {...pagination} /> */}
     </PageContainer>
-  );
+  )
 }
