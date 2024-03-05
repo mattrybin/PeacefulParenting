@@ -12,11 +12,14 @@ export const categoryEnum = pgEnum("category", [
   "other"
 ])
 
-export const post = pgTable("post", {
-  id: uuid("id").defaultRandom(),
-  category: categoryEnum("category"),
-  name: text("title").notNull(),
+export const posts = pgTable("posts", {
+  id: uuid("id").defaultRandom().primaryKey().notNull(),
+  category: categoryEnum("category").notNull(),
+  title: text("title").notNull(),
   body: text("body").notNull(),
-  createdAt: timestamp("created_at"),
-  updatedAt: timestamp("updated_at")
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull()
 })
+
+export type Post = typeof posts.$inferSelect
+export type PostCreate = typeof posts.$inferInsert

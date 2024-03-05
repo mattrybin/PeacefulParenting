@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "studio": "drizzle-kit studio",
+    "dev": "drizzle-kit studio",
     "drop": "drizzle-kit drop --config=drizzle.config.ts",
     "migrate": "pnpm tsx src/migrate.ts",
     "generate": "drizzle-kit generate:pg",
