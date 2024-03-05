@@ -55,7 +55,7 @@ export const FilterTab = () => {
   }
   if (path === "questions") {
     return (
-      <div className="pb-5 max-w-[1000px] mx-auto pt-2">
+      <div className="pb-5 max-w-[1000px] mx-auto pt-2 desktop:max-w-[1240px]">
         <Swiper {...swiperParams}>
           {categories.map(({ id, icon, title, subtitle }) => (
             <SwiperSlide key={id}>
