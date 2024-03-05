@@ -1,10 +1,7 @@
-// import { useQuestions } from "./page.hook"
-// import { getQuestions } from "app/testing"
 import { PageContainer } from "shared/components/Containers"
 import { getQuestions } from "shared/queries/questions"
 import { List } from "./components/List"
 import { RightSideBar } from "./components/RightSideBar"
-import { LeftSideBar } from "./components/LeftSideBar"
 import { MyComponent } from "./components/Component"
 
 const array = [
