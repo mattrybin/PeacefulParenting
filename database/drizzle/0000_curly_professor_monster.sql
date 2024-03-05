@@ -4,11 +4,11 @@ EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "post" (
-	"id" uuid DEFAULT gen_random_uuid(),
-	"category" "category",
+CREATE TABLE IF NOT EXISTS "posts" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"category" "category" NOT NULL,
 	"title" text NOT NULL,
 	"body" text NOT NULL,
-	"created_at" timestamp,
-	"updated_at" timestamp
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
 );
